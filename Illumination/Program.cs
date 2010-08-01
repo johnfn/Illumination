@@ -9,7 +9,7 @@ namespace Illumination
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Illumination game = new Illumination())
             {
                 game.Run();
             }
