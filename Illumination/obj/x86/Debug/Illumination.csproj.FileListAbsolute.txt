@@ -1,0 +1,7 @@
+C:\Users\Hoon\ImagineCup\Illumination\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Hoon\ImagineCup\Illumination\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Hoon\ImagineCup\Illumination\bin\x86\Debug\Content\grasstile.xnb
+C:\Users\Hoon\ImagineCup\Illumination\bin\x86\Debug\Illumination.exe
+C:\Users\Hoon\ImagineCup\Illumination\bin\x86\Debug\Illumination.pdb
+C:\Users\Hoon\ImagineCup\Illumination\obj\x86\Debug\Illumination.exe
+C:\Users\Hoon\ImagineCup\Illumination\obj\x86\Debug\Illumination.pdb
