@@ -23,6 +23,11 @@ namespace Illumination.WorldObjects
         TileType type;
         HashSet<Entity> entities;
 
+        public HashSet<Entity> Entities
+        {
+            get { return entities; }
+        }
+
         public TileType Type
         {
             get { return type; }
@@ -54,6 +59,11 @@ namespace Illumination.WorldObjects
                 case TileType.Water:
                     spriteBatch.Draw(MediaRepository.Textures["WaterTile"], BoundingBox, Color.White);
                     break;
+            }
+
+            foreach (Entity entity in entities)
+            {
+                entity.Draw(spriteBatch);
             }
         }
 

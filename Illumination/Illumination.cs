@@ -86,7 +86,6 @@ namespace Illumination
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin();
             world.Draw(spriteBatch);
             spriteBatch.End();

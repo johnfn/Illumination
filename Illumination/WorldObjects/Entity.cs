@@ -12,7 +12,7 @@ namespace Illumination.WorldObjects
             set { location = value; }
         }
 
-        public void Initialize(int x, int y, int width, int height)
+        public Entity(int x, int y, int width, int height)
         {
             location.X = x;
             location.Y = y;
