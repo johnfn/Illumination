@@ -86,10 +86,14 @@
     <Compile Include="Data\MediaRepository.cs" />
     <Compile Include="Graphics\Display.cs" />
     <Compile Include="Logic\LightSequence.cs" />
+    <Compile Include="Logic\MouseHandler\MouseController.cs" />
+    <Compile Include="Logic\MouseHandler\MouseEvent.cs" />
+    <Compile Include="Logic\MouseHandler\MouseListener.cs" />
     <Compile Include="Logic\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Illumination.cs" />
+    <Compile Include="Utility\Geometry.cs" />
     <Compile Include="WorldObjects\Building.cs" />
     <Compile Include="WorldObjects\Entity.cs" />
     <Compile Include="WorldObjects\Light.cs" />

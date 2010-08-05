@@ -28,6 +28,9 @@ namespace Illumination
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            this.graphics.PreferredBackBufferWidth = 500;
+            this.graphics.PreferredBackBufferHeight = 500;
         }
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace Illumination
         /// </summary>
         protected override void Initialize()
         {
-            world = new World(50, 50, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            world = new World(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
 
             base.Initialize();
         }
