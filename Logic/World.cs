@@ -3,60 +3,55 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Illumination.Logic
-{
-    public class World
-    {
+namespace Illumination.Logic {
+    public static class World {
         #region Properties
 
-        Tile[,] grid;
-        int tileWidth;
-        int tileHeight;
+        static Tile[,] grid;
+        static int tileWidth;
+        static int tileHeight;
 
-        public int TileWidth 
-        {
+        public static int TileWidth {
             get { return tileWidth; }
         }
 
-        public int TileHeight
-        {
+        public static int TileHeight {
             get { return tileHeight; }
         }
 
-        public Tile[,] Grid
-        {
+        public static Tile[,] Grid {
             get { return grid; }
         }
 
         #endregion
 
-        #region Constructor
-
-        public World(int numRows, int numCols, int displayWidth, int displayHeight)
-        {
+        public static void InitalizeWorld(int numRows, int numCols, int displayWidth, int displayHeight) {
             tileWidth = displayWidth / numCols;
             tileHeight = displayHeight / numRows;
 
             grid = new Tile[numRows, numCols];
-            for (int row = 0; row < numRows; row++)
-            {
-                for (int col = 0; col < numCols; col++)
-                {
+            for (int row = 0; row < numRows; row++) {
+                for (int col = 0; col < numCols; col++) {
                     grid[row, col] = new Tile(new Rectangle(col * tileWidth, row * tileHeight, tileWidth, tileHeight), Tile.TileType.Grass);
                 }
             }
+            grid[0, 0].AddEntity(new Person(0, 0, 50, 50));
         }
-
-        #endregion
 
         #region Public Methods
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (Tile tile in grid)
-            {
+        public static void Draw(SpriteBatch spriteBatch) {
+            foreach (Tile tile in grid) {
                 tile.Draw(spriteBatch);
             }
+        }
+
+        public static Point ViewportToGridLocation(Point p) {
+            return new Point(p.X / tileWidth, p.Y / tileHeight);
+        }
+
+        public static Point GridLocationToViewport(Point p) {
+            return new Point(p.X * tileWidth, p.Y * tileHeight);
         }
 
         #endregion

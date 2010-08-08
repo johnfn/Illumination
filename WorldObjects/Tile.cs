@@ -8,12 +8,9 @@ using Illumination.Data;
 
 #endregion
 
-namespace Illumination.WorldObjects
-{
-    public class Tile : WorldObject
-    {
-        public enum TileType
-        {
+namespace Illumination.WorldObjects {
+    public class Tile : WorldObject {
+        public enum TileType {
             Water,
             Grass
         }
@@ -23,13 +20,11 @@ namespace Illumination.WorldObjects
         TileType type;
         HashSet<Entity> entities;
 
-        public HashSet<Entity> Entities
-        {
+        public HashSet<Entity> Entities {
             get { return entities; }
         }
 
-        public TileType Type
-        {
+        public TileType Type {
             get { return type; }
             set { type = value; }
         }
@@ -38,8 +33,7 @@ namespace Illumination.WorldObjects
 
         #region Constructor
 
-        public Tile(Rectangle rectangle, TileType type)
-        {
+        public Tile(Rectangle rectangle, TileType type) {
             BoundingBox = rectangle;
             this.type = type;
             entities = new HashSet<Entity>();
@@ -49,10 +43,8 @@ namespace Illumination.WorldObjects
 
         #region Public Methods
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            switch (type)
-            {
+        public override void Draw(SpriteBatch spriteBatch) {
+            switch (type) {
                 case TileType.Grass:
                     spriteBatch.Draw(MediaRepository.Textures["GrassTile"], BoundingBox, Color.White);
                     break;
@@ -61,10 +53,17 @@ namespace Illumination.WorldObjects
                     break;
             }
 
-            foreach (Entity entity in entities)
-            {
+            foreach (Entity entity in entities) {
                 entity.Draw(spriteBatch);
             }
+        }
+
+        public void AddEntity(Entity entity) {
+            entities.Add(entity);
+        }
+
+        public void RemoveEntity(Entity entity) {
+            entities.Remove(entity);
         }
 
         #endregion

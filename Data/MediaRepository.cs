@@ -4,10 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 
-namespace Illumination.Data
-{
-    public static class MediaRepository
-    {
+namespace Illumination.Data {
+    public static class MediaRepository {
         public static Dictionary<string, Texture2D> Textures;
         public static Dictionary<string, SoundEffect> SoundEffects;
         public static Dictionary<string, Song> Songs;
@@ -15,8 +13,7 @@ namespace Illumination.Data
 
         private static bool loaded = false;
 
-        public static void LoadAll(Game gameInstance)
-        {
+        public static void LoadAll(Game gameInstance) {
             Textures = new Dictionary<string, Texture2D>();
             SoundEffects = new Dictionary<string, SoundEffect>();
             Songs = new Dictionary<string, Song>();
@@ -26,7 +23,7 @@ namespace Illumination.Data
 
             Textures.Add("GrassTile", gameInstance.Content.Load<Texture2D>("grasstile"));
             Textures.Add("WaterTile", gameInstance.Content.Load<Texture2D>("watertile"));
-            
+
             Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("worker"));
             Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("educator"));
             Textures.Add("Developer", gameInstance.Content.Load<Texture2D>("developer"));
@@ -54,8 +51,7 @@ namespace Illumination.Data
             loaded = true;
         }
 
-        public static bool IsLoaded()
-        {
+        public static bool IsLoaded() {
             return loaded;
         }
     }
