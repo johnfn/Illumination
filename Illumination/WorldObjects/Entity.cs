@@ -1,23 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-namespace Illumination.WorldObjects
-{
-    public abstract class Entity : WorldObject
-    {
-        Rectangle location = new Rectangle ();
 
-        public Rectangle Location
-        {
-            get { return location; }
-            set { location = value; }
+namespace Illumination.WorldObjects {
+    public abstract class Entity : WorldObject {
+        public enum DirectionType {
+            North,
+            South,
+            East,
+            West
         }
 
-        public Entity(int x, int y, int width, int height)
-        {
-            location.X = x;
-            location.Y = y;
-            location.Width = width;
-            location.Height = height;
+        Rectangle gridLocation = new Rectangle();
+
+        public Rectangle GridLocation {
+            get { return gridLocation; }
+            set { gridLocation = value; }
+        }
+
+        public Entity(int x, int y, int width, int height) {
+            gridLocation.X = x;
+            gridLocation.Y = y;
+            gridLocation.Width = width;
+            gridLocation.Height = height;
+
+            base.BoundingBox = gridLocation;
         }
     }
 }

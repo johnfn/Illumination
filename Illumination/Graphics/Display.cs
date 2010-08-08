@@ -1,3 +1,2 @@
-﻿namespace Illumination.Graphics
-{
+﻿namespace Illumination.Graphics {
 }

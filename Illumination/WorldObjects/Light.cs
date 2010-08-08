@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace Illumination.WorldObjects
-{
-    public class Light : Entity
-    {
-        public enum LightType
-        {
+namespace Illumination.WorldObjects {
+    public class Light : Entity {
+        public enum LightType {
             White,
             Gray,
             Yellow,
@@ -15,10 +12,9 @@ namespace Illumination.WorldObjects
             SIZE
         }
 
-        public Light(int x, int y, int width, int height) : base(x, y, width, height) {}
+        public Light(int x, int y, int width, int height) : base(x, y, width, height) { }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             throw new System.NotImplementedException();
         }
     }

@@ -20,10 +20,9 @@ namespace Illumination {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener {
+    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        World world;
 
         MouseController mouseController;
         Button menuButton;
@@ -45,7 +44,7 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-            world = new World(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+           World.InitalizeWorld(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
 
             base.Initialize();
             mouseController = new MouseController();
@@ -95,7 +94,7 @@ namespace Illumination {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
             spriteBatch.Begin();
-            world.Draw(spriteBatch);
+            World.Draw(spriteBatch);
             menuButton.Draw(spriteBatch);
             spriteBatch.End();
 
@@ -106,6 +105,18 @@ namespace Illumination {
             if (evt.InvokingComponent == menuButton) {
                 Console.WriteLine("Menu triggered");
             }
+        }
+
+        public void MouseClicked(MouseEvent evt) {
+
+        }
+
+        public void MousePressed(MouseEvent evt) {
+
+        }
+
+        public void MouseReleased(MouseEvent evt) {
+
         }
     }
 }
