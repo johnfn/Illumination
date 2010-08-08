@@ -49,6 +49,8 @@ namespace Illumination.Data
 
             Textures.Add("School", gameInstance.Content.Load<Texture2D>("school"));
 
+            Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
+
             loaded = true;
         }
 

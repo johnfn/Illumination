@@ -18,12 +18,14 @@ namespace Illumination.Logic.MouseHandler {
         private MouseState currentState;
 
         private HashSet<MouseListener> mouseListeners;
+        private HashSet<MouseMotionListener> mouseMotionListeners;
 
         public MouseController() {
             previousState = currentState = Mouse.GetState();
 
             mousePressed = false;
             mouseListeners = new HashSet<MouseListener>();
+            mouseMotionListeners = new HashSet<MouseMotionListener>();
         }
 
         public void AddMouseListener(MouseListener ml) {
@@ -32,6 +34,14 @@ namespace Illumination.Logic.MouseHandler {
 
         public void RemoveMouseListener(MouseListener ml) {
             mouseListeners.Add(ml);
+        }
+
+        public void AddMouseMotionListener(MouseMotionListener mml) {
+            mouseMotionListeners.Add(mml);
+        }
+
+        public void RemoveMouseMotionListener(MouseMotionListener mml) {
+            mouseMotionListeners.Remove(mml);
         }
 
         public void Update() {
@@ -70,8 +80,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private void FireMouseMoved(MouseEvent evt) {
-            foreach (MouseListener ml in mouseListeners) {
-                ml.MouseMoved(evt);
+            foreach (MouseMotionListener mml in mouseMotionListeners) {
+                mml.MouseMoved(evt);
             }
         }
 
@@ -88,8 +98,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private void FireMouseDragged(MouseEvent evt) {
-            foreach (MouseListener ml in mouseListeners) {
-                ml.MouseDragged(evt);
+            foreach (MouseMotionListener mml in mouseMotionListeners) {
+                mml.MouseDragged(evt);
             }
         }
 

@@ -12,25 +12,30 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Illumination.Logic;
 using Illumination.Data;
+using Illumination.Logic.MouseHandler;
+using Illumination.Components;
+using Illumination.Logic.ActionHandler;
 
-namespace Illumination
-{
+namespace Illumination {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Illumination : Microsoft.Xna.Framework.Game
-    {
+    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         World world;
 
-        public Illumination()
-        {
+        MouseController mouseController;
+        Button menuButton;
+
+        public Illumination() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             this.graphics.PreferredBackBufferWidth = 500;
             this.graphics.PreferredBackBufferHeight = 500;
+
+            this.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -39,19 +44,20 @@ namespace Illumination
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
-        {
+        protected override void Initialize() {
             world = new World(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
 
             base.Initialize();
+            mouseController = new MouseController();
+            menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(0, 0), mouseController);
+            menuButton.AddActionListener(this);
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
-        {
+        protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -62,8 +68,7 @@ namespace Illumination
         /// UnloadContent will be called once per game and is the place to unload
         /// all content.
         /// </summary>
-        protected override void UnloadContent()
-        {
+        protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
@@ -72,8 +77,9 @@ namespace Illumination
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
+        protected override void Update(GameTime gameTime) {
+            mouseController.Update();
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
@@ -87,13 +93,19 @@ namespace Illumination
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
+        protected override void Draw(GameTime gameTime) {
             spriteBatch.Begin();
             world.Draw(spriteBatch);
+            menuButton.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void ActionPerformed(ActionEvent evt) {
+            if (evt.InvokingComponent == menuButton) {
+                Console.WriteLine("Menu triggered");
+            }
         }
     }
 }

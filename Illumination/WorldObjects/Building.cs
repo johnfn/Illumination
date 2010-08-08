@@ -12,7 +12,11 @@ namespace Illumination.WorldObjects
 
         delegate void DoEffect();
 
-        public Building(int x, int y, int width, int height) : base(x, y, width, height) { }
+        public Building(int x, int y, int width, int height) : base(x, y, width, height) {
+            lightBeams = new LightSequence();
+            effects = new Dictionary<LightSequence, DoEffect>();
+            isTriggered = new Dictionary<LightSequence, bool>();
+        }
 
         public void Illuminate(Light.LightType color)
         {
