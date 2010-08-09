@@ -25,6 +25,11 @@ namespace Illumination.Graphics {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
             }
+
+            foreach (Light light in World.LightSet)
+            {
+                light.Draw(spriteBatch);
+            }
         }
 
         public static Point ViewportToGridLocation(Point p) {

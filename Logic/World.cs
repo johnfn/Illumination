@@ -8,8 +8,21 @@ using Illumination.Graphics;
 namespace Illumination.Logic {
     public static class World {
         static Tile[,] grid;
-        static HashSet <Person> personSet;
-        static HashSet <Building> buildingSet;
+        static HashSet<Person> personSet;
+        static HashSet<Building> buildingSet;
+        static HashSet<Tree> treeSet;
+
+        static LightLogic lightLogic = new LightLogic();
+
+        public static HashSet<Tree> TreeSet
+        {
+            get { return treeSet; }
+        }
+
+        public static HashSet<Light> LightSet
+        {
+            get { return lightLogic.LightSet; }
+        }
 
         public static Tile[,] Grid {
             get { return grid; }
@@ -25,6 +38,7 @@ namespace Illumination.Logic {
 
             personSet = new HashSet<Person>();
             buildingSet = new HashSet<Building>();
+            treeSet = new HashSet<Tree>();
         }
 
         public static Person CreatePerson(int x, int y) {
@@ -45,6 +59,40 @@ namespace Illumination.Logic {
 
         public static void RemoveBuilding(Building building) {
 
+        }
+
+        public static Tree CreateTree(int x, int y)
+        {
+            Tree newTree = new Tree(x, y);
+            Grid[x, y].AddEntity(newTree);
+            treeSet.Add(newTree);
+
+            return newTree;
+        }
+
+        public static void RemoveTree(Tree tree)
+        {
+
+        }
+
+        public static Light CreateLight(int x, int y)
+        {
+            return lightLogic.CreateLight(x, y);
+        }
+
+        public static void RemoveLight(Light light)
+        {
+            lightLogic.RemoveLight(light);
+        }
+
+        public static void NextTimestep()
+        {
+            lightLogic.NextTimestep();
+        }
+
+        public static void BeginNight()
+        {
+            lightLogic.ActivateTrees();
         }
     }
 }

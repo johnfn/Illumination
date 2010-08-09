@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Illumination.Data;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace Illumination.WorldObjects {
     public class Light : Entity {
@@ -12,10 +15,41 @@ namespace Illumination.WorldObjects {
             SIZE
         }
 
-        public Light(int x, int y, int width, int height) : base(x, y, width, height) { }
+        static Dictionary<LightType, Color> colorTable;
+        
+        static Light () {
+            colorTable = new Dictionary<LightType, Color>();
+
+            colorTable.Add(LightType.Blue, Color.Blue);
+            colorTable.Add(LightType.Gray, Color.Gray);
+            colorTable.Add(LightType.Yellow, Color.Yellow);
+            colorTable.Add(LightType.White, Color.White);
+            colorTable.Add(LightType.Green, Color.Green);
+            colorTable.Add(LightType.Red, Color.Red);
+        }
+
+        DirectionType direction;
+
+        public DirectionType Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
+
+        LightType lightColor;
+
+        public LightType LightColor
+        {
+            get { return lightColor; }
+            set { lightColor = value; }
+        }
+
+        public Light(int x, int y) : base(x, y, 1, 1) {
+            lightColor = LightType.White;
+        }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            throw new System.NotImplementedException();
+            spriteBatch.Draw(MediaRepository.Textures["Light"], BoundingBox, colorTable[lightColor]);
         }
     }
 }

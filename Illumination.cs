@@ -55,6 +55,14 @@ namespace Illumination {
 
             menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(0, 0), mouseController);
             menuButton.AddActionListener(this);
+
+            World.CreateTree(5, 5);
+            Tree t1 = World.CreateTree(2, 1);
+            t1.Direction = Entity.DirectionType.East;
+            Tree t2 = World.CreateTree(9, 9);
+            t2.Direction = Entity.DirectionType.North;
+
+            World.BeginNight();
         }
 
         /// <summary>
@@ -85,10 +93,11 @@ namespace Illumination {
             mouseController.Update();
 
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
             // TODO: Add your update logic here
+            World.NextTimestep();
 
             base.Update(gameTime);
         }
