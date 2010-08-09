@@ -115,9 +115,8 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-            Point drawLocation = Display.GridLocationToViewport(gridLocation);
 
-            World.Grid[gridLocation.X, gridLocation.Y].AddEntity(new Person(drawLocation.X, drawLocation.Y, 50, 50));
+            World.CreatePerson(gridLocation.X, gridLocation.Y);
         }
 
         public void MousePressed(MouseEvent evt) { /* Ignore exception */ }

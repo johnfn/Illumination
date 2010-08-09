@@ -28,10 +28,9 @@ namespace Illumination.Logic {
         }
 
         public static Person CreatePerson(int x, int y) {
-            Point viewportLocation = Display.GridLocationToViewport(new Point(x, y));
-
-            Person newPerson = new Person(viewportLocation.X, viewportLocation.Y, Display.TileWidth, Display.TileHeight);
-            Grid[x,y].AddEntity(newPerson);
+            Person newPerson = new Person(x, y);
+            Grid[x, y].AddEntity(newPerson);
+            personSet.Add(newPerson);
 
             return newPerson;
         }

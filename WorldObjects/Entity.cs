@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
@@ -23,7 +24,7 @@ namespace Illumination.WorldObjects {
             gridLocation.Width = width;
             gridLocation.Height = height;
 
-            base.BoundingBox = gridLocation;
+            base.BoundingBox = Display.GridLocationToViewport(gridLocation);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Illumination.WorldObjects {
 
         #endregion
 
-        public Person(int x, int y, int width, int height) : base(x, y, width, height) {
+        public Person(int x, int y) : base(x, y, 1, 1) {
             age = 0;
             education = 0;
             gender = GenderType.Male;
