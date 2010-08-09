@@ -34,7 +34,7 @@ namespace Illumination {
             Content.RootDirectory = "Content";
 
             this.graphics.PreferredBackBufferWidth = 500;
-            this.graphics.PreferredBackBufferHeight = 500;
+            this.graphics.PreferredBackBufferHeight = 550;
 
             this.IsMouseVisible = true;
         }
@@ -46,14 +46,14 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-            Display.InitializeDisplay(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            Display.InitializeDisplay(10, 10, 500, 500);
             World.InitalizeWorld(10, 10);
 
             base.Initialize();
             mouseController = new MouseController();
             mouseController.AddMouseListener(this);
 
-            menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(0, 0), mouseController);
+            menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(20, 510), mouseController);
             menuButton.AddActionListener(this);
 
             World.CreateTree(5, 5);
@@ -62,7 +62,6 @@ namespace Illumination {
             Tree t2 = World.CreateTree(9, 9);
             t2.Direction = Entity.DirectionType.North;
 
-            World.BeginNight();
         }
 
         /// <summary>
@@ -92,10 +91,23 @@ namespace Illumination {
         protected override void Update(GameTime gameTime) {
             mouseController.Update();
 
+            KeyboardState keyboardState = Keyboard.GetState();
+
             // Allows the game to exit
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (keyboardState.IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            if (keyboardState.IsKeyDown(Keys.D))
+            {
+                if (World.IsNight)
+                    World.IsNight = false;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.N))
+            {
+                if (!World.IsNight)
+                    World.IsNight = true;
+            }
             // TODO: Add your update logic here
             World.NextTimestep();
 
@@ -107,10 +119,15 @@ namespace Illumination {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
+            spriteBatch.GraphicsDevice.Clear(Color.White);
+
             spriteBatch.Begin();
 
             Display.DrawWorld(spriteBatch);
+            spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 500, 500, 50), Color.DarkGreen);
             menuButton.Draw(spriteBatch);
+            spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -128,7 +145,10 @@ namespace Illumination {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
             //Person person = World.CreatePerson(gridLocation.X, gridLocation.Y);
-            World.CreateBuilding(gridLocation.X, gridLocation.Y);
+            if (World.InBound(gridLocation.X, gridLocation.Y))
+            {
+                World.CreateBuilding(gridLocation.X, gridLocation.Y);
+            }
         }
 
         public void MousePressed(MouseEvent evt) { /* Ignore exception */ }

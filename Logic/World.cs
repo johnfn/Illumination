@@ -14,6 +14,18 @@ namespace Illumination.Logic {
 
         static LightLogic lightLogic = new LightLogic();
 
+        static bool isNight;
+        static bool isDayAndNightToggled = false;
+
+        public static bool IsNight
+        {
+            get { return isNight; }
+            set { 
+                isNight = value;
+                isDayAndNightToggled = true;
+            }
+        }
+
         public static HashSet<Tree> TreeSet
         {
             get { return treeSet; }
@@ -47,6 +59,13 @@ namespace Illumination.Logic {
             personSet = new HashSet<Person>();
             buildingSet = new HashSet<Building>();
             treeSet = new HashSet<Tree>();
+
+            isNight = false;
+        }
+
+        public static bool InBound(int x, int y)
+        {
+            return x < grid.GetLength(0) && y < grid.GetLength(1);
         }
 
         public static Person CreatePerson(int x, int y) {
@@ -99,12 +118,27 @@ namespace Illumination.Logic {
 
         public static void NextTimestep()
         {
+            if (isDayAndNightToggled)
+            {
+                if (isNight)
+                    BeginNight();
+                else
+                    BeginDay();
+
+                isDayAndNightToggled = false;
+            }
+
             lightLogic.NextTimestep();
         }
 
         public static void BeginNight()
         {
             lightLogic.ActivateTrees();
+        }
+
+        public static void BeginDay()
+        {
+            lightLogic.Clear();
         }
     }
 }

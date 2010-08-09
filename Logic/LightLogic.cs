@@ -68,5 +68,10 @@ namespace Illumination.Logic
         {
 
         }
+
+        internal void Clear()
+        {
+            lightSet.Clear();
+        }
     }
 }

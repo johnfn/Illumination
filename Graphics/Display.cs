@@ -3,6 +3,7 @@ using Illumination.Logic;
 using Illumination.WorldObjects;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Illumination.Data;
 namespace Illumination.Graphics {
     public static class Display {
         static int tileWidth;
@@ -25,14 +26,19 @@ namespace Illumination.Graphics {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
             }
+            
+            foreach (Building building in World.BuildingSet) {
+                building.Draw(spriteBatch);
+            }
+
+            if (World.IsNight)
+            {
+                spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 0, 500, 500), new Color(0, 0, 0, 70));
+            }
 
             foreach (Light light in World.LightSet)
             {
                 light.Draw(spriteBatch);
-            }
-
-            foreach (Building building in World.BuildingSet) {
-                building.Draw(spriteBatch);
             }
         }
 
