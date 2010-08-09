@@ -11,8 +11,6 @@ namespace Illumination.Logic {
         static HashSet<Person> personSet;
         static HashSet<Building> buildingSet;
         static HashSet<Tree> treeSet;
-        static HashSet <Person> personSet;
-        static HashSet <Building> buildingSet;
 
         static LightLogic lightLogic = new LightLogic();
 
