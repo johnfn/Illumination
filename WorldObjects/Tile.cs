@@ -55,7 +55,9 @@ namespace Illumination.WorldObjects {
             }
 
             foreach (Entity entity in entities) {
-                entity.Draw(spriteBatch);
+                if (!entity.SpansMultipleTiles) {
+                    entity.Draw(spriteBatch);
+                }
             }
         }
 

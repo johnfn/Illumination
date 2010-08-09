@@ -4,6 +4,8 @@ using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
+        private bool spansMultipleTiles = false;
+
         public enum DirectionType {
             North,
             South,
@@ -16,6 +18,11 @@ namespace Illumination.WorldObjects {
         public Rectangle GridLocation {
             get { return gridLocation; }
             set { gridLocation = value; }
+        }
+
+        public bool SpansMultipleTiles {
+            get { return spansMultipleTiles; }
+            set { spansMultipleTiles = value; }
         }
 
         public Entity(int x, int y, int width, int height) {

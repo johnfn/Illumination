@@ -7,9 +7,17 @@ using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public static class World {
-        static Tile[,] grid;
-        static HashSet <Person> personSet;
-        static HashSet <Building> buildingSet;
+        private static Tile[,] grid;
+        private static HashSet <Person> personSet;
+        private static HashSet <Building> buildingSet;
+
+        public static HashSet<Person> PersonSet {
+            get { return personSet; }
+        }
+
+        public static HashSet <Building> BuildingSet {
+            get { return buildingSet; }
+        }
 
         public static Tile[,] Grid {
             get { return grid; }
@@ -29,22 +37,26 @@ namespace Illumination.Logic {
 
         public static Person CreatePerson(int x, int y) {
             Person newPerson = new Person(x, y);
-            Grid[x, y].AddEntity(newPerson);
+            Grid[x,y].AddEntity(newPerson);
             personSet.Add(newPerson);
 
             return newPerson;
         }
 
         public static void RemovePerson(Person person) {
-
+            throw new NotImplementedException();
         }
 
         public static Building CreateBuilding(int x, int y) {
-            return null;
+            School newSchool = new School(x, y);
+            Grid[x, y].AddEntity(newSchool);
+            buildingSet.Add(newSchool);
+
+            return newSchool;
         }
 
         public static void RemoveBuilding(Building building) {
-
+            throw new NotImplementedException();
         }
     }
 }
