@@ -30,6 +30,10 @@ namespace Illumination.Graphics {
             {
                 light.Draw(spriteBatch);
             }
+
+            foreach (Building building in World.BuildingSet) {
+                building.Draw(spriteBatch);
+            }
         }
 
         public static Point ViewportToGridLocation(Point p) {

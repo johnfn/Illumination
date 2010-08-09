@@ -123,9 +123,12 @@ namespace Illumination {
         }
 
         public void MouseClicked(MouseEvent evt) {
+            Random random = new Random();
+
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
-            World.CreatePerson(gridLocation.X, gridLocation.Y);
+            //Person person = World.CreatePerson(gridLocation.X, gridLocation.Y);
+            World.CreateBuilding(gridLocation.X, gridLocation.Y);
         }
 
         public void MousePressed(MouseEvent evt) { /* Ignore exception */ }
