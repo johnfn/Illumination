@@ -2,58 +2,50 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public static class World {
-        #region Properties
-
         static Tile[,] grid;
-        static int tileWidth;
-        static int tileHeight;
-
-        public static int TileWidth {
-            get { return tileWidth; }
-        }
-
-        public static int TileHeight {
-            get { return tileHeight; }
-        }
+        static HashSet <Person> personSet;
+        static HashSet <Building> buildingSet;
 
         public static Tile[,] Grid {
             get { return grid; }
         }
 
-        #endregion
-
-        public static void InitalizeWorld(int numRows, int numCols, int displayWidth, int displayHeight) {
-            tileWidth = displayWidth / numCols;
-            tileHeight = displayHeight / numRows;
-
+        public static void InitalizeWorld(int numRows, int numCols) {
             grid = new Tile[numRows, numCols];
             for (int row = 0; row < numRows; row++) {
                 for (int col = 0; col < numCols; col++) {
-                    grid[row, col] = new Tile(new Rectangle(col * tileWidth, row * tileHeight, tileWidth, tileHeight), Tile.TileType.Grass);
+                    grid[row, col] = new Tile(row, col, Tile.TileType.Grass);
                 }
             }
-            grid[0, 0].AddEntity(new Person(0, 0, 50, 50));
+
+            personSet = new HashSet<Person>();
+            buildingSet = new HashSet<Building>();
         }
 
-        #region Public Methods
+        public static Person CreatePerson(int x, int y) {
+            Point viewportLocation = Display.GridLocationToViewport(new Point(x, y));
 
-        public static void Draw(SpriteBatch spriteBatch) {
-            foreach (Tile tile in grid) {
-                tile.Draw(spriteBatch);
-            }
+            Person newPerson = new Person(viewportLocation.X, viewportLocation.Y, Display.TileWidth, Display.TileHeight);
+            Grid[x,y].AddEntity(newPerson);
+
+            return newPerson;
         }
 
-        public static Point ViewportToGridLocation(Point p) {
-            return new Point(p.X / tileWidth, p.Y / tileHeight);
+        public static void RemovePerson(Person person) {
+
         }
 
-        public static Point GridLocationToViewport(Point p) {
-            return new Point(p.X * tileWidth, p.Y * tileHeight);
+        public static Building CreateBuilding(int x, int y) {
+            return null;
         }
 
-        #endregion
+        public static void RemoveBuilding(Building building) {
+
+        }
     }
 }

@@ -16,6 +16,7 @@ using Illumination.Logic.MouseHandler;
 using Illumination.Components;
 using Illumination.Logic.ActionHandler;
 using Illumination.WorldObjects;
+using Illumination.Graphics;
 
 namespace Illumination {
     /// <summary>
@@ -45,7 +46,8 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-           World.InitalizeWorld(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            Display.InitializeDisplay(10, 10, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            World.InitalizeWorld(10, 10);
 
             base.Initialize();
             mouseController = new MouseController();
@@ -97,7 +99,8 @@ namespace Illumination {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
             spriteBatch.Begin();
-            World.Draw(spriteBatch);
+
+            Display.DrawWorld(spriteBatch);
             menuButton.Draw(spriteBatch);
             spriteBatch.End();
 
@@ -111,9 +114,10 @@ namespace Illumination {
         }
 
         public void MouseClicked(MouseEvent evt) {
-            Point gridLocation = World.ViewportToGridLocation(evt.CurrentLocation);
-            Console.WriteLine("Grid location {0}, {1}", gridLocation.X, gridLocation.Y);
-            World.Grid[gridLocation.X, gridLocation.Y].AddEntity(new Person(evt.CurrentLocation.X, evt.CurrentLocation.Y, 50, 50));
+            Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            Point drawLocation = Display.GridLocationToViewport(gridLocation);
+
+            World.Grid[gridLocation.X, gridLocation.Y].AddEntity(new Person(drawLocation.X, drawLocation.Y, 50, 50));
         }
 
         public void MousePressed(MouseEvent evt) { /* Ignore exception */ }

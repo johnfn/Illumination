@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
+using Illumination.Graphics;
 
 #endregion
 
@@ -33,8 +34,8 @@ namespace Illumination.WorldObjects {
 
         #region Constructor
 
-        public Tile(Rectangle rectangle, TileType type) {
-            BoundingBox = rectangle;
+        public Tile(int gridX, int gridY, TileType type) {
+            base.BoundingBox = Display.GridLocationToViewport(new Rectangle(gridX, gridY, 1, 1));
             this.type = type;
             entities = new HashSet<Entity>();
         }
