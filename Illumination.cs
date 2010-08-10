@@ -17,16 +17,18 @@ using Illumination.Components;
 using Illumination.Logic.ActionHandler;
 using Illumination.WorldObjects;
 using Illumination.Graphics;
+using Illumination.Logic.KeyHandler;
 
 namespace Illumination {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener {
+    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, KeyListener {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         MouseController mouseController;
+        KeyController keyController;
         Button menuButton;
 
         public Illumination() {
@@ -50,8 +52,12 @@ namespace Illumination {
             World.InitalizeWorld(10, 10);
 
             base.Initialize();
+
             mouseController = new MouseController();
             mouseController.AddMouseListener(this);
+
+            keyController = new KeyController();
+            keyController.AddKeyListener(this);
 
             menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(20, 510), mouseController);
             menuButton.AddActionListener(this);
@@ -90,24 +96,10 @@ namespace Illumination {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
             mouseController.Update();
+            keyController.Update();
 
             KeyboardState keyboardState = Keyboard.GetState();
 
-            // Allows the game to exit
-            if (keyboardState.IsKeyDown(Keys.Escape))
-                this.Exit();
-
-            if (keyboardState.IsKeyDown(Keys.D))
-            {
-                if (World.IsNight)
-                    World.IsNight = false;
-            }
-
-            if (keyboardState.IsKeyDown(Keys.N))
-            {
-                if (!World.IsNight)
-                    World.IsNight = true;
-            }
             // TODO: Add your update logic here
             World.NextTimestep();
 
@@ -140,8 +132,6 @@ namespace Illumination {
         }
 
         public void MouseClicked(MouseEvent evt) {
-            Random random = new Random();
-
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
             //Person person = World.CreatePerson(gridLocation.X, gridLocation.Y);
@@ -151,7 +141,28 @@ namespace Illumination {
             }
         }
 
-        public void MousePressed(MouseEvent evt) { /* Ignore exception */ }
-        public void MouseReleased(MouseEvent evt) { /* Ignore exception */ }
+        public void MousePressed(MouseEvent evt) { /* Ignore */ }
+        public void MouseReleased(MouseEvent evt) { /* Ignore */ }
+
+        #region KeyListener Members
+
+        public void KeysPressed(KeyEvent evt) {
+            if (evt.ChangedKeys.Contains(Keys.Escape)) {
+                this.Exit();
+            }
+            if (evt.ChangedKeys.Contains(Keys.D)) {
+                if (World.IsNight)
+                    World.IsNight = false;
+            }
+
+            if (evt.ChangedKeys.Contains(Keys.N)) {
+                if (!World.IsNight)
+                    World.IsNight = true;
+            }
+        }
+
+        public void KeysReleased(KeyEvent evt) { /* Ignore */ }
+
+        #endregion
     }
 }

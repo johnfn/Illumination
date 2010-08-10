@@ -65,7 +65,7 @@ namespace Illumination.Logic {
 
         public static bool InBound(int x, int y)
         {
-            return x < grid.GetLength(0) && y < grid.GetLength(1);
+            return x >= 0 && y >= 0 && x < grid.GetLength(0) && y < grid.GetLength(1);
         }
 
         public static Person CreatePerson(int x, int y) {
