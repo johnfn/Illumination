@@ -90,6 +90,10 @@
     <Compile Include="Graphics\Display.cs" />
     <Compile Include="Logic\ActionHandler\ActionEvent.cs" />
     <Compile Include="Logic\ActionHandler\ActionListener.cs" />
+    <Compile Include="Logic\KeyHandler\KeyController.cs" />
+    <Compile Include="Logic\KeyHandler\KeyEvent.cs" />
+    <Compile Include="Logic\KeyHandler\KeyListener.cs" />
+    <Compile Include="Logic\LightLogic.cs" />
     <Compile Include="Logic\LightSequence.cs" />
     <Compile Include="Logic\MouseHandler\MouseController.cs" />
     <Compile Include="Logic\MouseHandler\MouseEvent.cs" />
@@ -105,7 +109,9 @@
     <Compile Include="WorldObjects\Item.cs" />
     <Compile Include="WorldObjects\Light.cs" />
     <Compile Include="WorldObjects\Person.cs" />
+    <Compile Include="WorldObjects\School.cs" />
     <Compile Include="WorldObjects\Tile.cs" />
+    <Compile Include="WorldObjects\Tree.cs" />
     <Compile Include="WorldObjects\WorldObject.cs" />
   </ItemGroup>
   <ItemGroup>
