@@ -73,7 +73,7 @@ namespace Illumination.Logic {
         }
 
         public static bool IsClear(int x, int y, int width, int height) {
-            if (width < 0 || height < 0 || !InBound(x, y) || !InBound(x + width, y + height)) {
+            if (width < 0 || height < 0 || !InBound(x, y) || !InBound(x + width - 1, y + height - 1)) {
                 return false;
             }
             

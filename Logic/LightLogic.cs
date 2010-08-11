@@ -26,7 +26,8 @@ namespace Illumination.Logic {
         }
 
         public void NextTimestep() {
-            foreach (Light light in lightSet) {
+            HashSet<Light> oldLightSet = new HashSet<Light> (lightSet);
+            foreach (Light light in oldLightSet) {
                 Rectangle newBoundingBox = light.BoundingBox;
 
                 switch (light.Direction) {
@@ -55,18 +56,39 @@ namespace Illumination.Logic {
             Point gridLocation = Display.ViewportToGridLocation(centerPosition);
             Point gridCenter = Display.GridCenterToViewport(gridLocation);
 
+            if (!World.InBound(gridLocation.X, gridLocation.Y))
+            {
+                RemoveLight(light);
+                return;
+            }
+
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
-            foreach (Entity entity in entities) {
-                if (entity is Person) {
-                    if (Utility.Geometry.Distance(centerPosition, gridCenter) > 1 || light.LastCollisionLocation.Equals(gridLocation)) {
+            foreach (Entity entity in entities)
+            {
+                if (entity is Person)
+                {
+                    Person thisPerson = (Person)entity;
+                    if (Utility.Geometry.Distance(centerPosition, gridCenter) > 1 || light.LastCollisionLocation.Equals(gridLocation))
+                    {
                         continue;
                     }
-                    light.LightColor = ((Person) entity).ReflectedLightColor;
-                    light.Direction = (Entity.DirectionType) ((int) (light.Direction + 1) % (int) (Entity.DirectionType.SIZE));
+                    if (light.LightColor == Light.LightType.White)
+                    {
+                        Light newLight = CreateLight(gridLocation.X, gridLocation.Y);
+                        newLight.LightColor = thisPerson.ReflectedLightColor;
+                        newLight.Direction = thisPerson.Direction;
 
-                    light.LastCollisionLocation = gridLocation;
-                } else if (entity is Building) {
+                        light.LastCollisionLocation = gridLocation;
+                    }
+                }
+                else if (entity is Building)
+                {
                     Console.WriteLine("Hit Building");
+                }
+
+                if (light.LightColor != Light.LightType.White && !(entity is Tree))
+                {
+                    RemoveLight(light);
                 }
             }
         }
@@ -83,7 +105,10 @@ namespace Illumination.Logic {
         }
 
         public void RemoveLight(Light light) {
-            throw new NotImplementedException();
+            if (lightSet.Contains(light))
+            {
+                lightSet.Remove(light);
+            }
         }
 
         internal void Clear() {

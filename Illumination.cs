@@ -67,7 +67,18 @@ namespace Illumination {
             t1.Direction = Entity.DirectionType.East;
             Tree t2 = World.CreateTree(9, 9);
             t2.Direction = Entity.DirectionType.North;
+            World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
 
+            Random random = new Random();
+            for (int n = 2; n <= 9; n++)
+            {
+                Person p = World.CreatePerson(2, n);
+                p.Direction = Entity.DirectionType.South;
+                if (n == 3) p.Direction = Entity.DirectionType.North;
+                p.Profession = (Person.ProfessionType)(random.Next() % (int)Person.ProfessionType.SIZE);
+            }
+            Person p2 = World.CreatePerson(6, 4);
+            p2.Direction = Entity.DirectionType.West;
         }
 
         /// <summary>
@@ -133,16 +144,23 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-
+            
             //World.CreateBuilding(gridLocation.X, gridLocation.Y, "Illumination.WorldObjects.School");
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
                 Entity entity = entities.First();
                 if (entity is Person) {
-                    if (((Person) entity).Profession < Person.ProfessionType.SIZE - 1) {
-                        ((Person) entity).Profession++;
+                    Person thisPerson = (Person)entity;
+                    if (thisPerson.Profession < Person.ProfessionType.SIZE - 1) {
+                        thisPerson.Profession++;
                     } else {
-                        World.RemovePerson((Person) entity);
+                        World.RemovePerson(thisPerson);
+                    }
+
+                    thisPerson.Direction++;
+                    if (thisPerson.Direction >= Entity.DirectionType.SIZE)
+                    {
+                        thisPerson.Direction = Entity.DirectionType.North;
                     }
                 }
             } else {

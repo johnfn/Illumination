@@ -33,11 +33,18 @@ namespace Illumination.WorldObjects {
             lightColorMapping[ProfessionType.Environmentalist] = Light.LightType.Green;
         }
 
+        DirectionType direction;
         int age;
         ProfessionType profession;
         GenderType gender;
         int health;
         int education;
+
+        public DirectionType Direction
+        {
+            get { return direction; }
+            set { direction = value; }
+        }
 
         public int Age {
             get { return age; }
@@ -76,6 +83,8 @@ namespace Illumination.WorldObjects {
             gender = GenderType.Male;
             health = 100;
             profession = ProfessionType.Worker;
+            Random random = new Random();
+            direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
@@ -94,6 +103,22 @@ namespace Illumination.WorldObjects {
                     break;
                 case ProfessionType.Scientist:
                     spriteBatch.Draw(MediaRepository.Textures["Scientist"], base.BoundingBox, Color.White);
+                    break;
+            }
+
+            switch (direction)
+            {
+                case DirectionType.North:
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_N"], BoundingBox, Color.White);
+                    break;
+                case DirectionType.East:
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_E"], BoundingBox, Color.White);
+                    break;
+                case DirectionType.South:
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_S"], BoundingBox, Color.White);
+                    break;
+                case DirectionType.West:
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], BoundingBox, Color.White);
                     break;
             }
         }
