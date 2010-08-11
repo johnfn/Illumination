@@ -15,6 +15,8 @@ namespace Illumination.WorldObjects {
             SIZE
         }
 
+        private Point lastCollisionLocation;
+
         static Dictionary<LightType, Color> colorTable;
         
         static Light () {
@@ -36,6 +38,11 @@ namespace Illumination.WorldObjects {
             set { direction = value; }
         }
 
+        public Point LastCollisionLocation {
+            get { return lastCollisionLocation; }
+            set { lastCollisionLocation = value; }
+        }
+
         LightType lightColor;
 
         public LightType LightColor
@@ -46,6 +53,8 @@ namespace Illumination.WorldObjects {
 
         public Light(int x, int y) : base(x, y, 1, 1) {
             lightColor = LightType.White;
+
+            lastCollisionLocation = new Point(x, y);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {

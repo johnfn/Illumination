@@ -8,9 +8,10 @@ namespace Illumination.WorldObjects {
 
         public enum DirectionType {
             North,
-            South,
             East,
-            West
+            South,
+            West,
+            SIZE
         }
 
         Rectangle gridLocation = new Rectangle();
@@ -20,12 +21,18 @@ namespace Illumination.WorldObjects {
             set { gridLocation = value; }
         }
 
-        public bool SpansMultipleTiles {
+        public bool DeferDraw {
             get { return spansMultipleTiles; }
             set { spansMultipleTiles = value; }
         }
 
+        public Entity() { /* Default constructor */ }
+
         public Entity(int x, int y, int width, int height) {
+            Initialize(x, y, width, height);
+        }
+
+        public virtual void Initialize(int x, int y, int width, int height) {
             gridLocation.X = x;
             gridLocation.Y = y;
             gridLocation.Width = width;

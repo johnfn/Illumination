@@ -55,7 +55,7 @@ namespace Illumination.WorldObjects {
             }
 
             foreach (Entity entity in entities) {
-                if (!entity.SpansMultipleTiles) {
+                if (!entity.DeferDraw) {
                     entity.Draw(spriteBatch);
                 }
             }
@@ -67,6 +67,10 @@ namespace Illumination.WorldObjects {
 
         public void RemoveEntity(Entity entity) {
             entities.Remove(entity);
+        }
+
+        public bool IsBlocked() {
+            return entities.Count > 0;
         }
 
         #endregion

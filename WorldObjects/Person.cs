@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
 using System;
+using System.Collections.Generic;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -10,6 +11,7 @@ namespace Illumination.WorldObjects {
             Doctor,
             Scientist,
             Environmentalist,
+            SIZE
         }
 
         public enum GenderType {
@@ -18,6 +20,18 @@ namespace Illumination.WorldObjects {
         }
 
         #region Properties
+
+        private static Dictionary <ProfessionType, Light.LightType> lightColorMapping;
+
+        static Person() {
+            lightColorMapping = new Dictionary<ProfessionType, Light.LightType>();
+
+            lightColorMapping[ProfessionType.Worker] = Light.LightType.Gray;
+            lightColorMapping[ProfessionType.Educator] = Light.LightType.Yellow;
+            lightColorMapping[ProfessionType.Doctor] = Light.LightType.Red;
+            lightColorMapping[ProfessionType.Scientist] = Light.LightType.Blue;
+            lightColorMapping[ProfessionType.Environmentalist] = Light.LightType.Green;
+        }
 
         int age;
         ProfessionType profession;
@@ -48,6 +62,10 @@ namespace Illumination.WorldObjects {
         public int Education {
             get { return education; }
             set { education = value; }
+        }
+
+        public Light.LightType ReflectedLightColor {
+            get { return lightColorMapping[profession]; }
         }
 
         #endregion

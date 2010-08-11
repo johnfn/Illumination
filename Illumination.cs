@@ -134,13 +134,22 @@ namespace Illumination {
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
-            //Person person = World.CreatePerson(gridLocation.X, gridLocation.Y);
-            if (World.InBound(gridLocation.X, gridLocation.Y))
-            {
-                World.CreateBuilding(gridLocation.X, gridLocation.Y);
+            //World.CreateBuilding(gridLocation.X, gridLocation.Y, "Illumination.WorldObjects.School");
+            HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
+            if (entities.Count > 0) {
+                Entity entity = entities.First();
+                if (entity is Person) {
+                    if (((Person) entity).Profession < Person.ProfessionType.SIZE - 1) {
+                        ((Person) entity).Profession++;
+                    } else {
+                        World.RemovePerson((Person) entity);
+                    }
+                }
+            } else {
+                World.CreatePerson(gridLocation.X, gridLocation.Y);
             }
-        }
 
+        }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }
 

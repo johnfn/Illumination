@@ -10,7 +10,7 @@ namespace Illumination.Utility {
             int dx = p1.X - p2.X;
             int dy = p1.Y - p2.Y;
 
-            return Math.Sqrt(dx * dy + dy * dy);
+            return Math.Sqrt(dx * dx + dy * dy);
         }
     }
 }

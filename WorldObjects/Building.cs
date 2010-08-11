@@ -10,13 +10,30 @@ namespace Illumination.WorldObjects {
 
         delegate void DoEffect();
 
-        public Building(int x, int y, int width, int height)
-            : base(x, y, width, height) {
+        public Building() : base() { /* Default constructor */ }
+
+        public Building(int x, int y, int width, int height) {
+            Initialize(x, y, width, height);
+        }
+
+        public int Width {
+            get { return base.GridLocation.Width; }
+        }
+
+        public int Height {
+            get { return base.GridLocation.Height; }
+        }
+
+        public abstract void Initialize(int x, int y);
+
+        public override void Initialize(int x, int y, int width, int height) {
+            base.Initialize(x, y, width, height);
+
             lightBeams = new LightSequence();
             effects = new Dictionary<LightSequence, DoEffect>();
             isTriggered = new Dictionary<LightSequence, bool>();
 
-            base.SpansMultipleTiles = true;
+            base.DeferDraw = true;
         }
 
         public void Illuminate(Light.LightType color) {

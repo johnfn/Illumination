@@ -26,18 +26,16 @@ namespace Illumination.Graphics {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
             }
-            
+
             foreach (Building building in World.BuildingSet) {
                 building.Draw(spriteBatch);
             }
 
-            if (World.IsNight)
-            {
+            if (World.IsNight) {
                 spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 0, 500, 500), new Color(0, 0, 0, 70));
             }
 
-            foreach (Light light in World.LightSet)
-            {
+            foreach (Light light in World.LightSet) {
                 light.Draw(spriteBatch);
             }
         }
@@ -56,6 +54,15 @@ namespace Illumination.Graphics {
 
         public static Point GridLocationToViewport(Point p) {
             return new Point(p.Y * tileHeight, p.X * tileWidth);
+        }
+
+        public static Point GridCenterToViewport(Point p) {
+            p = GridLocationToViewport(p);
+
+            p.X += tileWidth / 2;
+            p.Y += tileHeight / 2;
+
+            return p;
         }
 
         public static Rectangle GridLocationToViewport(Rectangle gridLocation) {
