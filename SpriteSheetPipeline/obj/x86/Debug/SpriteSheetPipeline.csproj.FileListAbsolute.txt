@@ -1,0 +1,10 @@
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.dll
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.pdb
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.dll
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.pdb
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.dll
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.pdb
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.dll
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.pdb

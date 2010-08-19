@@ -4,8 +4,13 @@ using Illumination.WorldObjects;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
+using Illumination.Graphics.AnimationHandler;
+using SpriteSheetRuntime;
+
 namespace Illumination.Graphics {
     public static class Display {
+        static AnimationController animationController = new AnimationController();
+
         static int tileWidth;
         static int tileHeight;
 
@@ -22,7 +27,7 @@ namespace Illumination.Graphics {
             tileHeight = displayHeight / numRows;
         }
 
-        public static void DrawWorld(SpriteBatch spriteBatch) {
+        public static void DrawWorld(SpriteBatch spriteBatch, GameTime gameTime) {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
             }
@@ -31,13 +36,37 @@ namespace Illumination.Graphics {
                 building.Draw(spriteBatch);
             }
 
+            animationController.Draw(spriteBatch, gameTime);
+
             if (World.IsNight) {
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 0, 500, 500), new Color(0, 0, 0, 70));
+                /* Transparent Black Mask */
+                spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 0, 500, 500), new Color(0, 0, 0, 50));
             }
 
             foreach (Light light in World.LightSet) {
                 light.Draw(spriteBatch);
             }
+        }
+
+        public static Animation CreateAnimation(Texture2D texture, Rectangle location, double duration)
+        {
+            Animation animation = new Animation(texture, location, duration);
+            animationController.AddAnimation(animation);
+
+            return animation;
+        }
+
+        public static Animation CreateAnimation(SpriteSheet spriteSheet, Rectangle location, double duration, double frameDuration)
+        {
+            Animation animation = new Animation(spriteSheet, location, duration, frameDuration);
+            animationController.AddAnimation(animation);
+
+            return animation;
+        }
+
+        public static void RemoveAnimation(Animation animation)
+        {
+            animationController.RemoveAnimation(animation);
         }
 
         public static Point ViewportToGridLocation(Point p) {

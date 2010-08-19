@@ -18,6 +18,8 @@ using Illumination.Logic.ActionHandler;
 using Illumination.WorldObjects;
 using Illumination.Graphics;
 using Illumination.Logic.KeyHandler;
+using Illumination.Graphics.AnimationHandler;
+using SpriteSheetRuntime;
 
 namespace Illumination {
     /// <summary>
@@ -79,6 +81,17 @@ namespace Illumination {
             }
             Person p2 = World.CreatePerson(6, 4);
             p2.Direction = Entity.DirectionType.West;
+
+            Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Rectangle(0,0,50,50), 3.0);
+            a1.AddTranslation(new Rectangle(400, 400, 50, 50));
+            a1.AddFading(255, 100);
+
+            Animation a2 = Display.CreateAnimation(MediaRepository.Textures["TreeOfLight"], new Rectangle(0, 0, 50, 50), 3.0);
+            a2.AddRotation(0, 3);
+
+            Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Rectangle(200, 200, 100, 100), 4, 0.1);
+            a3.AddTranslation(new Rectangle(400, 200, 10, 10));
+            a3.AddFading(255, 0);
         }
 
         /// <summary>
@@ -125,8 +138,9 @@ namespace Illumination {
             spriteBatch.GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
+            
 
-            Display.DrawWorld(spriteBatch);
+            Display.DrawWorld(spriteBatch, gameTime);
             spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 500, 500, 50), Color.DarkGreen);
             menuButton.Draw(spriteBatch);
             spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);

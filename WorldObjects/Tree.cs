@@ -25,7 +25,7 @@ namespace Illumination.WorldObjects
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(MediaRepository.Textures["TreeOfLight"], BoundingBox, Color.White);
-
+            
             switch (direction)
             {
                 case DirectionType.North:

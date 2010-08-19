@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
+using SpriteSheetRuntime;
 
 namespace Illumination.Data {
     public static class MediaRepository {
@@ -10,6 +11,7 @@ namespace Illumination.Data {
         public static Dictionary<string, SoundEffect> SoundEffects;
         public static Dictionary<string, Song> Songs;
         public static Dictionary<string, SpriteFont> Fonts;
+        public static Dictionary<string, SpriteSheet> Sheets;
 
         private static bool loaded = false;
 
@@ -18,6 +20,7 @@ namespace Illumination.Data {
             SoundEffects = new Dictionary<string, SoundEffect>();
             Songs = new Dictionary<string, Song>();
             Fonts = new Dictionary<string, SpriteFont>();
+            Sheets = new Dictionary<string, SpriteSheet>();
 
             Textures.Add("Blank", gameInstance.Content.Load<Texture2D>("whitetile"));
 
@@ -47,6 +50,8 @@ namespace Illumination.Data {
             Textures.Add("School", gameInstance.Content.Load<Texture2D>("school"));
 
             Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
+
+            Sheets.Add("Glow", gameInstance.Content.Load<SpriteSheet>("Glow"));
 
             loaded = true;
         }

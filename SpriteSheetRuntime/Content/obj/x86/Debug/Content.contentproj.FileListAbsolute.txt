@@ -1,0 +1,2 @@
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\SpriteSheetSample\SpriteSheetRuntime\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\Content\obj\x86\Debug\ResolveAssemblyReference.cache
