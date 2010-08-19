@@ -41,25 +41,25 @@ namespace Illumination.Graphics.AnimationHandler
         double animationDuration;
         double spriteFrameDuration; // only for multiple images
 
-        public Animation(Texture2D texture, Rectangle location, double duration)
+        public Animation(Texture2D texture, Rectangle location, double durationInSec)
         {
             image = ImageType.Single;
 
             this.texture = texture;
             initialBox = location;
             finalBox = location;
-            animationDuration = duration;
+            animationDuration = durationInSec;
         }
 
-        public Animation(SpriteSheet spriteSheet, Rectangle location, double duration, double frameDuration)
+        public Animation(SpriteSheet spriteSheet, Rectangle location, double durationInSec, double frameDurationInSec)
         {
             image = ImageType.Multiple;
 
             this.spriteSheet = spriteSheet;
             initialBox = location;
             finalBox = location;
-            animationDuration = duration;
-            spriteFrameDuration = frameDuration;
+            animationDuration = durationInSec;
+            spriteFrameDuration = frameDurationInSec;
         }
 
         public void AddTranslation(Rectangle destination)

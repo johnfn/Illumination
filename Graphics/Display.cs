@@ -48,17 +48,17 @@ namespace Illumination.Graphics {
             }
         }
 
-        public static Animation CreateAnimation(Texture2D texture, Rectangle location, double duration)
+        public static Animation CreateAnimation(Texture2D texture, Rectangle location, double durationInSec)
         {
-            Animation animation = new Animation(texture, location, duration);
+            Animation animation = new Animation(texture, location, durationInSec);
             animationController.AddAnimation(animation);
 
             return animation;
         }
 
-        public static Animation CreateAnimation(SpriteSheet spriteSheet, Rectangle location, double duration, double frameDuration)
+        public static Animation CreateAnimation(SpriteSheet spriteSheet, Rectangle location, double durationInSec, double frameDurationInSec)
         {
-            Animation animation = new Animation(spriteSheet, location, duration, frameDuration);
+            Animation animation = new Animation(spriteSheet, location, durationInSec, frameDurationInSec);
             animationController.AddAnimation(animation);
 
             return animation;
