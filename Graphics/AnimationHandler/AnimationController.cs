@@ -21,7 +21,7 @@ namespace Illumination.Graphics.AnimationHandler
             HashSet<Animation> oldAnimations = new HashSet<Animation>(animations);
             foreach (Animation animation in oldAnimations)
             {
-                if (!animation.DrawNextFrame(spriteBatch, gameTime))
+                if (!animation.Update(spriteBatch, gameTime))
                 {
                     RemoveAnimation(animation);
                 }

@@ -7,7 +7,32 @@ using Illumination.Data;
 using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
 
-namespace Illumination.Graphics {
+namespace Illumination.Graphics
+{
+    public struct Dimension
+    {
+        int width;
+        int height;
+
+        public int Width 
+        {
+            get { return width; }
+            set { width = value; }
+        }
+
+        public int Height
+        {
+            get { return height; }
+            set { height = value; }
+        }
+
+        public Dimension(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+    };
+
     public static class Display {
         static AnimationController animationController = new AnimationController();
 
@@ -48,17 +73,17 @@ namespace Illumination.Graphics {
             }
         }
 
-        public static Animation CreateAnimation(Texture2D texture, Rectangle location, double durationInSec)
+        public static Animation CreateAnimation(Texture2D texture, Point position, Dimension size, double durationInSec)
         {
-            Animation animation = new Animation(texture, location, durationInSec);
+            Animation animation = new Animation(texture, position, size, durationInSec);
             animationController.AddAnimation(animation);
 
             return animation;
         }
 
-        public static Animation CreateAnimation(SpriteSheet spriteSheet, Rectangle location, double durationInSec, double frameDurationInSec)
+        public static Animation CreateAnimation(SpriteSheet spriteSheet, Point position, Dimension size, double durationInSec, double spriteFrameDurationInSec)
         {
-            Animation animation = new Animation(spriteSheet, location, durationInSec, frameDurationInSec);
+            Animation animation = new Animation(spriteSheet, position, size, durationInSec, spriteFrameDurationInSec);
             animationController.AddAnimation(animation);
 
             return animation;

@@ -5,115 +5,143 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using SpriteSheetRuntime;
+using Illumination.Graphics;
 
 namespace Illumination.Graphics.AnimationHandler
 {
     public class Animation
     {
-        const int numFramesPerSec = 40;
-
         public enum ImageType
         {
             Single,
             Multiple
         }
 
-        ImageType image = ImageType.Multiple;
-
+        ImageType image;
+        
         /* Image */
         Texture2D texture;
         SpriteSheet spriteSheet;
 
-        /* Translation */
-        Rectangle initialBox;
-        Rectangle finalBox;
-
-        /* Rotation */
-        float initialAngle = 0;
-        float finalAngle = 0;
-
-        /* Fading */
-        byte initialAlpha = 255;
-        byte finalAlpha = 255;
+        AnimationSequence<Dimension> sizeSequence;
+        AnimationSequence<Point> positionSequence;
+        AnimationSequence<float> angleSequence;
+        AnimationSequence<Color> colorSequence;
 
         /* Time */
         double elapsedTotalSec = 0;
         double animationDuration;
         double spriteFrameDuration; // only for multiple images
 
-        public Animation(Texture2D texture, Rectangle location, double durationInSec)
+        Vector2 relativeOrigin = new Vector2(0, 0);
+
+        public Animation(Texture2D texture, Point position, Dimension size, double durationInSec)
         {
             image = ImageType.Single;
-
             this.texture = texture;
-            initialBox = location;
-            finalBox = location;
             animationDuration = durationInSec;
+
+            Initialize(position, size);
         }
 
-        public Animation(SpriteSheet spriteSheet, Rectangle location, double durationInSec, double frameDurationInSec)
+        public Animation(SpriteSheet spriteSheet, Point position, Dimension size, double durationInSec, double spriteFrameDurationInSec)
         {
             image = ImageType.Multiple;
-
             this.spriteSheet = spriteSheet;
-            initialBox = location;
-            finalBox = location;
             animationDuration = durationInSec;
-            spriteFrameDuration = frameDurationInSec;
+            spriteFrameDuration = spriteFrameDurationInSec;
+
+            Initialize(position, size);
         }
 
-        public void AddTranslation(Rectangle destination)
+        void Initialize(Point position, Dimension size)
         {
-            finalBox = destination;
+            sizeSequence = new AnimationSequence<Dimension>(size, InterpolateSize);
+            positionSequence = new AnimationSequence<Point>(position, InterpolatePosition);
+            angleSequence = new AnimationSequence<float>(0, InterpolateAngle);
+            colorSequence = new AnimationSequence<Color>(new Color(255, 255, 255, 255), InterpolateColor);
         }
 
-        public void AddRotation(float initialAngle, float finalAngle)
+        public void SetRelativeOrigin(Vector2 origin)
         {
-            this.initialAngle = initialAngle;
-            this.finalAngle = finalAngle;
+            relativeOrigin = origin;
         }
 
-        public void AddFading(byte initalAlpha, byte finalAlpha)
+        public void AddExtensionFrame(Dimension size, double targetTime)
         {
-            this.initialAlpha = initalAlpha;
-            this.finalAlpha = finalAlpha;
+            sizeSequence.AddFrame(size, targetTime);
         }
 
-        public bool DrawNextFrame(SpriteBatch spriteBatch, GameTime gameTime)
+        public void AddTranslationFrame(Point position, double targetTime)
         {
-            int totalNumFrames = (int)(numFramesPerSec * animationDuration);
-            int currentFrame = (int)(numFramesPerSec * elapsedTotalSec);
-            double fraction = currentFrame / (double)totalNumFrames;
+            positionSequence.AddFrame(position, targetTime);
+        }
 
-            Rectangle currentBox = initialBox;
-            currentBox.X += (int)(fraction * (finalBox.X - initialBox.X));
-            currentBox.Y += (int)(fraction * (finalBox.Y - initialBox.Y));
-            currentBox.Width += (int)(fraction * (finalBox.Width - initialBox.Width));
-            currentBox.Height += (int)(fraction * (finalBox.Height - initialBox.Height));
+        public void AddRotationFrame(float angle, double targetTime)
+        {
+            angleSequence.AddFrame(angle, targetTime);
+        }
 
-            Vector2 origin = new Vector2(currentBox.Width / 2, currentBox.Height / 2);
-            currentBox.X += (int)origin.X;
-            currentBox.Y += (int)origin.Y;
+        public void AddColorFrame(Color color, double targetTime)
+        {
+            colorSequence.AddFrame(color, targetTime);
+        }
 
-            float currentAngle = initialAngle;
-            currentAngle += (float)(fraction * (finalAngle - initialAngle));
+        public bool Update(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            Dimension size = sizeSequence.InterpolateFrame(elapsedTotalSec);
+            Point position = positionSequence.InterpolateFrame(elapsedTotalSec);
+            float angle = angleSequence.InterpolateFrame(elapsedTotalSec);
+            Color color = colorSequence.InterpolateFrame(elapsedTotalSec);
 
-            byte currentAlpha = initialAlpha;
-            currentAlpha += (byte)(fraction * (finalAlpha - initialAlpha));
+            Rectangle boundingBox = new Rectangle(position.X, position.Y, size.Width, size.Height);
 
             if (image == ImageType.Single)
             {
-                spriteBatch.Draw(texture, currentBox, null, new Color(255, 255, 255, currentAlpha), currentAngle, origin, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, 0);
             }
             else
             {
                 int index = (int)(elapsedTotalSec / spriteFrameDuration) % spriteSheet.Count; 
-                spriteBatch.Draw(spriteSheet.Texture, currentBox, spriteSheet.SourceRectangle(index), new Color(255, 255, 255, currentAlpha), currentAngle, origin, SpriteEffects.None, 0);
+                spriteBatch.Draw(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
             }
 
             elapsedTotalSec += gameTime.ElapsedGameTime.Milliseconds / 1000.0;
 
             return elapsedTotalSec <= animationDuration;
+        }
+
+        static Dimension InterpolateSize(Dimension size1, Dimension size2, double fraction)
+        {
+            Dimension newSize = size1;
+            newSize.Width += (int)((size2.Width - size1.Width) * fraction);
+            newSize.Height += (int)((size2.Height - size1.Height) * fraction);
+            return newSize;
+        }
+
+        static Point InterpolatePosition(Point point1, Point point2, double fraction)
+        {
+            Point newPoint = point1;
+            newPoint.X += (int)((point2.X - point1.X) * fraction);
+            newPoint.Y += (int)((point2.Y - point1.Y) * fraction);
+            return newPoint;
+        }
+
+        static float InterpolateAngle(float angle1, float angle2, double fraction)
+        {
+            float newAngle = angle1;
+            newAngle += (float)((angle2 - angle1) * fraction);
+            return newAngle;
+        }
+
+        static Color InterpolateColor(Color color1, Color color2, double fraction)
+        {
+            Color newColor = color1;
+            newColor.R += (byte)((color2.R - color1.R) * fraction);
+            newColor.G += (byte)((color2.G - color1.G) * fraction);
+            newColor.B += (byte)((color2.B - color1.B) * fraction);
+            newColor.A += (byte)((color2.A - color1.A) * fraction);
+            return newColor;
         }
     }
 }

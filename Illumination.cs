@@ -82,16 +82,26 @@ namespace Illumination {
             Person p2 = World.CreatePerson(6, 4);
             p2.Direction = Entity.DirectionType.West;
 
-            Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Rectangle(0,0,50,50), 3);
-            a1.AddTranslation(new Rectangle(400, 400, 50, 50));
-            a1.AddFading(255, 100);
+            /* Frame by frame manipulation demo */
+            Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Point(25, 25), new Dimension(50, 50), 5.5);
+            a1.SetRelativeOrigin(new Vector2(25, 25));
 
-            Animation a2 = Display.CreateAnimation(MediaRepository.Textures["TreeOfLight"], new Rectangle(100, 200, 50, 50), 3);
-            a2.AddRotation(0, 6.28f);
+            a1.AddTranslationFrame(new Point(425, 125), 2);
+            a1.AddTranslationFrame(new Point(125, 325), 3);
+            
+            a1.AddExtensionFrame(new Dimension(50, 50), 2);
+            a1.AddExtensionFrame(new Dimension(150, 150), 3);
+            
+            a1.AddColorFrame(new Color(255, 255, 255, 0), 0);
+            a1.AddColorFrame(new Color(255, 0, 0, 255), 1.5);
+            a1.AddColorFrame(new Color(0, 0, 255, 0), 5); // Time order does not matter
+            a1.AddColorFrame(new Color(0, 0, 255, 255), 3);
+            
+            a1.AddRotationFrame((float)(Math.PI * 5), 3);
+            a1.AddRotationFrame((float)(Math.PI * 0), 5);
 
-            Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Rectangle(200, 200, 100, 100), 4, 0.1);
-            a3.AddTranslation(new Rectangle(400, 200, 10, 10));
-            a3.AddFading(255, 0);
+            /* Sprite sheet demo */
+            Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Point(0, 0), new Dimension(100, 100), 4, 0.1);
         }
 
         /// <summary>
