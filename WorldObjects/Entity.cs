@@ -5,6 +5,7 @@ using Illumination.Graphics;
 namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
         private bool spansMultipleTiles = false;
+        private bool blocksMovement = true;
 
         public enum DirectionType {
             North,
@@ -15,6 +16,11 @@ namespace Illumination.WorldObjects {
         }
 
         Rectangle gridLocation = new Rectangle();
+
+        public bool BlocksMovement {
+            get { return blocksMovement; }
+            set { blocksMovement = value; }
+        }
 
         public Rectangle GridLocation {
             get { return gridLocation; }

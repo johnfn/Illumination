@@ -158,29 +158,35 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-            
+
             //World.CreateBuilding(gridLocation.X, gridLocation.Y, "Illumination.WorldObjects.School");
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
                 Entity entity = entities.First();
                 if (entity is Person) {
-                    Person thisPerson = (Person)entity;
-                    if (thisPerson.Profession < Person.ProfessionType.SIZE - 1) {
-                        thisPerson.Profession++;
-                    } else {
-                        World.RemovePerson(thisPerson);
-                    }
-
-                    thisPerson.Direction++;
-                    if (thisPerson.Direction >= Entity.DirectionType.SIZE)
-                    {
-                        thisPerson.Direction = Entity.DirectionType.North;
+                    Person thisPerson = (Person) entity;
+                    HashSet <Person.SearchNode> range = thisPerson.ComputeMovementRange();
+                    foreach (Person.SearchNode node in range) {
+                        World.Grid[node.point.X, node.point.Y].Highlighted = true;
                     }
                 }
-            } else {
-                World.CreatePerson(gridLocation.X, gridLocation.Y);
-            }
+                //        if (thisPerson.Profession < Person.ProfessionType.SIZE - 1) {
+                //            thisPerson.Profession++;
+                //        } else {
+                //            World.RemovePerson(thisPerson);
+                //        }
 
+                //        thisPerson.Direction++;
+                //        if (thisPerson.Direction >= Entity.DirectionType.SIZE)
+                //        {
+                //            thisPerson.Direction = Entity.DirectionType.North;
+                //        }
+                //    }
+                //} else {
+                //    World.CreatePerson(gridLocation.X, gridLocation.Y);
+                //}
+
+            }
         }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }

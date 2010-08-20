@@ -2,6 +2,8 @@
 using Illumination.Data;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Illumination.Logic;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -39,6 +41,10 @@ namespace Illumination.WorldObjects {
         GenderType gender;
         int health;
         int education;
+        int movementRange;
+
+        static int[] directionX = { -1, 1, 0, 0 };
+        static int[] directionY = { 0, 0, -1, 1 };
 
         public DirectionType Direction
         {
@@ -75,6 +81,11 @@ namespace Illumination.WorldObjects {
             get { return lightColorMapping[profession]; }
         }
 
+        public int MovementRange {
+            get { return movementRange; }
+            set { movementRange = value; }
+        }
+
         #endregion
 
         public Person(int x, int y) : base(x, y, 1, 1) {
@@ -85,6 +96,8 @@ namespace Illumination.WorldObjects {
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
+            movementRange = 3;
+            BlocksMovement = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
@@ -121,6 +134,41 @@ namespace Illumination.WorldObjects {
                     spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], BoundingBox, Color.White);
                     break;
             }
+        }
+
+        public struct SearchNode {
+            public Point point;
+            public int cost;
+
+            public SearchNode(Point point, int cost) {
+                this.point = point;
+                this.cost = cost;
+            }
+        };
+
+        public HashSet<SearchNode> ComputeMovementRange() {
+            HashSet<SearchNode> possibleLocations = new HashSet<SearchNode>();
+            
+            Queue <SearchNode> queue = new Queue<SearchNode>();
+            queue.Enqueue(new SearchNode(new Point(GridLocation.X, GridLocation.Y), 0));
+
+            while (queue.Count > 0) {
+                SearchNode node = queue.Dequeue();
+                Point currentPosition = node.point;
+                if (World.InBound(currentPosition) && node.cost <= movementRange) {
+                    possibleLocations.Add(node);
+                    for (int i = 0; i < directionX.Length; i++) {
+                        Point nextPoint = new Point(currentPosition.X + directionX[i], currentPosition.Y + directionY[i]);
+                        int cost = World.GetMovementCost(nextPoint);
+                        if (cost == -1) {
+                            continue;
+                        }
+                        queue.Enqueue(new SearchNode(nextPoint, node.cost + cost));
+                    }
+                }
+            }
+
+            return possibleLocations;
         }
     }
 }

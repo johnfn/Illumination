@@ -16,10 +16,19 @@ namespace Illumination.WorldObjects {
             Grass
         }
 
+        static Dictionary <TileType, int> movementCosts;
+
+        static Tile() {
+            movementCosts = new Dictionary<TileType, int>();
+            movementCosts[TileType.Water] = -1;
+            movementCosts[TileType.Grass] = 1;
+        }
+
         #region Properties
 
         TileType type;
         HashSet<Entity> entities;
+        bool highlighted;
 
         public HashSet<Entity> Entities {
             get { return entities; }
@@ -30,6 +39,11 @@ namespace Illumination.WorldObjects {
             set { type = value; }
         }
 
+        public bool Highlighted {
+            get { return highlighted; }
+            set { highlighted = value; }
+        }
+
         #endregion
 
         #region Constructor
@@ -37,6 +51,7 @@ namespace Illumination.WorldObjects {
         public Tile(int gridX, int gridY, TileType type) {
             base.BoundingBox = Display.GridLocationToViewport(new Rectangle(gridX, gridY, 1, 1));
             this.type = type;
+            this.highlighted = false;
             entities = new HashSet<Entity>();
         }
 
@@ -53,12 +68,24 @@ namespace Illumination.WorldObjects {
                     spriteBatch.Draw(MediaRepository.Textures["WaterTile"], BoundingBox, Color.White);
                     break;
             }
+            if (highlighted) {
+                spriteBatch.Draw(MediaRepository.Textures["Blank"], BoundingBox, new Color(0, 255, 0, 150));
+            }
 
             foreach (Entity entity in entities) {
                 if (!entity.DeferDraw) {
                     entity.Draw(spriteBatch);
                 }
             }
+        }
+
+        public int GetMovementCost() {
+            foreach (Entity entity in entities) {
+                if (entity.BlocksMovement) {
+                    return -1;
+                }
+            }
+            return movementCosts[type];
         }
 
         public void AddEntity(Entity entity) {

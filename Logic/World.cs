@@ -72,6 +72,10 @@ namespace Illumination.Logic {
             return x >= 0 && y >= 0 && x < grid.GetLength(0) && y < grid.GetLength(1);
         }
 
+        public static bool InBound(Point p) {
+            return InBound(p.X, p.Y);
+        }
+
         public static bool IsClear(int x, int y, int width, int height) {
             if (width < 0 || height < 0 || !InBound(x, y) || !InBound(x + width - 1, y + height - 1)) {
                 return false;
@@ -86,6 +90,13 @@ namespace Illumination.Logic {
             }
             
             return true;
+        }
+
+        public static int GetMovementCost(Point point) {
+            if (!InBound(point)) {
+                return -1;
+            }
+            return Grid[point.X, point.Y].GetMovementCost();
         }
 
         public static Person CreatePerson(int x, int y) {
