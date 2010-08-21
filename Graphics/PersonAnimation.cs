@@ -20,7 +20,7 @@ namespace Illumination.Graphics {
             public void Move(Person.SearchNode endNode) {
                 person.Hidden = true;
                 person.Selectable = false;
-                Animation a = Display.CreateAnimation(person.PersonTexture, person.BoundingBox, 5);
+                Animation a = Display.CreateAnimation(person.PersonTexture, person.BoundingBox, Double.MaxValue);
                 AddPathAnimation(a, Person.SearchNode.GetForwardPath(endNode));
             }
 
