@@ -172,7 +172,6 @@ namespace Illumination {
             World.RemoveAllHighlight();
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
-            //World.CreateBuilding(gridLocation.X, gridLocation.Y, "Illumination.WorldObjects.School");
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
                 Entity entity = selectedObject = entities.First();
@@ -180,21 +179,31 @@ namespace Illumination {
                     Person thisPerson = (Person) entity;
                     Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
                     World.AddHighlight(range.Keys);
+                } else {
+                    selectedObject = null;
+                    World.RemoveAllHighlight();
                 }
             } else {
-                if (selectedObject != null && selectedObject is Person) {
-                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedObject).ComputeMovementRange();
-                    if (range.ContainsKey(gridLocation)) {
-                        PersonAnimation.Move((Person) selectedObject, range[gridLocation]);
-                    }
-                }
                 selectedObject = null;
                 World.RemoveAllHighlight();
             }
         }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
-        public void MouseReleased(MouseEvent evt) { /* Ignore */ }
 
+        public void MouseReleased(MouseEvent evt) {
+            if (evt.Button == MouseEvent.MouseButton.Right) {
+                Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+                if (selectedObject is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
+                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedObject).ComputeMovementRange();
+                    if (range.ContainsKey(gridLocation)) {
+                        World.MovePerson((Person) selectedObject, gridLocation);
+                        PersonAnimation.Move((Person) selectedObject, range[gridLocation]);
+                        selectedObject = null;
+                        World.RemoveAllHighlight();
+                    }
+                }
+            }
+        }
         #region KeyListener Members
 
         public void KeysPressed(KeyEvent evt) {

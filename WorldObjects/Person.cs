@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Illumination.Logic;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -110,6 +111,11 @@ namespace Illumination.WorldObjects {
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
             movementRange = 3;
             BlocksMovement = false;
+        }
+
+        public void Move(int newX, int newY) {
+            GridLocation = new Rectangle(newX, newY, 1, 1);
+            BoundingBox = Graphics.Display.GridLocationToViewport(GridLocation);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {

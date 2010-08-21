@@ -59,7 +59,6 @@ namespace Illumination.Logic.MouseHandler {
                     }
                     FireMouseDragged(new MouseEvent(startLocation, currentLocation));
                 }
-                
             }
 
             if (previousState.LeftButton == ButtonState.Pressed && currentState.LeftButton == ButtonState.Released) {
@@ -76,6 +75,14 @@ namespace Illumination.Logic.MouseHandler {
                 startLocation = new Point(currentState.X, currentState.Y);
 
                 FireMousePressed(new MouseEvent(startLocation));
+            }
+
+            if (previousState.RightButton == ButtonState.Pressed && currentState.RightButton == ButtonState.Released) {
+                FireMouseReleased(new MouseEvent(currentLocation, MouseEvent.MouseButton.Right));
+            }
+
+            if (previousState.RightButton == ButtonState.Released && currentState.RightButton == ButtonState.Pressed) {
+                FireMousePressed(new MouseEvent(startLocation, MouseEvent.MouseButton.Right));
             }
         }
 

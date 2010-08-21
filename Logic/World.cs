@@ -96,6 +96,10 @@ namespace Illumination.Logic {
             return true;
         }
 
+        public static bool IsClear(int x, int y) {
+            return IsClear(x, y, 1, 1);
+        }
+
         public static int GetMovementCost(Point point) {
             if (!InBound(point)) {
                 return -1;
@@ -120,6 +124,16 @@ namespace Illumination.Logic {
                 Grid[person.GridLocation.X, person.GridLocation.Y].RemoveEntity(person);
                 personSet.Remove(person);
             }
+        }
+
+        public static Person MovePerson(Person person, Point newLocation) {
+            if (IsClear(newLocation.X, newLocation.Y)) {
+                Grid[person.GridLocation.X, person.GridLocation.Y].RemoveEntity(person);
+                Grid[newLocation.X, newLocation.Y].AddEntity(person);
+                person.Move(newLocation.X, newLocation.Y);
+            }
+
+            return person;
         }
 
         public static Building CreateBuilding(int x, int y, string buildingClass) {
