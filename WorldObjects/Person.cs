@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Illumination.Logic;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -94,6 +95,10 @@ namespace Illumination.WorldObjects {
             set { movementRange = value; }
         }
 
+        public Texture2D PersonTexture {
+            get { return texturesMap[profession]; }
+        }
+
         #endregion
 
         public Person(int x, int y) : base(x, y, 1, 1) {
@@ -108,12 +113,13 @@ namespace Illumination.WorldObjects {
             BlocksMovement = false;
         }
 
-        public Texture2D GetTexture() {
-            return texturesMap[profession];
+        public void Move(int newX, int newY) {
+            GridLocation = new Rectangle(newX, newY, 1, 1);
+            BoundingBox = Graphics.Display.GridLocationToViewport(GridLocation);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(GetTexture(), base.BoundingBox, Color.White);
+            spriteBatch.Draw(PersonTexture, base.BoundingBox, Color.White);
 
             switch (direction)
             {
