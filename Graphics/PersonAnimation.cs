@@ -8,21 +8,43 @@ using Microsoft.Xna.Framework;
 
 namespace Illumination.Graphics {
     public class PersonAnimation {
-        private const double MOVEMENT_INTERVAL = 0.35;
+        private class MovementAnimation : FrameEvent {
+            private Person person;
 
-        public static void Move(Person p, Person.SearchNode endNode) {
-            Animation a = Display.CreateAnimation(p.PersonTexture, p.BoundingBox, 5);
-            AddPathAnimation(a, Person.SearchNode.GetForwardPath(endNode));
+            private const double MOVEMENT_INTERVAL = 0.35;
+
+            public MovementAnimation(Person person) {
+                this.person = person;
+            }
+
+            public void Move(Person.SearchNode endNode) {
+                person.Hidden = true;
+                person.Selectable = false;
+                Animation a = Display.CreateAnimation(person.PersonTexture, person.BoundingBox, Double.MaxValue);
+                AddPathAnimation(a, Person.SearchNode.GetForwardPath(endNode));
+            }
+
+            private void AddPathAnimation(Animation animation, Person.SearchNode startNode) {
+                double time = 0;
+                while (startNode != null) {
+                    animation.AddTranslationFrame(Display.GridLocationToViewport(startNode.point), time);
+
+                    startNode = startNode.nextNode;
+                    time += MOVEMENT_INTERVAL;
+                }
+
+                animation.AddEventFrame(this, time - MOVEMENT_INTERVAL);
+            }
+
+            public override void DoEvent(Animation a) {
+                person.Hidden = false;
+                person.Selectable = true;
+                a.StopAnimation();
+            }
         }
 
-        private static void AddPathAnimation(Animation animation, Person.SearchNode startNode) {
-            double time = 0;
-            while (startNode != null) {
-                animation.AddTranslationFrame(Display.GridLocationToViewport(startNode.point), time);
-
-                startNode = startNode.nextNode;
-                time += MOVEMENT_INTERVAL;
-            }
+        public static void CreateMovementAnimation(Person p, Person.SearchNode endNode) {
+            new MovementAnimation(p).Move(endNode);
         }
     }
 }

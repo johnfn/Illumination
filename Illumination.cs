@@ -46,21 +46,19 @@ namespace Illumination {
         }
 
         /* FOR TESTING ANIMATION EVENT */
-        public class TrickyHelloWorld : IFrameEvent
+        public class TrickyHelloWorld : FrameEvent
         {
-            bool isTriggered = false;
-
-            public void DoEvent(Animation animation)
+            public override void DoEvent(Animation animation)
             {
                 Console.WriteLine("Hello World");
             }
 
-            public bool IsTriggered()
+            public override bool IsTriggered()
             {
                 return isTriggered;
             }
 
-            public void MarkTriggered()
+            public override void MarkTriggered()
             {
                 isTriggered = true;
             }
@@ -204,8 +202,9 @@ namespace Illumination {
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
-                Entity entity = selectedObject = entities.First();
-                if (entity is Person) {
+                Entity entity = entities.First();
+                if (entity is Person && entity.Selectable) {
+                    selectedObject = entity;
                     Person thisPerson = (Person) entity;
                     Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
                     World.AddHighlight(range.Keys);
@@ -227,7 +226,7 @@ namespace Illumination {
                     Dictionary <Point, Person.SearchNode> range = ((Person) selectedObject).ComputeMovementRange();
                     if (range.ContainsKey(gridLocation)) {
                         World.MovePerson((Person) selectedObject, gridLocation);
-                        PersonAnimation.Move((Person) selectedObject, range[gridLocation]);
+                        PersonAnimation.CreateMovementAnimation((Person) selectedObject, range[gridLocation]);
                         selectedObject = null;
                         World.RemoveAllHighlight();
                     }
