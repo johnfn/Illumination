@@ -33,6 +33,8 @@ namespace Illumination {
         KeyController keyController;
         Button menuButton;
 
+        Entity selectedObject = null;
+
         public Illumination() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -81,6 +83,9 @@ namespace Illumination {
             }
             Person p2 = World.CreatePerson(6, 4);
             p2.Direction = Entity.DirectionType.West;
+
+            //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
+            //a2.AddTranslationFrame(new Point(p2.BoundingBox.X + Display.TileWidth, p2.BoundingBox.Y), 2);
 
             /* Frame by frame manipulation demo */
             Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Point(25, 25), new Dimension(50, 50), 5.5);
@@ -132,9 +137,6 @@ namespace Illumination {
             mouseController.Update();
             keyController.Update();
 
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            // TODO: Add your update logic here
             World.NextTimestep();
 
             base.Update(gameTime);
@@ -167,35 +169,27 @@ namespace Illumination {
         }
 
         public void MouseClicked(MouseEvent evt) {
+            World.RemoveAllHighlight();
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
 
             //World.CreateBuilding(gridLocation.X, gridLocation.Y, "Illumination.WorldObjects.School");
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
-                Entity entity = entities.First();
+                Entity entity = selectedObject = entities.First();
                 if (entity is Person) {
                     Person thisPerson = (Person) entity;
-                    HashSet <Person.SearchNode> range = thisPerson.ComputeMovementRange();
-                    foreach (Person.SearchNode node in range) {
-                        World.Grid[node.point.X, node.point.Y].Highlighted = true;
+                    Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
+                    World.AddHighlight(range.Keys);
+                }
+            } else {
+                if (selectedObject != null && selectedObject is Person) {
+                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedObject).ComputeMovementRange();
+                    if (range.ContainsKey(gridLocation)) {
+                        PersonAnimation.Move((Person) selectedObject, range[gridLocation]);
                     }
                 }
-                //        if (thisPerson.Profession < Person.ProfessionType.SIZE - 1) {
-                //            thisPerson.Profession++;
-                //        } else {
-                //            World.RemovePerson(thisPerson);
-                //        }
-
-                //        thisPerson.Direction++;
-                //        if (thisPerson.Direction >= Entity.DirectionType.SIZE)
-                //        {
-                //            thisPerson.Direction = Entity.DirectionType.North;
-                //        }
-                //    }
-                //} else {
-                //    World.CreatePerson(gridLocation.X, gridLocation.Y);
-                //}
-
+                selectedObject = null;
+                World.RemoveAllHighlight();
             }
         }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }

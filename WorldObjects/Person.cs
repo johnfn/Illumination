@@ -24,6 +24,7 @@ namespace Illumination.WorldObjects {
         #region Properties
 
         private static Dictionary <ProfessionType, Light.LightType> lightColorMapping;
+        private static Dictionary<ProfessionType, Texture2D> texturesMap;
 
         static Person() {
             lightColorMapping = new Dictionary<ProfessionType, Light.LightType>();
@@ -33,6 +34,13 @@ namespace Illumination.WorldObjects {
             lightColorMapping[ProfessionType.Doctor] = Light.LightType.Red;
             lightColorMapping[ProfessionType.Scientist] = Light.LightType.Blue;
             lightColorMapping[ProfessionType.Environmentalist] = Light.LightType.Green;
+
+            texturesMap = new Dictionary<ProfessionType, Texture2D>();
+            texturesMap[ProfessionType.Worker] = MediaRepository.Textures["Worker"];
+            texturesMap[ProfessionType.Educator] = MediaRepository.Textures["Educator"];
+            texturesMap[ProfessionType.Doctor] = MediaRepository.Textures["Doctor"];
+            texturesMap[ProfessionType.Scientist] = MediaRepository.Textures["Scientist"];
+            texturesMap[ProfessionType.Environmentalist] = MediaRepository.Textures["Environmentalist"];
         }
 
         DirectionType direction;
@@ -100,24 +108,12 @@ namespace Illumination.WorldObjects {
             BlocksMovement = false;
         }
 
+        public Texture2D GetTexture() {
+            return texturesMap[profession];
+        }
+
         public override void Draw(SpriteBatch spriteBatch) {
-            switch (profession) {
-                case ProfessionType.Doctor:
-                    spriteBatch.Draw(MediaRepository.Textures["Doctor"], base.BoundingBox, Color.White);
-                    break;
-                case ProfessionType.Educator:
-                    spriteBatch.Draw(MediaRepository.Textures["Educator"], base.BoundingBox, Color.White);
-                    break;
-                case ProfessionType.Environmentalist:
-                    spriteBatch.Draw(MediaRepository.Textures["Environmentalist"], base.BoundingBox, Color.White);
-                    break;
-                case ProfessionType.Worker:
-                    spriteBatch.Draw(MediaRepository.Textures["Worker"], base.BoundingBox, Color.White);
-                    break;
-                case ProfessionType.Scientist:
-                    spriteBatch.Draw(MediaRepository.Textures["Scientist"], base.BoundingBox, Color.White);
-                    break;
-            }
+            spriteBatch.Draw(GetTexture(), base.BoundingBox, Color.White);
 
             switch (direction)
             {
@@ -136,34 +132,72 @@ namespace Illumination.WorldObjects {
             }
         }
 
-        public struct SearchNode {
+        public class SearchNode {
             public Point point;
             public int cost;
+            public SearchNode nextNode;
 
-            public SearchNode(Point point, int cost) {
+            public SearchNode(Point point, int cost, SearchNode nextNode) {
                 this.point = point;
                 this.cost = cost;
+                this.nextNode = nextNode;
+            }
+
+            public override bool Equals(object obj) {
+                if (this == obj) {
+                    return true;
+                } else if (!(obj is SearchNode)) {
+                    return false;
+                }
+
+                return point.Equals(((SearchNode) obj).point);
+            }
+
+            public override int GetHashCode() {
+                return point.GetHashCode();
+            }
+
+            // Reversing a linked list!
+            public static SearchNode GetForwardPath(SearchNode endNode) {
+                if (endNode == null) {
+                    return null;
+                }
+
+                SearchNode previousNode = null;
+                SearchNode currentNode = endNode;
+                SearchNode nextNode = endNode.nextNode;
+
+                while (nextNode != null) {
+                    currentNode.nextNode = previousNode;
+
+                    previousNode = currentNode;
+                    currentNode = nextNode;
+                    nextNode = nextNode.nextNode;
+                }
+
+                currentNode.nextNode = previousNode;
+                return currentNode;
             }
         };
 
-        public HashSet<SearchNode> ComputeMovementRange() {
-            HashSet<SearchNode> possibleLocations = new HashSet<SearchNode>();
+        public Dictionary<Point, SearchNode> ComputeMovementRange() {
+            Dictionary<Point, SearchNode> possibleLocations = new Dictionary<Point, SearchNode>();
             
             Queue <SearchNode> queue = new Queue<SearchNode>();
-            queue.Enqueue(new SearchNode(new Point(GridLocation.X, GridLocation.Y), 0));
+            queue.Enqueue(new SearchNode(new Point(GridLocation.X, GridLocation.Y), 0, null));
 
             while (queue.Count > 0) {
                 SearchNode node = queue.Dequeue();
                 Point currentPosition = node.point;
                 if (World.InBound(currentPosition) && node.cost <= movementRange) {
-                    possibleLocations.Add(node);
+                    possibleLocations[node.point] = node;
                     for (int i = 0; i < directionX.Length; i++) {
                         Point nextPoint = new Point(currentPosition.X + directionX[i], currentPosition.Y + directionY[i]);
                         int cost = World.GetMovementCost(nextPoint);
-                        if (cost == -1) {
+                        if (cost == -1 || (possibleLocations.ContainsKey(nextPoint) && possibleLocations[nextPoint].cost <= cost)) {
                             continue;
                         }
-                        queue.Enqueue(new SearchNode(nextPoint, node.cost + cost));
+                        queue.Enqueue(new SearchNode(nextPoint, node.cost + cost, node));
                     }
                 }
             }

@@ -17,6 +17,8 @@ namespace Illumination.Logic {
         static bool isNight;
         static bool isDayAndNightToggled = false;
 
+        static HashSet <Tile> highlightedTiles;
+
         public static bool IsNight {
             get { return isNight; }
             set {
@@ -64,6 +66,8 @@ namespace Illumination.Logic {
             personSet = new HashSet<Person>();
             buildingSet = new HashSet<Building>();
             treeSet = new HashSet<Tree>();
+
+            highlightedTiles = new HashSet<Tile>();
 
             isNight = false;
         }
@@ -190,6 +194,35 @@ namespace Illumination.Logic {
 
         public static void BeginDay() {
             lightLogic.Clear();
+        }
+
+        public static void AddHighlight(int x, int y) {
+            if (InBound(x, y)) {
+                highlightedTiles.Add(grid[x, y]);
+                grid[x, y].Highlighted = true;
+            }
+        }
+
+        public static void AddHighlight(IEnumerable<Point> points) {
+            foreach (Point p in points) {
+                if (InBound(p)) {
+                    AddHighlight(p.X, p.Y);
+                }
+            }
+        }
+
+        public static void RemoveHighlight(int x, int y) {
+            if (InBound(x, y)) {
+                highlightedTiles.Remove(grid[x, y]);
+                grid[x, y].Highlighted = false;
+            }
+        }
+
+        public static void RemoveAllHighlight() {
+            foreach (Tile t in highlightedTiles) {
+                t.Highlighted = false;
+            }
+            highlightedTiles.Clear();
         }
     }
 }
