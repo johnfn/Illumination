@@ -94,6 +94,10 @@ namespace Illumination.WorldObjects {
             set { movementRange = value; }
         }
 
+        public Texture2D PersonTexture {
+            get { return texturesMap[profession]; }
+        }
+
         #endregion
 
         public Person(int x, int y) : base(x, y, 1, 1) {
@@ -108,12 +112,8 @@ namespace Illumination.WorldObjects {
             BlocksMovement = false;
         }
 
-        public Texture2D GetTexture() {
-            return texturesMap[profession];
-        }
-
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(GetTexture(), base.BoundingBox, Color.White);
+            spriteBatch.Draw(PersonTexture, base.BoundingBox, Color.White);
 
             switch (direction)
             {
