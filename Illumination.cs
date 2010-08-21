@@ -45,6 +45,27 @@ namespace Illumination {
             this.IsMouseVisible = true;
         }
 
+        /* FOR TESTING ANIMATION EVENT */
+        public class TrickyHelloWorld : IFrameEvent
+        {
+            bool isTriggered = false;
+
+            public void DoEvent(Animation animation)
+            {
+                Console.WriteLine("Hello World");
+            }
+
+            public bool IsTriggered()
+            {
+                return isTriggered;
+            }
+
+            public void MarkTriggered()
+            {
+                isTriggered = true;
+            }
+        }
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -104,6 +125,8 @@ namespace Illumination {
             
             a1.AddRotationFrame((float)(Math.PI * 5), 3);
             a1.AddRotationFrame((float)(Math.PI * 0), 5);
+
+            a1.AddEventFrame(new TrickyHelloWorld(), 2);
 
             /* Sprite sheet demo */
             Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Point(0, 0), new Dimension(100, 100), 4, 0.1);

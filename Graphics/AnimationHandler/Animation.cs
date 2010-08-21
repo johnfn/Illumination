@@ -9,6 +9,13 @@ using Illumination.Graphics;
 
 namespace Illumination.Graphics.AnimationHandler
 {
+    public interface IFrameEvent
+    {
+        void DoEvent(Animation animation);
+        bool IsTriggered();
+        void MarkTriggered();
+    }
+
     public class Animation
     {
         public enum ImageType
@@ -16,6 +23,17 @@ namespace Illumination.Graphics.AnimationHandler
             Single,
             Multiple
         }
+
+        struct EventFrame
+        {
+            public IFrameEvent customEvent;
+            public bool isTriggered;
+            public EventFrame(IFrameEvent customEvent)
+            {
+                this.customEvent = customEvent;
+                isTriggered = false;
+            }
+        };
 
         ImageType image;
         
@@ -27,6 +45,7 @@ namespace Illumination.Graphics.AnimationHandler
         AnimationSequence<Point> positionSequence;
         AnimationSequence<float> angleSequence;
         AnimationSequence<Color> colorSequence;
+        AnimationSequence<EventFrame> eventSequence;
 
         /* Time */
         double elapsedTotalSec = 0;
@@ -60,11 +79,19 @@ namespace Illumination.Graphics.AnimationHandler
             positionSequence = new AnimationSequence<Point>(position, InterpolatePosition);
             angleSequence = new AnimationSequence<float>(0, InterpolateAngle);
             colorSequence = new AnimationSequence<Color>(new Color(255, 255, 255, 255), InterpolateColor);
+
+            EventFrame initEventFrame = new EventFrame(nullEvent);
+            eventSequence = new AnimationSequence<EventFrame>(initEventFrame, InterpolateEvent);
         }
 
         public void SetRelativeOrigin(Vector2 origin)
         {
             relativeOrigin = origin;
+        }
+
+        public void SetAnimationDuration(double animationDuration)
+        {
+            this.animationDuration = animationDuration;
         }
 
         public void AddExtensionFrame(Dimension size, double targetTime)
@@ -87,6 +114,12 @@ namespace Illumination.Graphics.AnimationHandler
             colorSequence.AddFrame(color, targetTime);
         }
 
+        public void AddEventFrame(IFrameEvent frameEvent, double targetTime)
+        {
+            EventFrame eventFrame = new EventFrame(frameEvent);
+            eventSequence.AddFrame(eventFrame, targetTime);
+        }
+
         public bool Update(SpriteBatch spriteBatch, GameTime gameTime)
         {
             Dimension size = sizeSequence.InterpolateFrame(elapsedTotalSec);
@@ -104,6 +137,16 @@ namespace Illumination.Graphics.AnimationHandler
             {
                 int index = (int)(elapsedTotalSec / spriteFrameDuration) % spriteSheet.Count; 
                 spriteBatch.Draw(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
+            }
+
+            if (!eventSequence.Empty())
+            {
+                EventFrame eventFrame = eventSequence.InterpolateFrame(elapsedTotalSec);
+                if (!eventFrame.customEvent.IsTriggered())
+                {
+                    eventFrame.customEvent.DoEvent(this);
+                    eventFrame.customEvent.MarkTriggered();
+                }
             }
 
             elapsedTotalSec += gameTime.ElapsedGameTime.Milliseconds / 1000.0;
@@ -143,5 +186,30 @@ namespace Illumination.Graphics.AnimationHandler
             newColor.A += (byte)((color2.A - color1.A) * fraction);
             return newColor;
         }
+
+        static EventFrame InterpolateEvent(EventFrame event1, EventFrame event2, double fraction)
+        {
+            return event1;
+        }
+
+        public class NullEvent : IFrameEvent
+        {
+            public void DoEvent(Animation animation)
+            {
+                /* DOES NOTHING */
+            }
+
+            public bool IsTriggered()
+            {
+                return true;
+            }
+
+            public void MarkTriggered()
+            {
+                /* DOES NOTHING */
+            }
+        }
+
+        static NullEvent nullEvent = new NullEvent();
     }
 }

@@ -53,6 +53,11 @@ namespace Illumination.Graphics.AnimationHandler
             AddFrame(initialInfo, 0);
         }
 
+        public bool Empty()
+        {
+            return frameList.Count == 0;
+        }
+
         public void AddFrame(T frameInfo, double targetTime)
         {
             FramePoint newFrame = new FramePoint(frameInfo, targetTime);
