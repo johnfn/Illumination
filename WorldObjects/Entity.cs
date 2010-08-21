@@ -6,6 +6,8 @@ namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
         private bool spansMultipleTiles = false;
         private bool blocksMovement = true;
+        private bool hidden = false;
+        private bool selectable = true;
 
         public enum DirectionType {
             North,
@@ -30,6 +32,16 @@ namespace Illumination.WorldObjects {
         public bool DeferDraw {
             get { return spansMultipleTiles; }
             set { spansMultipleTiles = value; }
+        }
+
+        public bool Hidden {
+            get { return hidden; }
+            set { hidden = value; }
+        }
+
+        public bool Selectable {
+            get { return selectable; }
+            set { selectable = value; }
         }
 
         public Entity() { /* Default constructor */ }

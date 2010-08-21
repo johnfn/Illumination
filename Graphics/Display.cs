@@ -58,7 +58,9 @@ namespace Illumination.Graphics
             }
 
             foreach (Building building in World.BuildingSet) {
-                building.Draw(spriteBatch);
+                if (!building.Hidden) {
+                    building.Draw(spriteBatch);
+                }
             }
 
             animationController.Draw(spriteBatch, gameTime);
@@ -69,7 +71,9 @@ namespace Illumination.Graphics
             }
 
             foreach (Light light in World.LightSet) {
-                light.Draw(spriteBatch);
+                if (!light.Hidden) {
+                    light.Draw(spriteBatch);
+                }
             }
         }
 

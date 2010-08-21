@@ -73,7 +73,7 @@ namespace Illumination.WorldObjects {
             }
 
             foreach (Entity entity in entities) {
-                if (!entity.DeferDraw) {
+                if (!entity.DeferDraw && !entity.Hidden) {
                     entity.Draw(spriteBatch);
                 }
             }

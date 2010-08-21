@@ -9,13 +9,6 @@ using Illumination.Graphics;
 
 namespace Illumination.Graphics.AnimationHandler
 {
-    public interface IFrameEvent
-    {
-        void DoEvent(Animation animation);
-        bool IsTriggered();
-        void MarkTriggered();
-    }
-
     public class Animation
     {
         public enum ImageType
@@ -26,9 +19,9 @@ namespace Illumination.Graphics.AnimationHandler
 
         struct EventFrame
         {
-            public IFrameEvent customEvent;
+            public FrameEvent customEvent;
             public bool isTriggered;
-            public EventFrame(IFrameEvent customEvent)
+            public EventFrame(FrameEvent customEvent)
             {
                 this.customEvent = customEvent;
                 isTriggered = false;
@@ -53,6 +46,8 @@ namespace Illumination.Graphics.AnimationHandler
         double spriteFrameDuration; // only for multiple images
 
         Vector2 relativeOrigin = new Vector2(0, 0);
+
+        bool stopped = false;
 
         public Animation(Texture2D texture, Point position, Dimension size, double durationInSec)
         {
@@ -114,7 +109,7 @@ namespace Illumination.Graphics.AnimationHandler
             colorSequence.AddFrame(color, targetTime);
         }
 
-        public void AddEventFrame(IFrameEvent frameEvent, double targetTime)
+        public void AddEventFrame(FrameEvent frameEvent, double targetTime)
         {
             EventFrame eventFrame = new EventFrame(frameEvent);
             eventSequence.AddFrame(eventFrame, targetTime);
@@ -122,6 +117,10 @@ namespace Illumination.Graphics.AnimationHandler
 
         public bool Update(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            if (stopped) {
+                return false;
+            }
+
             Dimension size = sizeSequence.InterpolateFrame(elapsedTotalSec);
             Point position = positionSequence.InterpolateFrame(elapsedTotalSec);
             float angle = angleSequence.InterpolateFrame(elapsedTotalSec);
@@ -152,6 +151,10 @@ namespace Illumination.Graphics.AnimationHandler
             elapsedTotalSec += gameTime.ElapsedGameTime.Milliseconds / 1000.0;
 
             return elapsedTotalSec <= animationDuration;
+        }
+
+        public void StopAnimation() {
+            stopped = true;
         }
 
         static Dimension InterpolateSize(Dimension size1, Dimension size2, double fraction)
@@ -192,19 +195,19 @@ namespace Illumination.Graphics.AnimationHandler
             return event1;
         }
 
-        public class NullEvent : IFrameEvent
+        public class NullEvent : FrameEvent
         {
-            public void DoEvent(Animation animation)
+            public override void DoEvent(Animation animation)
             {
                 /* DOES NOTHING */
             }
 
-            public bool IsTriggered()
+            public override bool IsTriggered()
             {
                 return true;
             }
 
-            public void MarkTriggered()
+            public override void MarkTriggered()
             {
                 /* DOES NOTHING */
             }
