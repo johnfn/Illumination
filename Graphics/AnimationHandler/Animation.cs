@@ -24,6 +24,14 @@ namespace Illumination.Graphics.AnimationHandler
             Multiple
         }
 
+        public enum EaseType
+        {
+            In,
+            Out,
+            InAndOut,
+            None
+        }
+
         struct EventFrame
         {
             public IFrameEvent customEvent;
@@ -84,6 +92,10 @@ namespace Illumination.Graphics.AnimationHandler
             eventSequence = new AnimationSequence<EventFrame>(initEventFrame, InterpolateEvent);
         }
 
+        ///  <summary>
+        ///  Sets the relative origin of the image that will be syncronized with the position on the map.
+        ///  It is also the origin of rotation. Default is (0, 0).
+        ///  </summary>
         public void SetRelativeOrigin(Vector2 origin)
         {
             relativeOrigin = origin;
@@ -96,28 +108,48 @@ namespace Illumination.Graphics.AnimationHandler
 
         public void AddExtensionFrame(Dimension size, double targetTime)
         {
-            sizeSequence.AddFrame(size, targetTime);
+            sizeSequence.AddFrame(size, targetTime, EaseType.None);
+        }
+
+        public void AddExtensionFrame(Dimension size, double targetTime, EaseType easeType)
+        {
+            sizeSequence.AddFrame(size, targetTime, easeType);
         }
 
         public void AddTranslationFrame(Point position, double targetTime)
         {
-            positionSequence.AddFrame(position, targetTime);
+            positionSequence.AddFrame(position, targetTime, EaseType.None);
+        }
+
+        public void AddTranslationFrame(Point position, double targetTime, EaseType easeType)
+        {
+            positionSequence.AddFrame(position, targetTime, easeType);
         }
 
         public void AddRotationFrame(float angle, double targetTime)
         {
-            angleSequence.AddFrame(angle, targetTime);
+            angleSequence.AddFrame(angle, targetTime, EaseType.None);
+        }
+
+        public void AddRotationFrame(float angle, double targetTime, EaseType easeType)
+        {
+            angleSequence.AddFrame(angle, targetTime, easeType);
         }
 
         public void AddColorFrame(Color color, double targetTime)
         {
-            colorSequence.AddFrame(color, targetTime);
+            colorSequence.AddFrame(color, targetTime, EaseType.None);
+        }
+
+        public void AddColorFrame(Color color, double targetTime, EaseType easeType)
+        {
+            colorSequence.AddFrame(color, targetTime, easeType);
         }
 
         public void AddEventFrame(IFrameEvent frameEvent, double targetTime)
         {
             EventFrame eventFrame = new EventFrame(frameEvent);
-            eventSequence.AddFrame(eventFrame, targetTime);
+            eventSequence.AddFrame(eventFrame, targetTime, EaseType.None);
         }
 
         public bool Update(SpriteBatch spriteBatch, GameTime gameTime)

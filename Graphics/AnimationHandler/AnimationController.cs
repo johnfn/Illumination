@@ -10,14 +10,9 @@ namespace Illumination.Graphics.AnimationHandler
     public class AnimationController
     {
         HashSet<Animation> animations;
-        Dictionary<double, double> easeInTable;
-        Dictionary<double, double> easeOutTable;
-
         public AnimationController()
         {
             animations = new HashSet<Animation>();
-            easeInTable = new Dictionary<double, double>();
-            easeOutTable = new Dictionary<double, double>();
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
