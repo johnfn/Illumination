@@ -7,10 +7,26 @@ namespace Illumination.Logic
     {
         Dictionary<Light.LightType, int> frequencies;
 
+        public LightSequence() {
+            frequencies = new Dictionary<Light.LightType, int>();
+            ResetAllFrequencies();
+        }
+
+        public LightSequence(string lights) : this() {
+            Light.LightType[] lightSequence = new Light.LightType[lights.Length];
+            foreach (char ch in lights.ToCharArray()) {
+                Light.LightType light = Light.GetLightColor(ch);
+                frequencies[light]++;
+            }
+        }
+
+        public LightSequence(Dictionary<Light.LightType, int> frequencies) {
+            this.frequencies = new Dictionary<Light.LightType, int>(frequencies);
+        }
+
         public Dictionary<Light.LightType, int> Frequencies
         {
             get { return frequencies; }
-            set { frequencies = value; }
         }
 
         public override int GetHashCode()
@@ -19,7 +35,7 @@ namespace Illumination.Logic
             int largestPossible = 12;
             for (Light.LightType color = 0; color < Light.LightType.SIZE; color++)
             {
-                hash += Frequencies[color];
+                hash += frequencies[color];
                 hash *= largestPossible;
             }
             return hash;
@@ -44,6 +60,12 @@ namespace Illumination.Logic
                     return false;
             }
             return true;
+        }
+
+        public void ResetAllFrequencies() {
+            for (Light.LightType color = 0; color < Light.LightType.SIZE; color++) {
+                frequencies[color] = 0;
+            }
         }
     }
 }

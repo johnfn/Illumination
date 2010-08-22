@@ -26,13 +26,9 @@ namespace Illumination.Graphics {
 
             private void AddPathAnimation(Animation animation, Person.SearchNode startNode) {
                 double time = 0;
-                while (startNode != null) {
+                for (; startNode != null; time += MOVEMENT_INTERVAL, startNode = startNode.nextNode) {
                     animation.AddTranslationFrame(Display.GridLocationToViewport(startNode.point), time);
-
-                    startNode = startNode.nextNode;
-                    time += MOVEMENT_INTERVAL;
                 }
-
                 animation.AddEventFrame(this, time - MOVEMENT_INTERVAL);
             }
 

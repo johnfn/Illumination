@@ -97,6 +97,10 @@ namespace Illumination.Graphics
             return animation;
         }
 
+        public static Animation CreateAnimation(SpriteSheet spriteSheet, Rectangle rectangle, double durationInSec, double spriteFrameDurationInSec) {
+            return CreateAnimation(spriteSheet, new Point(rectangle.X, rectangle.Y), new Dimension(rectangle.Width, rectangle.Height), durationInSec, spriteFrameDurationInSec);
+        }
+
         public static void RemoveAnimation(Animation animation)
         {
             animationController.RemoveAnimation(animation);

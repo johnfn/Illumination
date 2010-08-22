@@ -139,7 +139,9 @@ namespace Illumination.Logic {
         public static Building CreateBuilding(int x, int y, string buildingClass) {
             Type buildingType = Type.GetType(buildingClass);
 
-            Building newBuilding = (Building) Activator.CreateInstance(buildingType);
+            School newBuilding = new School();
+
+            //Building newBuilding = (Building) Activator.CreateInstance(buildingType);
             newBuilding.Initialize(x, y);
 
             if (!IsClear(x, y, newBuilding.Width, newBuilding.Height)) {
@@ -208,6 +210,9 @@ namespace Illumination.Logic {
 
         public static void BeginDay() {
             lightLogic.Clear();
+            foreach (Building building in buildingSet) {
+                building.ClearLightSequences();
+            }
         }
 
         public static void AddHighlight(int x, int y) {

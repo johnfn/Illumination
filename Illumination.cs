@@ -179,7 +179,6 @@ namespace Illumination {
 
             spriteBatch.Begin();
             
-
             Display.DrawWorld(spriteBatch, gameTime);
             spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 500, 500, 50), Color.DarkGreen);
             menuButton.Draw(spriteBatch);
