@@ -56,39 +56,31 @@ namespace Illumination.Logic {
             Point gridLocation = Display.ViewportToGridLocation(centerPosition);
             Point gridCenter = Display.GridCenterToViewport(gridLocation);
 
-            if (!World.InBound(gridLocation.X, gridLocation.Y))
-            {
+            if (!World.InBound(gridLocation.X, gridLocation.Y)) {
                 RemoveLight(light);
                 return;
             }
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
-            foreach (Entity entity in entities)
-            {
-                if (entity is Person)
-                {
-                    Person thisPerson = (Person)entity;
-                    if (Utility.Geometry.Distance(centerPosition, gridCenter) > 1 || light.LastCollisionLocation.Equals(gridLocation))
-                    {
+            foreach (Entity entity in entities) {
+                if (entity is Person) {
+                    Person thisPerson = (Person) entity;
+                    if (Utility.Geometry.Distance(centerPosition, gridCenter) > 1 || light.LastCollisionLocation.Equals(gridLocation)) {
                         continue;
                     }
-                    if (light.LightColor == Light.LightType.White)
-                    {
+                    if (light.LightColor == Light.LightType.White) {
                         Light newLight = CreateLight(gridLocation.X, gridLocation.Y);
                         newLight.LightColor = thisPerson.ReflectedLightColor;
                         newLight.Direction = thisPerson.Direction;
 
                         light.LastCollisionLocation = gridLocation;
                     }
-                }
-                else if (entity is Building)
-                {
-
-                    Console.WriteLine("Hit Building");
+                } else if (entity is Building) {
+                    Building building = (Building) entity;
+                    building.Illuminate(light.LightColor);
                 }
 
-                if (light.LightColor != Light.LightType.White && !(entity is Tree))
-                {
+                if (light.LightColor != Light.LightType.White && !(entity is Tree)) {
                     RemoveLight(light);
                 }
             }

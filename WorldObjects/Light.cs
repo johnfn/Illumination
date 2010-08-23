@@ -17,6 +17,7 @@ namespace Illumination.WorldObjects {
 
         private Point lastCollisionLocation;
 
+        static Dictionary<char, LightType> shortNames;
         static Dictionary<LightType, Color> colorTable;
         
         static Light () {
@@ -28,6 +29,19 @@ namespace Illumination.WorldObjects {
             colorTable.Add(LightType.White, Color.White);
             colorTable.Add(LightType.Green, Color.Green);
             colorTable.Add(LightType.Red, Color.Red);
+
+            shortNames = new Dictionary<char, LightType>();
+
+            shortNames['B'] = LightType.Blue;
+            shortNames['g'] = LightType.Gray;
+            shortNames['Y'] = LightType.Yellow;
+            shortNames['W'] = LightType.White;
+            shortNames['G'] = LightType.Green;
+            shortNames['R'] = LightType.Red;
+        }
+
+        public static LightType GetLightColor(char ch) {
+            return shortNames.ContainsKey(ch) ? shortNames[ch] : LightType.Gray;
         }
 
         DirectionType direction;

@@ -25,6 +25,7 @@ namespace Illumination.Components.Panels
             
             Rectangle detailPanelAbsLoc = Geometry.Translate(detailPanelRelLoc, BoundingBox.X, BoundingBox.Y);
             spriteBatch.Draw(MediaRepository.Textures["Blank"], detailPanelAbsLoc, Color.AliceBlue);
-        }
+        }
+
     }
 }

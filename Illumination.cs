@@ -185,7 +185,6 @@ namespace Illumination {
 
             spriteBatch.Begin();
             
-
             Display.DrawWorld(spriteBatch, gameTime);
             //menuButton.Draw(spriteBatch);
             
