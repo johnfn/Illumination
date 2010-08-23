@@ -21,6 +21,9 @@ namespace Illumination.Components.Panels
         Button dayNightButton;
         Rectangle dayNightButtonRelLoc = new Rectangle(150, 0, 200, 25);
 
+        StatusBar timeBar;
+        Rectangle timeBarRelLoc = new Rectangle(375, 0, 200, 25);
+
         public MenuBar(Rectangle boundingBox, MouseController mouseController)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.Blue)
         {
@@ -34,6 +37,10 @@ namespace Illumination.Components.Panels
             dayNightButton = new Button(MediaRepository.Textures["Blank"], dayNightButtonAbsLoc, Color.DarkRed,
                 dayNightButtonText, MediaRepository.Fonts["DefaultFont"], Color.White, mouseController);
 
+            Rectangle timeBarAbsLoc = Geometry.Translate(timeBarRelLoc, boundingBox.X, boundingBox.Y);
+            timeBar = new StatusBar(timeBarAbsLoc, new Color(200, 200, 0, 255), new Color(255, 255, 220, 255));
+            timeBar.Fraction = 1;
+
             menuButton.AddActionListener(this);
             dayNightButton.AddActionListener(this);
         }
@@ -43,7 +50,12 @@ namespace Illumination.Components.Panels
             base.Draw(spriteBatch);
 
             menuButton.Draw(spriteBatch);
+
+            dayNightButton.Text = World.IsNight ? "Begin Day" : "Begin Night";
             dayNightButton.Draw(spriteBatch);
+
+            timeBar.Fraction = World.TimeLeft / World.DAY_TIME_LIMIT;
+            timeBar.Draw(spriteBatch);
         }
 
         public void ActionPerformed(ActionEvent evt)
@@ -51,7 +63,6 @@ namespace Illumination.Components.Panels
             if (evt.InvokingComponent == dayNightButton)
             {
                 World.IsNight = !World.IsNight;
-                dayNightButton.Text = World.IsNight ? "Begin Day" : "Begin Night";
             }
             else
             {

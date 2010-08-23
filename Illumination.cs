@@ -171,7 +171,7 @@ namespace Illumination {
             mouseController.Update();
             keyController.Update();
 
-            World.NextTimestep();
+            World.NextTimestep(gameTime);
 
             base.Update(gameTime);
         }
