@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 
 namespace Illumination.Components.Panels {
     public class DirectionPanel : Panel {
+        Button leftButton, rightButton, upButton, downButton;
+
         public DirectionPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
 

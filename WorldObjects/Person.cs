@@ -109,7 +109,7 @@ namespace Illumination.WorldObjects {
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
-            movementRange = 3;
+            movementRange = 10;
             BlocksMovement = false;
         }
 
@@ -200,7 +200,8 @@ namespace Illumination.WorldObjects {
                     for (int i = 0; i < directionX.Length; i++) {
                         Point nextPoint = new Point(currentPosition.X + directionX[i], currentPosition.Y + directionY[i]);
                         int cost = World.GetMovementCost(nextPoint);
-                        if (cost == -1 || (possibleLocations.ContainsKey(nextPoint) && possibleLocations[nextPoint].cost <= cost)) {
+                        if (cost == -1 || (possibleLocations.ContainsKey(nextPoint) 
+                            && node.cost + cost >= possibleLocations[nextPoint].cost)) {
                             continue;
                         }
                         queue.Enqueue(new SearchNode(nextPoint, node.cost + cost, node));
