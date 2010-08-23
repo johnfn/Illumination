@@ -7,6 +7,8 @@ using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public static class World {
+        public const double DAY_TIME_LIMIT = 5;
+
         static Tile[,] grid;
         static HashSet<Person> personSet;
         static HashSet<Building> buildingSet;
@@ -16,6 +18,14 @@ namespace Illumination.Logic {
 
         static bool isNight;
         static bool isDayAndNightToggled = false;
+
+        static double timeLeft;
+
+        public static double TimeLeft
+        {
+            get { return timeLeft; }
+            set { timeLeft = value; }
+        }
 
         static HashSet <Tile> highlightedTiles;
 
@@ -70,6 +80,7 @@ namespace Illumination.Logic {
             highlightedTiles = new HashSet<Tile>();
 
             isNight = false;
+            timeLeft = DAY_TIME_LIMIT;
         }
 
         public static bool InBound(int x, int y) {
@@ -191,7 +202,7 @@ namespace Illumination.Logic {
             lightLogic.RemoveLight(light);
         }
 
-        public static void NextTimestep() {
+        public static void NextTimestep(GameTime gameTime) {
             if (isDayAndNightToggled) {
                 if (isNight)
                     BeginNight();
@@ -201,11 +212,23 @@ namespace Illumination.Logic {
                 isDayAndNightToggled = false;
             }
 
+            if (!isNight)
+            {
+                double elapsedSec = gameTime.ElapsedGameTime.Milliseconds / (double)1000;
+                timeLeft -= elapsedSec;
+
+                if (timeLeft <= 0)
+                {
+                    IsNight = true;
+                }
+            }
+
             lightLogic.NextTimestep();
         }
 
         public static void BeginNight() {
             lightLogic.ActivateTrees();
+            timeLeft = 0;
         }
 
         public static void BeginDay() {
@@ -213,6 +236,7 @@ namespace Illumination.Logic {
             foreach (Building building in buildingSet) {
                 building.ClearLightSequences();
             }
+            timeLeft = DAY_TIME_LIMIT;
         }
 
         public static void AddHighlight(int x, int y) {
