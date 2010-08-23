@@ -13,9 +13,11 @@ namespace Illumination.Components.Panels {
         Panel detailPanel;
 
         public InformationPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) { 
-            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.Red);
+            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.White);
 
             AddComponent(detailPanel);
+
+            detailPanel.AddComponent(new DirectionPanel(new Rectangle(0, 0, 200, 200)));
         }
 
         public void DisplayPerson(Person p) {

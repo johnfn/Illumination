@@ -35,8 +35,6 @@ namespace Illumination {
         InformationPanel informationPanel;
         MenuBar menuBar;
 
-        Entity selectedObject = null;
-
         public Illumination() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -200,23 +198,27 @@ namespace Illumination {
         }
 
         public void MouseClicked(MouseEvent evt) {
-            World.RemoveAllHighlight();
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            if (!World.InBound(gridLocation)) {
+                return;
+            }
+
+            World.RemoveAllHighlight();
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
                 Entity entity = entities.First();
                 if (entity is Person && entity.Selectable) {
-                    selectedObject = entity;
+                    World.SelectedEntity = entity;
                     Person thisPerson = (Person) entity;
                     Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
                     World.AddHighlight(range.Keys);
                 } else {
-                    selectedObject = null;
+                    World.SelectedEntity = null;
                     World.RemoveAllHighlight();
                 }
             } else {
-                selectedObject = null;
+                World.SelectedEntity = null;
                 World.RemoveAllHighlight();
             }
         }
@@ -225,12 +227,12 @@ namespace Illumination {
         public void MouseReleased(MouseEvent evt) {
             if (evt.Button == MouseEvent.MouseButton.Right) {
                 Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-                if (selectedObject is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
-                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedObject).ComputeMovementRange();
+                if (World.SelectedEntity is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
+                    Dictionary <Point, Person.SearchNode> range = ((Person) World.SelectedEntity).ComputeMovementRange();
                     if (range.ContainsKey(gridLocation)) {
-                        World.MovePerson((Person) selectedObject, gridLocation);
-                        PersonAnimation.CreateMovementAnimation((Person) selectedObject, range[gridLocation]);
-                        selectedObject = null;
+                        World.MovePerson((Person) World.SelectedEntity, gridLocation);
+                        PersonAnimation.CreateMovementAnimation((Person) World.SelectedEntity, range[gridLocation]);
+                        World.SelectedEntity = null;
                         World.RemoveAllHighlight();
                     }
                 }

@@ -21,6 +21,8 @@ namespace Illumination.Logic {
 
         static double timeLeft;
 
+        static Entity selectedEntity;
+
         public static double TimeLeft
         {
             get { return timeLeft; }
@@ -55,6 +57,11 @@ namespace Illumination.Logic {
 
         public static Tile[,] Grid {
             get { return grid; }
+        }
+
+        public static Entity SelectedEntity {
+            get { return selectedEntity; }
+            set { selectedEntity = value; }
         }
 
         public static HashSet<Entity> GetEntities(int x, int y) {

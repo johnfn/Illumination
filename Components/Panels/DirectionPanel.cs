@@ -5,9 +5,12 @@ using System.Text;
 using Illumination.Data;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Illumination.Logic.ActionHandler;
+using Illumination.Logic;
+using Illumination.WorldObjects;
 
 namespace Illumination.Components.Panels {
-    public class DirectionPanel : Panel {
+    public class DirectionPanel : Panel, ActionListener {
         Button northButton, southButton, eastButton, westButton;
 
         public DirectionPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
@@ -15,12 +18,34 @@ namespace Illumination.Components.Panels {
         }
 
         public void Initialize() {
-            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(0, 0, 50, 50), Color.Blue);
-            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(0, 0, 50, 50), Color.White);
-            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(0, 0, 50, 50), Color.White);
-            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 0, 50, 50), Color.White);
+            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(50, 0, 50, 50), Color.Black);
+            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(50, 100, 50, 50), Color.Black);
+            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(100, 50, 50, 50), Color.Black);
+            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 50, 50, 50), Color.Black);
 
+            AddComponent(northButton);
             AddComponent(southButton);
+            AddComponent(eastButton);
+            AddComponent(westButton);
+
+            northButton.AddActionListener(this);
+            southButton.AddActionListener(this);
+            eastButton.AddActionListener(this);
+            westButton.AddActionListener(this);
+        }
+
+        public void ActionPerformed(ActionEvent evt) {
+            if (World.SelectedEntity is Person) {
+                if (evt.InvokingComponent == northButton) {
+                    ((Person) World.SelectedEntity).Direction = Entity.DirectionType.North;
+                } else if (evt.InvokingComponent == southButton) {
+                    ((Person) World.SelectedEntity).Direction = Entity.DirectionType.South;
+                } else if (evt.InvokingComponent == eastButton) {
+                    ((Person) World.SelectedEntity).Direction = Entity.DirectionType.East;
+                } else {
+                    ((Person) World.SelectedEntity).Direction = Entity.DirectionType.West;
+                }
+            }
         }
     }
 }
