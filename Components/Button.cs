@@ -6,22 +6,41 @@ using Illumination.Logic.MouseHandler;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Illumination.Logic.ActionHandler;
+using Illumination.Data;
+using Illumination.Utility;
 
 namespace Illumination.Components {
     public class Button : Component, MouseListener {
-        private string text;
-        private SpriteFont font;
-        private Vector2 location;
+        SpriteFont font;
+        string text;
+        Vector2 textLocation;
+        Color textColor;
+        
+        HashSet<ActionListener> actionListeners;
 
-        private HashSet<ActionListener> actionListeners;
+        public string Text
+        {
+            get { return text; }
+            set { 
+                text = value;
+                textLocation = Geometry.CenterText(text, font, BoundingBox);
+            }
+        }
 
-        public Button(string text, SpriteFont font, Vector2 location, MouseController mouseController) {
+        public Button(Texture2D background, Rectangle boundingBox, Color color, MouseController mouseController) 
+            : this(background, boundingBox, color, "", MediaRepository.Fonts["DefaultFont"], Color.White, mouseController) { }
+
+        public Button(Rectangle boundingBox, string text, SpriteFont font, Color textColor, MouseController mouseController)
+            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor, mouseController) { }
+
+        public Button(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor, MouseController mouseController)
+            : base(background, boundingBox, color)
+        {
             this.text = text;
             this.font = font;
-            this.location = location;
+            this.textColor = textColor;
 
-            Vector2 dimensions = font.MeasureString(text);
-            base.BoundingBox = new Rectangle((int) location.X, (int) location.Y, (int) dimensions.X, (int) dimensions.Y);
+            textLocation = Geometry.CenterText(text, font, boundingBox);
 
             mouseController.AddMouseListener(this);
 
@@ -37,7 +56,9 @@ namespace Illumination.Components {
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.DrawString(font, text, location, Color.Black);
+            base.Draw(spriteBatch);
+
+            spriteBatch.DrawString(font, text, textLocation, textColor);
         }
 
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }

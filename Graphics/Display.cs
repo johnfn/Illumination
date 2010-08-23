@@ -6,53 +6,48 @@ using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
 using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
+using Illumination.Utility;
 
 namespace Illumination.Graphics
 {
     public struct Dimension
     {
-        int width;
-        int height;
-
-        public int Width 
-        {
-            get { return width; }
-            set { width = value; }
-        }
-
-        public int Height
-        {
-            get { return height; }
-            set { height = value; }
-        }
+        public int Width;
+        public int Height;
 
         public Dimension(int width, int height)
         {
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
         }
     };
 
     public static class Display {
         static AnimationController animationController = new AnimationController();
 
-        static int tileWidth;
-        static int tileHeight;
+        static Point gridOrigin;
+        static Dimension tileSize;
+        static Dimension gridViewportSize;
 
-        public static int TileWidth {
-            get { return tileWidth; }
+        public static Dimension TileSize 
+        {
+            get { return tileSize; }
         }
 
-        public static int TileHeight {
-            get { return tileHeight; }
+        public static Dimension GridViewportSize
+        {
+            get { return gridViewportSize; }
         }
 
-        public static void InitializeDisplay(int numRows, int numCols, int displayWidth, int displayHeight) {
-            tileWidth = displayWidth / numCols;
-            tileHeight = displayHeight / numRows;
+        public static void InitializeDisplay(int numRows, int numCols, Rectangle displayWindow) 
+        {
+            tileSize = new Dimension(displayWindow.Width / numCols, displayWindow.Height / numRows);
+            gridViewportSize = new Dimension(displayWindow.Width, displayWindow.Height);
+            gridOrigin = new Point(displayWindow.X, displayWindow.Y);
         }
 
-        public static void DrawWorld(SpriteBatch spriteBatch, GameTime gameTime) {
+        public static void DrawWorld(SpriteBatch spriteBatch, GameTime gameTime) 
+        {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
             }
@@ -67,7 +62,7 @@ namespace Illumination.Graphics
 
             if (World.IsNight) {
                 /* Transparent Black Mask */
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 0, 500, 500), new Color(0, 0, 0, 50));
+                spriteBatch.Draw(MediaRepository.Textures["Blank"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
             }
 
             foreach (Light light in World.LightSet) {
@@ -85,7 +80,8 @@ namespace Illumination.Graphics
             return animation;
         }
 
-        public static Animation CreateAnimation(Texture2D texture, Rectangle rect, double durationInSec) {
+        public static Animation CreateAnimation(Texture2D texture, Rectangle rect, double durationInSec) 
+        {
             return CreateAnimation(texture, new Point(rect.X, rect.Y), new Dimension(rect.Width, rect.Height), durationInSec);
         }
 
@@ -103,34 +99,34 @@ namespace Illumination.Graphics
         }
 
         public static Point ViewportToGridLocation(Point p) {
-            return new Point(p.Y / tileHeight, p.X / tileWidth);
+            return new Point((p.Y - gridOrigin.Y) / tileSize.Height, (p.X - gridOrigin.X) / tileSize.Width);
         }
 
         public static Rectangle ViewportToGridLocation(Rectangle viewport) {
             Point anchorPoint = ViewportToGridLocation(new Point(viewport.X, viewport.Y));
-            int gridWidth = (int) Math.Ceiling((double) viewport.Width / tileWidth);
-            int gridHeight = (int) Math.Ceiling((double) viewport.Height / tileHeight);
+            int gridWidth = (int) Math.Ceiling((double) viewport.Width / tileSize.Width);
+            int gridHeight = (int) Math.Ceiling((double) viewport.Height / tileSize.Height);
 
             return new Rectangle(anchorPoint.X, anchorPoint.Y, gridWidth, gridHeight);
         }
 
         public static Point GridLocationToViewport(Point p) {
-            return new Point(p.Y * tileHeight, p.X * tileWidth);
+            return new Point(gridOrigin.X + p.Y * tileSize.Height, gridOrigin.Y + p.X * tileSize.Width);
         }
 
         public static Point GridCenterToViewport(Point p) {
             p = GridLocationToViewport(p);
 
-            p.X += tileWidth / 2;
-            p.Y += tileHeight / 2;
+            p.X += tileSize.Width / 2;
+            p.Y += tileSize.Height / 2;
 
             return p;
         }
 
         public static Rectangle GridLocationToViewport(Rectangle gridLocation) {
             Point anchorPoint = GridLocationToViewport(new Point(gridLocation.X, gridLocation.Y));
-            int gridWidth = gridLocation.Width * TileWidth;
-            int gridHeight = gridLocation.Height * TileHeight;
+            int gridWidth = gridLocation.Width * tileSize.Width;
+            int gridHeight = gridLocation.Height * tileSize.Height;
 
             return new Rectangle(anchorPoint.X, anchorPoint.Y, gridWidth, gridHeight);
         }

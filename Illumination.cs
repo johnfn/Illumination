@@ -20,6 +20,7 @@ using Illumination.Graphics;
 using Illumination.Logic.KeyHandler;
 using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
+using Illumination.Components.Panels;
 
 namespace Illumination {
     /// <summary>
@@ -31,7 +32,9 @@ namespace Illumination {
 
         MouseController mouseController;
         KeyController keyController;
-        Button menuButton;
+
+        InformationPanel informationPanel;
+        MenuBar menuBar;
 
         Entity selectedObject = null;
 
@@ -39,8 +42,8 @@ namespace Illumination {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            this.graphics.PreferredBackBufferWidth = 500;
-            this.graphics.PreferredBackBufferHeight = 550;
+            this.graphics.PreferredBackBufferWidth = 600;
+            this.graphics.PreferredBackBufferHeight = 700;
 
             this.IsMouseVisible = true;
         }
@@ -71,19 +74,21 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-            Display.InitializeDisplay(10, 10, 500, 500);
+            Display.InitializeDisplay(10, 10, new Rectangle(50, 25, 500, 500));
             World.InitalizeWorld(10, 10);
 
             base.Initialize();
 
+        
             mouseController = new MouseController();
             mouseController.AddMouseListener(this);
 
             keyController = new KeyController();
             keyController.AddKeyListener(this);
 
-            menuButton = new Button("Menu", MediaRepository.Fonts["DefaultFont"], new Vector2(20, 510), mouseController);
-            menuButton.AddActionListener(this);
+            informationPanel = new InformationPanel(new Rectangle(0, 525, 600, 175));
+            menuBar = new MenuBar(new Rectangle(0, 0, 600, 25), mouseController);
+
 
             World.CreateTree(5, 5);
             Tree t1 = World.CreateTree(2, 1);
@@ -106,7 +111,7 @@ namespace Illumination {
             //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
             //a2.AddTranslationFrame(new Point(p2.BoundingBox.X + Display.TileWidth, p2.BoundingBox.Y), 2);
             
-            /* Frame by frame manipulation demo */
+            /* Frame by frame manipulation demo 
             Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Point(25, 25), new Dimension(50, 50), 5.5);
             a1.SetRelativeOrigin(new Vector2(25, 25));
 
@@ -126,7 +131,7 @@ namespace Illumination {
 
             a1.AddEventFrame(new TrickyHelloWorld(), 2);
 
-            /* Ease in and out demo + Sprite sheet demo */
+            // Ease in and out demo + Sprite sheet demo 
             Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Point(0, 0), new Dimension(100, 100), 12, 0.1);
             a3.AddTranslationFrame(new Point(0, 0), 0, Animation.EaseType.InAndOut);
             a3.AddTranslationFrame(new Point(400, 0), 3, Animation.EaseType.InAndOut);
@@ -135,6 +140,7 @@ namespace Illumination {
 
             a3.AddColorFrame(Color.White, 9);
             a3.AddColorFrame(Color.TransparentWhite, 12);
+            */
         }
 
         /// <summary>
@@ -181,19 +187,19 @@ namespace Illumination {
             
 
             Display.DrawWorld(spriteBatch, gameTime);
-            spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(0, 500, 500, 50), Color.DarkGreen);
-            menuButton.Draw(spriteBatch);
-            spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);
+            //menuButton.Draw(spriteBatch);
             
+            //spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);
+
+            informationPanel.Draw(spriteBatch);
+            menuBar.Draw(spriteBatch);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
         public void ActionPerformed(ActionEvent evt) {
-            if (evt.InvokingComponent == menuButton) {
-                Console.WriteLine("Menu triggered");
-            }
         }
 
         public void MouseClicked(MouseEvent evt) {
@@ -233,6 +239,7 @@ namespace Illumination {
                 }
             }
         }
+
         #region KeyListener Members
 
         public void KeysPressed(KeyEvent evt) {

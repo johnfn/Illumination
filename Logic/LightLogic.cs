@@ -83,6 +83,7 @@ namespace Illumination.Logic {
                 }
                 else if (entity is Building)
                 {
+
                     Console.WriteLine("Hit Building");
                 }
 
