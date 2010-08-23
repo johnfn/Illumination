@@ -7,25 +7,22 @@ using Illumination.Data;
 using Microsoft.Xna.Framework;
 using Illumination.Utility;
 
-namespace Illumination.Components.Panels
-{
-    public class InformationPanel : Panel
-    {
-        Rectangle detailPanelRelLoc = new Rectangle(175, 0, 250, 175);
+namespace Illumination.Components.Panels {
+    public class InformationPanel : Panel {
+        Panel detailPanel;
 
-        public InformationPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green)
-        {
-            
+        public InformationPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) { 
+            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.AliceBlue);
+
+            AddComponent(detailPanel);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             base.Draw(spriteBatch);
-            
-            Rectangle detailPanelAbsLoc = Geometry.Translate(detailPanelRelLoc, BoundingBox.X, BoundingBox.Y);
-            spriteBatch.Draw(MediaRepository.Textures["Blank"], detailPanelAbsLoc, Color.AliceBlue);
         }
 
+        public void DisplayPerson(Person p) {
+
+        }
     }
 }

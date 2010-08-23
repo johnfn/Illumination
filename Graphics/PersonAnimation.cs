@@ -5,6 +5,7 @@ using System.Text;
 using Illumination.WorldObjects;
 using Illumination.Graphics.AnimationHandler;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Illumination.Graphics {
     public class PersonAnimation {
@@ -26,6 +27,7 @@ namespace Illumination.Graphics {
 
             private void AddPathAnimation(Animation animation, Person.SearchNode startNode) {
                 double time = 0;
+                animation.AddColorFrame(new Color(255, 255, 255, 100), 0.01);
                 for (; startNode != null; time += MOVEMENT_INTERVAL, startNode = startNode.nextNode) {
                     animation.AddTranslationFrame(Display.GridLocationToViewport(startNode.point), time);
                 }

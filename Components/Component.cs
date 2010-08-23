@@ -12,37 +12,32 @@ namespace Illumination.Components {
         Texture2D background;
         Color color;
 
-        public Rectangle BoundingBox 
-        {
+        public Rectangle BoundingBox {
             get { return boundingBox; }
             set { boundingBox = value; }
         }
 
-        public Texture2D Background
-        {
+        public Texture2D Background {
             get { return background; }
             set { background = value; }
         }
 
-        public Color Color
-        {
+        public Color Color {
             get { return color; }
             set { color = value; }
         }
 
         public Component() { /* Default constructor */ }
 
-        public Component(Texture2D background, Rectangle boundingBox, Color color) 
-        {
+        public Component(Texture2D background, Rectangle boundingBox, Color color) {
             this.background = background;
             this.boundingBox = boundingBox;
             this.color = color;
         }
 
-        public Component(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {}
+        public Component(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) { }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
+        public virtual void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(background, boundingBox, color);
         }
     }

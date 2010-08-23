@@ -63,6 +63,9 @@ namespace Illumination.Logic {
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             foreach (Entity entity in entities) {
+                if (entity.Hidden) {
+                    continue;
+                }
                 if (entity is Person) {
                     Person thisPerson = (Person) entity;
                     if (Utility.Geometry.Distance(centerPosition, gridCenter) > 1 || light.LastCollisionLocation.Equals(gridLocation)) {
