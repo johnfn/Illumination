@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
 using Microsoft.Xna.Framework;
 using Illumination.Utility;
+using Illumination.WorldObjects;
 
 namespace Illumination.Components.Panels {
     public class InformationPanel : Panel {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Illumination.Data;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace Illumination.Components.Panels {
     public class DirectionPanel : Panel {
