@@ -46,6 +46,17 @@ namespace Illumination.Components.Panels {
                     ((Person) World.SelectedEntity).Direction = Entity.DirectionType.West;
                 }
             }
+            else if (World.SelectedEntity is Tree) {
+                if (evt.InvokingComponent == northButton) {
+                    ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.North;
+                } else if (evt.InvokingComponent == southButton) {
+                    ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.South;
+                } else if (evt.InvokingComponent == eastButton) {
+                    ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.East;
+                } else {
+                    ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.West;
+                }
+            }
         }
     }
 }

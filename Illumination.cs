@@ -213,6 +213,9 @@ namespace Illumination {
                     Person thisPerson = (Person) entity;
                     Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
                     World.AddHighlight(range.Keys);
+                } else if (entity is Tree && entity.Selectable) {
+                    World.SelectedEntity = entity;
+                    World.AddHighlight(gridLocation.X, gridLocation.Y);
                 } else {
                     World.SelectedEntity = null;
                     World.RemoveAllHighlight();
