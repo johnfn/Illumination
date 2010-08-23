@@ -7,20 +7,20 @@ using Microsoft.Xna.Framework;
 using Illumination.Utility;
 
 namespace Illumination.Logic.MouseHandler {
-    public class MouseController {
+    public static class MouseController {
         private const int CLICK_TOLERANCE = 5;
 
-        private bool mousePressed;
-        private bool isClick;
-        private Point startLocation;
+        private static bool mousePressed;
+        private static bool isClick;
+        private static Point startLocation;
 
-        private MouseState previousState;
-        private MouseState currentState;
+        private static MouseState previousState;
+        private static MouseState currentState;
 
-        private HashSet<MouseListener> mouseListeners;
-        private HashSet<MouseMotionListener> mouseMotionListeners;
+        private static HashSet<MouseListener> mouseListeners;
+        private static HashSet<MouseMotionListener> mouseMotionListeners;
 
-        public MouseController() {
+        public static void Initialize() {
             previousState = currentState = Mouse.GetState();
 
             mousePressed = false;
@@ -28,23 +28,23 @@ namespace Illumination.Logic.MouseHandler {
             mouseMotionListeners = new HashSet<MouseMotionListener>();
         }
 
-        public void AddMouseListener(MouseListener ml) {
+        public static void AddMouseListener(MouseListener ml) {
             mouseListeners.Add(ml);
         }
 
-        public void RemoveMouseListener(MouseListener ml) {
+        public static void RemoveMouseListener(MouseListener ml) {
             mouseListeners.Add(ml);
         }
 
-        public void AddMouseMotionListener(MouseMotionListener mml) {
+        public static void AddMouseMotionListener(MouseMotionListener mml) {
             mouseMotionListeners.Add(mml);
         }
 
-        public void RemoveMouseMotionListener(MouseMotionListener mml) {
+        public static void RemoveMouseMotionListener(MouseMotionListener mml) {
             mouseMotionListeners.Remove(mml);
         }
 
-        public void Update() {
+        public static void Update() {
             previousState = currentState;
             currentState = Mouse.GetState();
 
@@ -86,31 +86,31 @@ namespace Illumination.Logic.MouseHandler {
             }
         }
 
-        private void FireMouseMoved(MouseEvent evt) {
+        private static void FireMouseMoved(MouseEvent evt) {
             foreach (MouseMotionListener mml in mouseMotionListeners) {
                 mml.MouseMoved(evt);
             }
         }
 
-        private void FireMousePressed(MouseEvent evt) {
+        private static void FireMousePressed(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
                 ml.MousePressed(evt);
             }
         }
-        
-        private void FireMouseReleased(MouseEvent evt) {
+
+        private static void FireMouseReleased(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
                 ml.MouseReleased(evt);
             }
         }
 
-        private void FireMouseDragged(MouseEvent evt) {
+        private static void FireMouseDragged(MouseEvent evt) {
             foreach (MouseMotionListener mml in mouseMotionListeners) {
                 mml.MouseDragged(evt);
             }
         }
 
-        private void FireMouseClicked(MouseEvent evt) {
+        private static void FireMouseClicked(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
                 ml.MouseClicked(evt);
             }

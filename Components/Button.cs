@@ -27,13 +27,13 @@ namespace Illumination.Components {
             }
         }
 
-        public Button(Texture2D background, Rectangle boundingBox, Color color, MouseController mouseController) 
-            : this(background, boundingBox, color, "", MediaRepository.Fonts["DefaultFont"], Color.White, mouseController) { }
+        public Button(Texture2D background, Rectangle boundingBox, Color color) 
+            : this(background, boundingBox, color, "", MediaRepository.Fonts["DefaultFont"], Color.White) { }
 
-        public Button(Rectangle boundingBox, string text, SpriteFont font, Color textColor, MouseController mouseController)
-            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor, mouseController) { }
+        public Button(Rectangle boundingBox, string text, SpriteFont font, Color textColor)
+            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor) { }
 
-        public Button(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor, MouseController mouseController)
+        public Button(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor)
             : base(background, boundingBox, color)
         {
             this.text = text;
@@ -42,7 +42,7 @@ namespace Illumination.Components {
 
             textLocation = Geometry.CenterText(text, font, boundingBox);
 
-            mouseController.AddMouseListener(this);
+            MouseController.AddMouseListener(this);
 
             actionListeners = new HashSet<ActionListener>();
         }

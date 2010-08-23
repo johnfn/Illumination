@@ -24,18 +24,18 @@ namespace Illumination.Components.Panels
         StatusBar timeBar;
         Rectangle timeBarRelLoc = new Rectangle(375, 0, 200, 25);
 
-        public MenuBar(Rectangle boundingBox, MouseController mouseController)
+        public MenuBar(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.Blue)
         {
             Rectangle menuButtonAbsLoc = Geometry.Translate(menuButtonRelLoc, boundingBox.X, boundingBox.Y);
             menuButton = new Button(MediaRepository.Textures["Blank"], menuButtonAbsLoc, Color.DarkBlue, 
-                "Menu", MediaRepository.Fonts["DefaultFont"], Color.White, mouseController);
+                "Menu", MediaRepository.Fonts["DefaultFont"], Color.White);
 
             string dayNightButtonText = World.IsNight ? "Begin Day" : "Begin Night";
 
             Rectangle dayNightButtonAbsLoc = Geometry.Translate(dayNightButtonRelLoc, boundingBox.X, boundingBox.Y);
             dayNightButton = new Button(MediaRepository.Textures["Blank"], dayNightButtonAbsLoc, Color.DarkRed,
-                dayNightButtonText, MediaRepository.Fonts["DefaultFont"], Color.White, mouseController);
+                dayNightButtonText, MediaRepository.Fonts["DefaultFont"], Color.White);
 
             Rectangle timeBarAbsLoc = Geometry.Translate(timeBarRelLoc, boundingBox.X, boundingBox.Y);
             timeBar = new StatusBar(timeBarAbsLoc, new Color(200, 200, 0, 255), new Color(255, 255, 220, 255));

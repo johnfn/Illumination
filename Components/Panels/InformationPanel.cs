@@ -13,13 +13,9 @@ namespace Illumination.Components.Panels {
         Panel detailPanel;
 
         public InformationPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) { 
-            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.AliceBlue);
+            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.Red);
 
             AddComponent(detailPanel);
-        }
-
-        public override void Draw(SpriteBatch spriteBatch) {
-            base.Draw(spriteBatch);
         }
 
         public void DisplayPerson(Person p) {

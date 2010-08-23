@@ -30,7 +30,6 @@ namespace Illumination {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        MouseController mouseController;
         KeyController keyController;
 
         InformationPanel informationPanel;
@@ -79,15 +78,14 @@ namespace Illumination {
 
             base.Initialize();
 
-        
-            mouseController = new MouseController();
-            mouseController.AddMouseListener(this);
+            MouseController.Initialize();
+            MouseController.AddMouseListener(this);
 
             keyController = new KeyController();
             keyController.AddKeyListener(this);
 
             informationPanel = new InformationPanel(new Rectangle(0, 525, 600, 175));
-            menuBar = new MenuBar(new Rectangle(0, 0, 600, 25), mouseController);
+            menuBar = new MenuBar(new Rectangle(0, 0, 600, 25));
 
 
             World.CreateTree(5, 5);
@@ -168,7 +166,7 @@ namespace Illumination {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
-            mouseController.Update();
+            MouseController.Update();
             keyController.Update();
 
             World.NextTimestep(gameTime);
