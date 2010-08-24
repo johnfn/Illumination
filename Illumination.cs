@@ -202,8 +202,7 @@ namespace Illumination {
             base.Draw(gameTime);
         }
 
-        public void ActionPerformed(ActionEvent evt) {
-        }
+        public void ActionPerformed(ActionEvent evt) { }
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
@@ -256,7 +255,6 @@ namespace Illumination {
                     }
                 }
             }
-
         }
 
         #region KeyListener Members

@@ -11,6 +11,11 @@ namespace Illumination.Components {
         Rectangle boundingBox;
         Texture2D background;
         Color color;
+        bool isActive = true;
+
+        public bool IsActive {
+            get { return isActive; }
+        }
 
         public Rectangle BoundingBox {
             get { return boundingBox; }
@@ -39,6 +44,14 @@ namespace Illumination.Components {
 
         public virtual void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(background, boundingBox, color);
+        }
+
+        public virtual void Activate() {
+            isActive = true;
+        }
+
+        public virtual void Deactivate() {
+            isActive = false;
         }
     }
 }

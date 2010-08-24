@@ -64,7 +64,7 @@ namespace Illumination.Components {
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseClicked(MouseEvent evt) {
-            if (base.BoundingBox.Contains(evt.CurrentLocation)) {
+            if (IsActive && base.BoundingBox.Contains(evt.CurrentLocation)) {
                 foreach (ActionListener al in actionListeners) {
                     al.ActionPerformed(new ActionEvent(this));
                 }

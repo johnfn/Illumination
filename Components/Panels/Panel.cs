@@ -13,12 +13,6 @@ namespace Illumination.Components.Panels {
         protected HashSet <Component> components;
         protected Point relativePosition;
 
-        bool isActive;
-        public bool IsActive
-        {
-            get { return isActive; }
-        }
-
         public Panel(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.White) { }
 
         public Panel(Rectangle boundingBox, Color backgroundColor) : this(MediaRepository.Textures["Blank"], boundingBox, backgroundColor) { }
@@ -26,8 +20,6 @@ namespace Illumination.Components.Panels {
         public Panel(Texture2D background, Rectangle boundingBox, Color color) : base(background, boundingBox, color) {
             components = new HashSet<Component>();
             relativePosition = new Point(boundingBox.X, boundingBox.Y);
-
-            isActive = true;
         }
 
         public Color BackgroundColor {
@@ -58,16 +50,6 @@ namespace Illumination.Components.Panels {
             }
         }
 
-        public virtual void Activate()
-        {
-            isActive = true;
-        }
-
-        public virtual void Deactivate()
-        {
-            isActive = false;
-        }
-
         public void AddComponent(Component c) {
             UpdateComponent(c);
             components.Add(c);
@@ -87,6 +69,22 @@ namespace Illumination.Components.Panels {
             c.BoundingBox = Geometry.Translate(c.BoundingBox, this.BoundingBox.X, this.BoundingBox.Y);
             if (c is Panel) {
                 ((Panel) c).UpdateComponents();
+            }
+        }
+
+        public override void Activate() {
+            base.Activate();
+
+            foreach (Component c in components) {
+                c.Activate();
+            }
+        }
+
+        public override void Deactivate() {
+            base.Deactivate();
+
+            foreach (Component c in components) {
+                c.Deactivate();
             }
         }
     }

@@ -29,6 +29,11 @@ namespace Illumination.Components.Panels {
             AddComponent(southButton);
             AddComponent(eastButton);
             AddComponent(westButton);
+
+            northButton.AddActionListener(this);
+            southButton.AddActionListener(this);
+            eastButton.AddActionListener(this);
+            westButton.AddActionListener(this);
         }
 
         public void ActionPerformed(ActionEvent evt) {
@@ -54,36 +59,6 @@ namespace Illumination.Components.Panels {
                     ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.West;
                 }
             }
-        }
-
-        public override void Activate()
-        {
-            if (IsActive)
-            {
-                return;
-            }
-
-            northButton.AddActionListener(this);
-            southButton.AddActionListener(this);
-            eastButton.AddActionListener(this);
-            westButton.AddActionListener(this);
-
-            base.Activate();
-        }
-
-        public override void Deactivate()
-        {
-            if (!IsActive)
-            {
-                return;
-            }
-
-            northButton.RemoveActionListener(this);
-            southButton.RemoveActionListener(this);
-            eastButton.RemoveActionListener(this);
-            westButton.RemoveActionListener(this);
-
-            base.Deactivate();
         }
     }
 }

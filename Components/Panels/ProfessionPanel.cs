@@ -29,6 +29,8 @@ namespace Illumination.Components.Panels
                 Button button = new Button(Person.GetTexture(profession), new Rectangle(50 * (int)profession, 0, 50, 50), Color.White);
                 professionButtons[(int)profession] = button;
                 AddComponent(button);
+
+                button.AddActionListener(this);
             }
         }
 
@@ -44,36 +46,6 @@ namespace Illumination.Components.Panels
                         break;
                     }
                 }
-            }
-        }
-
-        public override void Activate()
-        {
-            if (IsActive)
-            {
-                return;
-            }
-
-            base.Activate();
-
-            foreach (Button button in professionButtons)
-            {
-                button.AddActionListener(this);
-            }
-        }
-
-        public override void Deactivate()
-        {
-            if (!IsActive)
-            {
-                return;
-            }
-
-            base.Deactivate();
-
-            foreach (Button button in professionButtons)
-            {
-                button.RemoveActionListener(this);
             }
         }
     }
