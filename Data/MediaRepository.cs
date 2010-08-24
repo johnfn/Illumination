@@ -27,6 +27,8 @@ namespace Illumination.Data {
             Textures.Add("GrassTile", gameInstance.Content.Load<Texture2D>("grasstile"));
             Textures.Add("WaterTile", gameInstance.Content.Load<Texture2D>("watertile"));
 
+            Textures.Add("TileBorder", gameInstance.Content.Load<Texture2D>("border"));
+
             Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("worker"));
             Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("educator"));
             Textures.Add("Scientist", gameInstance.Content.Load<Texture2D>("developer"));

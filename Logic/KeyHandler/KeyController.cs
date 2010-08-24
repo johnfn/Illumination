@@ -5,22 +5,22 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 
 namespace Illumination.Logic.KeyHandler {
-    public class KeyController {
-        private KeyboardState previousState;
-        private KeyboardState currentState;
+    public static class KeyController {
+        private static KeyboardState previousState;
+        private static KeyboardState currentState;
 
-        private HashSet <Keys> previousKeySet;
+        private static HashSet <Keys> previousKeySet;
 
-        private HashSet <KeyListener> keyListeners;
+        private static HashSet <KeyListener> keyListeners;
 
-        public KeyController() {
+        public static void Initialize() {
             previousState = currentState = Keyboard.GetState();
 
             previousKeySet = new HashSet<Keys>(currentState.GetPressedKeys());
             keyListeners = new HashSet<KeyListener>();
         }
 
-        public void Update() {
+        public static void Update() {
             currentState = Keyboard.GetState();
 
             HashSet <Keys> currentKeySet = new HashSet <Keys> (currentState.GetPressedKeys());
@@ -39,21 +39,21 @@ namespace Illumination.Logic.KeyHandler {
             previousState = currentState;
         }
 
-        public void AddKeyListener(KeyListener keyListener) {
+        public static void AddKeyListener(KeyListener keyListener) {
             keyListeners.Add(keyListener);
         }
 
-        public void RemoveKeyListener(KeyListener keyListener) {
+        public static void RemoveKeyListener(KeyListener keyListener) {
             keyListeners.Remove(keyListener);
         }
 
-        private void FireKeyPressed(KeyEvent evt) {
+        private static void FireKeyPressed(KeyEvent evt) {
             foreach (KeyListener kl in keyListeners) {
                 kl.KeysPressed(evt);
             }
         }
 
-        private void FireKeyReleased(KeyEvent evt) {
+        private static void FireKeyReleased(KeyEvent evt) {
             foreach (KeyListener kl in keyListeners) {
                 kl.KeysReleased(evt);
             }

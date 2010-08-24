@@ -48,24 +48,36 @@ namespace Illumination.Logic.MouseHandler {
             previousState = currentState;
             currentState = Mouse.GetState();
 
+            int modifiers = 0;
+            KeyboardState keyState = Keyboard.GetState();
+            if (keyState.IsKeyDown(Keys.LeftShift) || keyState.IsKeyDown(Keys.RightShift)) {
+                modifiers |= MouseEvent.SHIFT_DOWN;
+            }
+            if (keyState.IsKeyDown(Keys.LeftControl) || keyState.IsKeyDown(Keys.RightControl)) {
+                modifiers |= MouseEvent.CTRL_DOWN;
+            }
+            if (keyState.IsKeyDown(Keys.LeftAlt) || keyState.IsKeyDown(Keys.RightAlt)) {
+                modifiers |= MouseEvent.ALT_DOWN;
+            }
+
             Point previousLocation = new Point(previousState.X, previousState.Y);
             Point currentLocation = new Point(currentState.X, currentState.Y);
 
             if ((previousState.X != currentState.X) || (previousState.Y != currentState.Y)) {
-                FireMouseMoved(new MouseEvent(previousLocation, currentLocation));
+                FireMouseMoved(new MouseEvent(previousLocation, currentLocation, modifiers));
                 if (mousePressed && currentState.LeftButton == ButtonState.Pressed) {
                     if (isClick && Geometry.Distance(startLocation, currentLocation) > CLICK_TOLERANCE) {
                         isClick = false;
                     }
-                    FireMouseDragged(new MouseEvent(startLocation, currentLocation));
+                    FireMouseDragged(new MouseEvent(startLocation, currentLocation, modifiers));
                 }
             }
 
             if (previousState.LeftButton == ButtonState.Pressed && currentState.LeftButton == ButtonState.Released) {
-                FireMouseReleased(new MouseEvent(currentLocation));
+                FireMouseReleased(new MouseEvent(currentLocation, modifiers));
 
                 if (isClick) {
-                    FireMouseClicked(new MouseEvent(currentLocation));
+                    FireMouseClicked(new MouseEvent(currentLocation, modifiers));
                 }
             }
 
@@ -74,15 +86,15 @@ namespace Illumination.Logic.MouseHandler {
                 isClick = true;
                 startLocation = new Point(currentState.X, currentState.Y);
 
-                FireMousePressed(new MouseEvent(startLocation));
+                FireMousePressed(new MouseEvent(startLocation, modifiers));
             }
 
             if (previousState.RightButton == ButtonState.Pressed && currentState.RightButton == ButtonState.Released) {
-                FireMouseReleased(new MouseEvent(currentLocation, MouseEvent.MouseButton.Right));
+                FireMouseReleased(new MouseEvent(currentLocation, MouseEvent.MouseButton.Right, modifiers));
             }
 
             if (previousState.RightButton == ButtonState.Released && currentState.RightButton == ButtonState.Pressed) {
-                FireMousePressed(new MouseEvent(startLocation, MouseEvent.MouseButton.Right));
+                FireMousePressed(new MouseEvent(startLocation, MouseEvent.MouseButton.Right, modifiers));
             }
         }
 

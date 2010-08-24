@@ -35,15 +35,15 @@ namespace Illumination.Components.Panels
         }
 
         public void ActionPerformed(ActionEvent evt) {
-            if (World.SelectedEntity is Person) {
-                Person thisPerson = (Person)World.SelectedEntity;
+            if (World.SelectedEntityType == World.EntityType.Person) {
+                foreach (Entity e in World.SelectedEntities) {
+                    Person thisPerson = (Person) e;
 
-                for (Person.ProfessionType profession = 0; profession < Person.ProfessionType.SIZE; profession++)
-                {
-                    if (evt.InvokingComponent == professionButtons[(int)profession])
-                    {
-                        thisPerson.Profession = profession;
-                        break;
+                    for (Person.ProfessionType profession = 0; profession < Person.ProfessionType.SIZE; profession++) {
+                        if (evt.InvokingComponent == professionButtons[(int) profession]) {
+                            thisPerson.Profession = profession;
+                            break;
+                        }
                     }
                 }
             }

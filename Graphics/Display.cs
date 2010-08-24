@@ -58,6 +58,12 @@ namespace Illumination.Graphics
                 }
             }
 
+            if (World.SelectedEntities.Count > 0) {
+                foreach (Entity e in World.SelectedEntities) {
+                    spriteBatch.Draw(MediaRepository.Textures["TileBorder"], e.BoundingBox, Color.White);
+                }
+            }
+
             animationController.Draw(spriteBatch, gameTime);
 
             if (World.IsNight) {

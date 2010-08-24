@@ -30,8 +30,6 @@ namespace Illumination {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        KeyController keyController;
-
         InformationPanel informationPanel;
         MenuBar menuBar;
 
@@ -77,10 +75,10 @@ namespace Illumination {
             base.Initialize();
 
             MouseController.Initialize();
-            MouseController.AddMouseListener(this);
+            KeyController.Initialize();
 
-            keyController = new KeyController();
-            keyController.AddKeyListener(this);
+            MouseController.AddMouseListener(this);
+            KeyController.AddKeyListener(this);
 
             informationPanel = new InformationPanel(new Rectangle(0, 525, 600, 175));
             menuBar = new MenuBar(new Rectangle(0, 0, 600, 25));
@@ -173,7 +171,7 @@ namespace Illumination {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
             MouseController.Update();
-            keyController.Update();
+            KeyController.Update();
 
             World.NextTimestep(gameTime);
 
@@ -214,25 +212,29 @@ namespace Illumination {
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
+                World.SelectedEntities.Clear();
                 Entity entity = entities.First();
-                if (entity is Person && entity.Selectable) {
-                    World.SelectedEntity = entity;
-                    Person thisPerson = (Person) entity;
-                    Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
-                    World.AddHighlight(range.Keys);
-                } else if (entity is Tree && entity.Selectable) {
-                    World.SelectedEntity = entity;
-                    World.AddHighlight(gridLocation.X, gridLocation.Y);
-                } else if (entity is Building && entity.Selectable) {
-                    World.SelectedEntity = entity;
-                    Building thisBuilding = (Building) entity;
-                    World.AddHighlight(thisBuilding.GetEffectRange());
+                if (entity.Selectable) {
+                    World.SelectedEntities.Add(entity);
+
+                    if (entity is Person) {
+                        World.SelectedEntityType = World.EntityType.Person;
+                        Person thisPerson = (Person) entity;
+                        Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
+                        World.AddHighlight(range.Keys);
+                    } else if (entity is Tree) {
+                        World.SelectedEntityType = World.EntityType.Tree;
+                        World.AddHighlight(gridLocation.X, gridLocation.Y);
+                    } else if (entity is Building) {
+                        World.SelectedEntityType = World.EntityType.Building;
+                        Building thisBuilding = (Building) entity;
+                        World.AddHighlight(thisBuilding.GetEffectRange());
+                    }
                 } else {
-                    World.SelectedEntity = null;
                     World.RemoveAllHighlight();
                 }
             } else {
-                World.SelectedEntity = null;
+                World.SelectedEntities.Clear();
                 World.RemoveAllHighlight();
             }
 
@@ -243,12 +245,16 @@ namespace Illumination {
         public void MouseReleased(MouseEvent evt) {
             if (evt.Button == MouseEvent.MouseButton.Right) {
                 Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-                if (World.SelectedEntity is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
-                    Dictionary <Point, Person.SearchNode> range = ((Person) World.SelectedEntity).ComputeMovementRange();
+                if (World.SelectedEntities.Count == 0) {
+                    return;
+                }
+                Entity selectedEntity = World.SelectedEntities.First();
+                if (selectedEntity is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
+                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedEntity).ComputeMovementRange();
                     if (range.ContainsKey(gridLocation)) {
-                        World.MovePerson((Person) World.SelectedEntity, gridLocation);
-                        PersonAnimation.CreateMovementAnimation((Person) World.SelectedEntity, range[gridLocation]);
-                        World.SelectedEntity = null;
+                        World.MovePerson((Person) selectedEntity, gridLocation);
+                        PersonAnimation.CreateMovementAnimation((Person) selectedEntity, range[gridLocation]);
+                        World.SelectedEntities.Clear();
                         World.RemoveAllHighlight();
 
                         informationPanel.UpdateDetailPanel();

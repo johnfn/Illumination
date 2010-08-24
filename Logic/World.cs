@@ -7,6 +7,13 @@ using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public static class World {
+        public enum EntityType {
+            None,
+            Person,
+            Tree,
+            Building
+        }
+
         public const double DAY_TIME_LIMIT = 60;
 
         static Tile[,] grid;
@@ -21,7 +28,8 @@ namespace Illumination.Logic {
 
         static double timeLeft;
 
-        static Entity selectedEntity;
+        static HashSet <Entity> selectedEntities = new HashSet<Entity>();
+        static EntityType selectedEntityType = EntityType.None;
 
         public static double TimeLeft
         {
@@ -59,9 +67,13 @@ namespace Illumination.Logic {
             get { return grid; }
         }
 
-        public static Entity SelectedEntity {
-            get { return selectedEntity; }
-            set { selectedEntity = value; }
+        public static HashSet<Entity> SelectedEntities {
+            get { return selectedEntities; }
+        }
+
+        public static EntityType SelectedEntityType {
+            get { return selectedEntityType; }
+            set { selectedEntityType = value; }
         }
 
         public static HashSet<Entity> GetEntities(int x, int y) {
@@ -278,6 +290,18 @@ namespace Illumination.Logic {
                 t.Highlighted = false;
             }
             highlightedTiles.Clear();
+        }
+
+        public static void ChangeDirection(Entity.DirectionType direction) {
+            if (selectedEntityType == EntityType.Person) {
+                foreach (Entity e in selectedEntities) {
+                    ((Person) e).Direction = direction;
+                }
+            } else if (selectedEntityType == EntityType.Tree) {
+                foreach (Entity e in selectedEntities) {
+                    ((Tree) e).Direction = direction;
+                }
+            }
         }
     }
 }

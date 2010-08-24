@@ -12,18 +12,19 @@ using Illumination.Logic;
 namespace Illumination.Components.Panels {
     public class InformationPanel : Panel {
         Panel detailPanel;
-        
+
         // Panels in the detailPanel
         Panel directionPanel;
         Panel professionPanel;
         //Panel personStatusPanel;
         //Panel buildingStatusPanel;
 
-        public InformationPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) { 
+        public InformationPanel(Rectangle boundingBox)
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) {
             detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.White);
-            directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200));
+            directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200), World.ChangeDirection);
             professionPanel = new ProfessionPanel(new Rectangle(0, 60, 250, 50));
- 
+
             AddComponent(detailPanel);
 
             detailPanel.AddComponent(directionPanel);
@@ -34,29 +35,39 @@ namespace Illumination.Components.Panels {
 
         }
 
-        public void UpdateDetailPanel()
-        {
+        public void UpdateDetailPanel() {
             directionPanel.Deactivate();
             professionPanel.Deactivate();
 
-            Entity entity = World.SelectedEntity;
-            if (entity is Person && entity.Selectable)
-            {
-                Person thisPerson = (Person)entity;
-                if (thisPerson.IsEducated && thisPerson.Profession == Person.ProfessionType.Worker)
-                {
-                    professionPanel.Activate();
-                }
+            if (World.SelectedEntities.Count > 0) {
+                World.EntityType entityType = World.SelectedEntityType;
+                if (entityType == World.EntityType.Person) {
+                    foreach (Entity e in World.SelectedEntities) {
+                        if (!e.Selectable) {
+                            continue;
+                        }
+                        Person thisPerson = (Person) e;
+                        if (thisPerson.IsEducated && thisPerson.Profession == Person.ProfessionType.Worker) {
+                            professionPanel.Activate();
+                        }
 
-                directionPanel.Activate();
-            }
-            else if (entity is Tree && entity.Selectable)
-            {
-                directionPanel.Activate();
-            }
-            else if (entity is Building && entity.Selectable)
-            {
-                /* Something */
+                        directionPanel.Activate();
+                    }
+                } else if (entityType == World.EntityType.Tree) {
+                    foreach (Entity e in World.SelectedEntities) {
+                        if (!e.Selectable) {
+                            continue;
+                        }
+                        directionPanel.Activate();
+                    }
+                } else if (entityType == World.EntityType.Building) {
+                    foreach (Entity e in World.SelectedEntities) {
+                        if (!e.Selectable) {
+                            continue;
+                        }
+                    }
+                    /* Something */
+                }
             }
         }
     }

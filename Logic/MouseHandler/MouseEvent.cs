@@ -12,6 +12,11 @@ namespace Illumination.Logic.MouseHandler {
             Right
         }
 
+        public const int SHIFT_DOWN = 1 << 0;
+        public const int CTRL_DOWN = 1 << 1;
+        public const int ALT_DOWN = 1 << 2;
+
+        private int modifiers;
         private Point startLocation;
         private Point currentLocation;
         private MouseButton button;
@@ -28,16 +33,29 @@ namespace Illumination.Logic.MouseHandler {
             get { return button; }
         }
 
-        public MouseEvent(Point currentLocation) : this(currentLocation, MouseButton.Left) { }
+        public bool IsCtrlDown() {
+            return (modifiers & CTRL_DOWN) > 0;
+        }
 
-        public MouseEvent(Point currentLocation, MouseButton button) : this(currentLocation, currentLocation, button) { }
+        public bool IsShiftDown() {
+            return (modifiers & SHIFT_DOWN) > 0;
+        }
 
-        public MouseEvent(Point startLocation, Point currentLocation) : this(startLocation, currentLocation, MouseButton.Left) { }
+        public bool IsAltDown() {
+            return (modifiers & ALT_DOWN) > 0;
+        }
 
-        public MouseEvent(Point startLocation, Point currentLocation, MouseButton button) {
+        public MouseEvent(Point currentLocation, int modifiers) : this(currentLocation, MouseButton.Left, modifiers) { }
+
+        public MouseEvent(Point currentLocation, MouseButton button, int modifiers) : this(currentLocation, currentLocation, button, modifiers) { }
+
+        public MouseEvent(Point startLocation, Point currentLocation, int modifiers) : this(startLocation, currentLocation, MouseButton.Left, modifiers) { }
+
+        public MouseEvent(Point startLocation, Point currentLocation, MouseButton button, int modifiers) {
             this.startLocation = startLocation;
             this.currentLocation = currentLocation;
             this.button = button;
+            this.modifiers = modifiers;
         }
     }
 }
