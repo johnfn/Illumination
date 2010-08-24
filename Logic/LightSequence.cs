@@ -15,7 +15,7 @@ namespace Illumination.Logic
         public LightSequence(string lights) : this() {
             Light.LightType[] lightSequence = new Light.LightType[lights.Length];
             foreach (char ch in lights.ToCharArray()) {
-                Light.LightType light = Light.GetLightColor(ch);
+                Light.LightType light = Light.GetLightType(ch);
                 frequencies[light]++;
             }
         }

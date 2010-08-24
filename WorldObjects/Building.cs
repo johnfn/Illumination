@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Illumination.Logic;
+using Microsoft.Xna.Framework;
 
 namespace Illumination.WorldObjects {
     public abstract class Building : Entity {
@@ -55,6 +56,20 @@ namespace Illumination.WorldObjects {
                     triggeredSequences.Add(sequence);
                 }
             }
+        }
+
+        public virtual HashSet<Point> GetEffectRange()
+        {
+            HashSet<Point> points = new HashSet<Point>();
+            for (int row = GridLocation.Top; row < GridLocation.Bottom; row++)
+            {
+                for (int col = GridLocation.Left; col < GridLocation.Right; col++)
+                {
+                    points.Add(new Point(row, col));
+                }
+            }
+
+            return points;
         }
     }
 }

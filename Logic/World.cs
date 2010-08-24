@@ -7,7 +7,7 @@ using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public static class World {
-        public const double DAY_TIME_LIMIT = 5;
+        public const double DAY_TIME_LIMIT = 60;
 
         static Tile[,] grid;
         static HashSet<Person> personSet;
@@ -229,8 +229,13 @@ namespace Illumination.Logic {
                     IsNight = true;
                 }
             }
-
-            lightLogic.NextTimestep();
+            else
+            {
+                if (!lightLogic.NextTimestep())
+                {
+                    IsNight = false;
+                }
+            }
         }
 
         public static void BeginNight() {

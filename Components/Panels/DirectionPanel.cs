@@ -15,23 +15,20 @@ namespace Illumination.Components.Panels {
 
         public DirectionPanel(Rectangle boundingBox) : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
             Initialize();
+
+            base.Deactivate();
         }
 
         public void Initialize() {
-            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(50, 0, 50, 50), Color.Black);
-            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(50, 100, 50, 50), Color.Black);
-            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(100, 50, 50, 50), Color.Black);
-            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 50, 50, 50), Color.Black);
+            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(40, 0, 40, 40), Color.Black);
+            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(40, 80, 40, 40), Color.Black);
+            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(80, 40, 40, 40), Color.Black);
+            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 40, 40, 40), Color.Black);
 
             AddComponent(northButton);
             AddComponent(southButton);
             AddComponent(eastButton);
             AddComponent(westButton);
-
-            northButton.AddActionListener(this);
-            southButton.AddActionListener(this);
-            eastButton.AddActionListener(this);
-            westButton.AddActionListener(this);
         }
 
         public void ActionPerformed(ActionEvent evt) {
@@ -57,6 +54,36 @@ namespace Illumination.Components.Panels {
                     ((Tree) World.SelectedEntity).Direction = Entity.DirectionType.West;
                 }
             }
+        }
+
+        public override void Activate()
+        {
+            if (IsActive)
+            {
+                return;
+            }
+
+            northButton.AddActionListener(this);
+            southButton.AddActionListener(this);
+            eastButton.AddActionListener(this);
+            westButton.AddActionListener(this);
+
+            base.Activate();
+        }
+
+        public override void Deactivate()
+        {
+            if (!IsActive)
+            {
+                return;
+            }
+
+            northButton.RemoveActionListener(this);
+            southButton.RemoveActionListener(this);
+            eastButton.RemoveActionListener(this);
+            westButton.RemoveActionListener(this);
+
+            base.Deactivate();
         }
     }
 }

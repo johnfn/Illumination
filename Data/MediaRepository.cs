@@ -45,6 +45,8 @@ namespace Illumination.Data {
             Textures.Add("Arrow_S", gameInstance.Content.Load<Texture2D>("arrow_S"));
             Textures.Add("Arrow_W", gameInstance.Content.Load<Texture2D>("arrow_W"));
 
+            Textures.Add("Notice", gameInstance.Content.Load<Texture2D>("notice"));
+
             Textures.Add("TreeOfLight", gameInstance.Content.Load<Texture2D>("treeoflight"));
 
             Textures.Add("School", gameInstance.Content.Load<Texture2D>("school"));
@@ -52,6 +54,7 @@ namespace Illumination.Data {
             Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
 
             Sheets.Add("Glow", gameInstance.Content.Load<SpriteSheet>("Glow"));
+
 
             loaded = true;
         }

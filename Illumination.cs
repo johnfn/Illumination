@@ -86,7 +86,7 @@ namespace Illumination {
             menuBar = new MenuBar(new Rectangle(0, 0, 600, 25));
 
 
-            World.CreateTree(5, 5);
+            World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
             Tree t1 = World.CreateTree(2, 1);
             t1.Direction = Entity.DirectionType.East;
             Tree t2 = World.CreateTree(9, 9);
@@ -100,8 +100,16 @@ namespace Illumination {
                 p.Direction = Entity.DirectionType.South;
                 if (n == 3) p.Direction = Entity.DirectionType.North;
                 p.Profession = (Person.ProfessionType)(random.Next() % (int)Person.ProfessionType.SIZE);
+                if (p.Profession != Person.ProfessionType.Worker)
+                {
+                    p.Education = 3;
+                }
             }
             Person p2 = World.CreatePerson(6, 4);
+            Person p3 = World.CreatePerson(4, 7);
+            p3.Profession = Person.ProfessionType.Educator;
+            p3.Education = 3;
+            p3.Direction = Entity.DirectionType.West;
             p2.Direction = Entity.DirectionType.West;
 
             //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
@@ -216,6 +224,10 @@ namespace Illumination {
                 } else if (entity is Tree && entity.Selectable) {
                     World.SelectedEntity = entity;
                     World.AddHighlight(gridLocation.X, gridLocation.Y);
+                } else if (entity is Building && entity.Selectable) {
+                    World.SelectedEntity = entity;
+                    Building thisBuilding = (Building) entity;
+                    World.AddHighlight(thisBuilding.GetEffectRange());
                 } else {
                     World.SelectedEntity = null;
                     World.RemoveAllHighlight();
@@ -224,6 +236,8 @@ namespace Illumination {
                 World.SelectedEntity = null;
                 World.RemoveAllHighlight();
             }
+
+            informationPanel.UpdateDetailPanel();
         }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
 
@@ -237,9 +251,12 @@ namespace Illumination {
                         PersonAnimation.CreateMovementAnimation((Person) World.SelectedEntity, range[gridLocation]);
                         World.SelectedEntity = null;
                         World.RemoveAllHighlight();
+
+                        informationPanel.UpdateDetailPanel();
                     }
                 }
             }
+
         }
 
         #region KeyListener Members

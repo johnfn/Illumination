@@ -23,12 +23,12 @@ namespace Illumination.WorldObjects {
         static Light () {
             colorTable = new Dictionary<LightType, Color>();
 
-            colorTable.Add(LightType.Blue, Color.Blue);
-            colorTable.Add(LightType.Gray, Color.Gray);
-            colorTable.Add(LightType.Yellow, Color.Yellow);
+            colorTable.Add(LightType.Blue, new Color(120, 120, 255));
+            colorTable.Add(LightType.Gray, new Color(170, 150, 170));
+            colorTable.Add(LightType.Yellow, new Color(255, 255, 120));
             colorTable.Add(LightType.White, Color.White);
-            colorTable.Add(LightType.Green, Color.Green);
-            colorTable.Add(LightType.Red, Color.Red);
+            colorTable.Add(LightType.Green, new Color(120, 255, 120));
+            colorTable.Add(LightType.Red, new Color(255, 120, 120));
 
             shortNames = new Dictionary<char, LightType>();
 
@@ -40,8 +40,12 @@ namespace Illumination.WorldObjects {
             shortNames['R'] = LightType.Red;
         }
 
-        public static LightType GetLightColor(char ch) {
+        public static LightType GetLightType(char ch) {
             return shortNames.ContainsKey(ch) ? shortNames[ch] : LightType.Gray;
+        }
+
+        public static Color GetLightColor(LightType type) {
+            return colorTable[type];
         }
 
         DirectionType direction;
@@ -57,22 +61,22 @@ namespace Illumination.WorldObjects {
             set { lastCollisionLocation = value; }
         }
 
-        LightType lightColor;
+        LightType type;
 
-        public LightType LightColor
+        public LightType Type
         {
-            get { return lightColor; }
-            set { lightColor = value; }
+            get { return type; }
+            set { type = value; }
         }
 
         public Light(int x, int y) : base(x, y, 1, 1) {
-            lightColor = LightType.White;
+            type = LightType.White;
 
             lastCollisionLocation = new Point(x, y);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(MediaRepository.Textures["Light"], BoundingBox, colorTable[lightColor]);
+            spriteBatch.Draw(MediaRepository.Textures["Light"], BoundingBox, colorTable[type]);
         }
     }
 }

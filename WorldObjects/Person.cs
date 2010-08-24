@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Illumination.Logic;
 using Illumination.Graphics;
+using Illumination.Graphics.AnimationHandler;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -22,9 +23,11 @@ namespace Illumination.WorldObjects {
             Female
         }
 
+        const int EDUCATION_MAX = 3;
+
         #region Properties
 
-        private static Dictionary <ProfessionType, Light.LightType> lightColorMapping;
+        private static Dictionary<ProfessionType, Light.LightType> lightColorMapping;
         private static Dictionary<ProfessionType, Texture2D> texturesMap;
 
         static Person() {
@@ -42,6 +45,11 @@ namespace Illumination.WorldObjects {
             texturesMap[ProfessionType.Doctor] = MediaRepository.Textures["Doctor"];
             texturesMap[ProfessionType.Scientist] = MediaRepository.Textures["Scientist"];
             texturesMap[ProfessionType.Environmentalist] = MediaRepository.Textures["Environmentalist"];
+        }
+
+        public static Texture2D GetTexture(ProfessionType profession)
+        {
+            return texturesMap[profession];
         }
 
         DirectionType direction;
@@ -84,6 +92,10 @@ namespace Illumination.WorldObjects {
         public int Education {
             get { return education; }
             set { education = value; }
+        }
+
+        public bool IsEducated {
+            get { return education >= EDUCATION_MAX; }
         }
 
         public Light.LightType ReflectedLightColor {
@@ -136,6 +148,25 @@ namespace Illumination.WorldObjects {
                     spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], BoundingBox, Color.White);
                     break;
             }
+
+            if (IsEducated && (profession == ProfessionType.Worker))
+            {
+                Rectangle noticeBox = new Rectangle(BoundingBox.X, BoundingBox.Y, BoundingBox.Width / 2, BoundingBox.Height / 2);
+                spriteBatch.Draw(MediaRepository.Textures["Notice"], noticeBox, Color.Yellow);
+            }
+        }
+
+        public void Educate(int increment)
+        {
+            if (education < EDUCATION_MAX)
+            {
+                education += increment;
+            }
+
+            Animation educateEffect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], BoundingBox, 2, 0.1);
+            educateEffect.AddColorFrame(Color.TransparentWhite, 0);
+            educateEffect.AddColorFrame(Color.Yellow, 0.5);
+            educateEffect.AddColorFrame(Color.TransparentWhite, 2);
         }
 
         public class SearchNode {
