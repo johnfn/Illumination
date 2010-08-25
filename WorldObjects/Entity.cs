@@ -4,6 +4,8 @@ using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
+        private static HashSet<Point> EMPTY_SET = new HashSet<Point>();
+
         private bool spansMultipleTiles = false;
         private bool blocksMovement = true;
         private bool hidden = false;
@@ -57,6 +59,10 @@ namespace Illumination.WorldObjects {
             gridLocation.Height = height;
 
             base.BoundingBox = Display.GridLocationToViewport(gridLocation);
+        }
+
+        public virtual IEnumerable<Point> GetRange() {
+            return EMPTY_SET;
         }
     }
 }

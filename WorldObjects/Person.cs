@@ -242,5 +242,9 @@ namespace Illumination.WorldObjects {
 
             return possibleLocations;
         }
+
+        public override IEnumerable<Point> GetRange() {
+            return ComputeMovementRange().Keys;
+        }
     }
 }

@@ -43,25 +43,6 @@ namespace Illumination {
             this.IsMouseVisible = true;
         }
 
-        /* FOR TESTING ANIMATION EVENT */
-        public class TrickyHelloWorld : FrameEvent
-        {
-            public override void DoEvent(Animation animation)
-            {
-                Console.WriteLine("Hello World");
-            }
-
-            public override bool IsTriggered()
-            {
-                return isTriggered;
-            }
-
-            public override void MarkTriggered()
-            {
-                isTriggered = true;
-            }
-        }
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -92,14 +73,13 @@ namespace Illumination {
             World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
 
             Random random = new Random();
-            for (int n = 2; n <= 9; n++)
-            {
+            for (int n = 2; n <= 9; n++) {
                 Person p = World.CreatePerson(2, n);
                 p.Direction = Entity.DirectionType.South;
-                if (n == 3) p.Direction = Entity.DirectionType.North;
-                p.Profession = (Person.ProfessionType)(random.Next() % (int)Person.ProfessionType.SIZE);
-                if (p.Profession != Person.ProfessionType.Worker)
-                {
+                if (n == 3)
+                    p.Direction = Entity.DirectionType.North;
+                p.Profession = (Person.ProfessionType) (random.Next() % (int) Person.ProfessionType.SIZE);
+                if (p.Profession != Person.ProfessionType.Worker) {
                     p.Education = 3;
                 }
             }
@@ -112,7 +92,7 @@ namespace Illumination {
 
             //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
             //a2.AddTranslationFrame(new Point(p2.BoundingBox.X + Display.TileWidth, p2.BoundingBox.Y), 2);
-            
+
             /* Frame by frame manipulation demo 
             Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Point(25, 25), new Dimension(50, 50), 5.5);
             a1.SetRelativeOrigin(new Vector2(25, 25));
@@ -186,10 +166,10 @@ namespace Illumination {
             spriteBatch.GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
-            
+
             Display.DrawWorld(spriteBatch, gameTime);
             //menuButton.Draw(spriteBatch);
-            
+
             //spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);
 
             informationPanel.Draw(spriteBatch);
@@ -208,34 +188,24 @@ namespace Illumination {
                 return;
             }
 
-            World.RemoveAllHighlight();
-
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
-                World.SelectedEntities.Clear();
                 Entity entity = entities.First();
                 if (entity.Selectable) {
-                    World.SelectedEntities.Add(entity);
+                    if (!evt.IsShiftDown) {
+                        World.ClearSelection();
+                    }
 
-                    if (entity is Person) {
-                        World.SelectedEntityType = World.EntityType.Person;
-                        Person thisPerson = (Person) entity;
-                        Dictionary <Point, Person.SearchNode> range = thisPerson.ComputeMovementRange();
-                        World.AddHighlight(range.Keys);
-                    } else if (entity is Tree) {
-                        World.SelectedEntityType = World.EntityType.Tree;
-                        World.AddHighlight(gridLocation.X, gridLocation.Y);
-                    } else if (entity is Building) {
-                        World.SelectedEntityType = World.EntityType.Building;
-                        Building thisBuilding = (Building) entity;
-                        World.AddHighlight(thisBuilding.GetEffectRange());
+                    if (evt.IsShiftDown && World.SelectedEntities.Contains(entity)) {
+                        World.DeselectEntity(entity);
+                    } else {
+                        World.SelectEntity(entity);
                     }
                 } else {
-                    World.RemoveAllHighlight();
+                    World.ClearSelection();
                 }
             } else {
-                World.SelectedEntities.Clear();
-                World.RemoveAllHighlight();
+                World.ClearSelection();
             }
 
             informationPanel.UpdateDetailPanel();
@@ -248,21 +218,21 @@ namespace Illumination {
                 if (World.SelectedEntities.Count == 0) {
                     return;
                 }
-                Entity selectedEntity = World.SelectedEntities.First();
-                if (selectedEntity is Person && World.IsClear(gridLocation.X, gridLocation.Y)) {
-                    Dictionary <Point, Person.SearchNode> range = ((Person) selectedEntity).ComputeMovementRange();
-                    if (range.ContainsKey(gridLocation)) {
-                        World.MovePerson((Person) selectedEntity, gridLocation);
-                        PersonAnimation.CreateMovementAnimation((Person) selectedEntity, range[gridLocation]);
-                        World.SelectedEntities.Clear();
-                        World.RemoveAllHighlight();
+                if (World.SelectedEntities.Count == 1 && World.SelectedEntityType == World.EntityType.Person) {
+                    if (World.IsClear(gridLocation.X, gridLocation.Y)) {
+                        Person person = (Person) World.SelectedEntities.First();
+                        Dictionary <Point, Person.SearchNode> range = person.ComputeMovementRange();
+                        if (range.ContainsKey(gridLocation)) {
+                            World.MovePerson(person, gridLocation);
+                            PersonAnimation.CreateMovementAnimation(person, range[gridLocation]);
 
-                        informationPanel.UpdateDetailPanel();
+                            World.ClearSelection();
+                            informationPanel.UpdateDetailPanel();
+                        }
                     }
                 }
             }
         }
-
         #region KeyListener Members
 
         public void KeysPressed(KeyEvent evt) {

@@ -71,9 +71,53 @@ namespace Illumination.Logic {
             get { return selectedEntities; }
         }
 
+        public static void SelectEntity(Entity entity) {
+            EntityType entityType = GetEntityType(entity);
+            if (selectedEntityType != entityType) {
+                selectedEntities.Clear();
+                
+                RemoveAllHighlight();
+
+                selectedEntityType = entityType;
+            }
+            selectedEntities.Add(entity);
+
+            AddHighlight(entity.GetRange());
+        }
+
+        public static void DeselectEntity(Entity entity) {
+            selectedEntities.Remove(entity);
+            if (selectedEntities.Count == 0) {
+                selectedEntityType = EntityType.None;
+            }
+
+            RemoveAllHighlight();
+            foreach (Entity e in selectedEntities) {
+                AddHighlight(e.GetRange());
+            }
+        }
+
+        public static void ClearSelection() {
+            selectedEntities.Clear();
+            selectedEntityType = EntityType.None;
+
+            RemoveAllHighlight();
+        }
+
+        private static EntityType GetEntityType(Entity entity) {
+            if (entity is Person) {
+                return EntityType.Person;
+            } else if (entity is Building) {
+                return EntityType.Building;
+            } else if (entity is Tree) {
+                return EntityType.Tree;
+            } else {
+                return EntityType.None;
+            }
+        }
+
         public static EntityType SelectedEntityType {
             get { return selectedEntityType; }
-            set { selectedEntityType = value; }
         }
 
         public static HashSet<Entity> GetEntities(int x, int y) {
@@ -282,6 +326,14 @@ namespace Illumination.Logic {
             if (InBound(x, y)) {
                 highlightedTiles.Remove(grid[x, y]);
                 grid[x, y].Highlighted = false;
+            }
+        }
+
+        public static void RemoveHighlight(IEnumerable<Point> points) {
+            foreach (Point p in points) {
+                if (InBound(p)) {
+                    RemoveHighlight(p.X, p.Y);
+                }
             }
         }
 

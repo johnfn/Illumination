@@ -58,18 +58,19 @@ namespace Illumination.WorldObjects {
             }
         }
 
-        public virtual HashSet<Point> GetEffectRange()
-        {
+        public virtual HashSet<Point> GetEffectRange() {
             HashSet<Point> points = new HashSet<Point>();
-            for (int row = GridLocation.Top; row < GridLocation.Bottom; row++)
-            {
-                for (int col = GridLocation.Left; col < GridLocation.Right; col++)
-                {
+            for (int row = GridLocation.Top; row < GridLocation.Bottom; row++) {
+                for (int col = GridLocation.Left; col < GridLocation.Right; col++) {
                     points.Add(new Point(row, col));
                 }
             }
 
             return points;
+        }
+
+        public override IEnumerable<Point> GetRange() {
+            return GetEffectRange();
         }
     }
 }

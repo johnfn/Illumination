@@ -33,16 +33,16 @@ namespace Illumination.Logic.MouseHandler {
             get { return button; }
         }
 
-        public bool IsCtrlDown() {
-            return (modifiers & CTRL_DOWN) > 0;
+        public bool IsCtrlDown {
+            get { return (modifiers & CTRL_DOWN) > 0; }
         }
 
-        public bool IsShiftDown() {
-            return (modifiers & SHIFT_DOWN) > 0;
+        public bool IsShiftDown {
+            get { return (modifiers & SHIFT_DOWN) > 0; }
         }
 
-        public bool IsAltDown() {
-            return (modifiers & ALT_DOWN) > 0;
+        public bool IsAltDown {
+            get { return (modifiers & ALT_DOWN) > 0; }
         }
 
         public MouseEvent(Point currentLocation, int modifiers) : this(currentLocation, MouseButton.Left, modifiers) { }

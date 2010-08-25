@@ -42,16 +42,16 @@ namespace Illumination.Components.Panels {
             if (World.SelectedEntities.Count > 0) {
                 World.EntityType entityType = World.SelectedEntityType;
                 if (entityType == World.EntityType.Person) {
+                    bool activateProfessionPanel = true;
                     foreach (Entity e in World.SelectedEntities) {
-                        if (!e.Selectable) {
-                            continue;
-                        }
                         Person thisPerson = (Person) e;
-                        if (thisPerson.IsEducated && thisPerson.Profession == Person.ProfessionType.Worker) {
-                            professionPanel.Activate();
+                        if (!thisPerson.IsEducated || thisPerson.Profession != Person.ProfessionType.Worker) {
+                            activateProfessionPanel = false;
                         }
-
-                        directionPanel.Activate();
+                    }
+                    directionPanel.Activate();
+                    if (activateProfessionPanel) {
+                        professionPanel.Activate();
                     }
                 } else if (entityType == World.EntityType.Tree) {
                     foreach (Entity e in World.SelectedEntities) {
