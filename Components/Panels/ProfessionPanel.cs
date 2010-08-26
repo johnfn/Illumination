@@ -26,7 +26,7 @@ namespace Illumination.Components.Panels
 
             for (Person.ProfessionType profession = 0; profession < Person.ProfessionType.SIZE; profession++)
             {
-                Button button = new Button(Person.GetTexture(profession), new Rectangle(50 * (int)profession, 0, 50, 50), Color.White);
+                Button button = new Button(Person.GetTexture(profession), new Rectangle(80 * (int)profession, 0, 80, 50), Color.White);
                 professionButtons[(int)profession] = button;
                 AddComponent(button);
 

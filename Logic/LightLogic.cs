@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Illumination.Logic {
     public class LightLogic {
-        const int LIGHT_SPEED = 2;
+        const float LIGHT_SPEED = 0.04f;
 
         static HashSet<Light> lightSet;
 
@@ -38,8 +38,8 @@ namespace Illumination.Logic {
 
             HashSet<Light> oldLightSet = new HashSet<Light> (lightSet);
             foreach (Light light in oldLightSet) {
-                Rectangle newBoundingBox = light.BoundingBox;
-                
+                Vector2 newLocation = light.Location;
+
                 /* Tracing effect */
                 Animation trace = Display.CreateAnimation(MediaRepository.Textures["Light"], light.BoundingBox, 0.6);
                 Color startColor = Light.GetLightColor(light.Type);
@@ -52,20 +52,21 @@ namespace Illumination.Logic {
 
                 switch (light.Direction) {
                     case Entity.DirectionType.North:
-                        newBoundingBox.Y -= LIGHT_SPEED;
+                        newLocation.X -= LIGHT_SPEED;
                         break;
                     case Entity.DirectionType.East:
-                        newBoundingBox.X += LIGHT_SPEED;
+                        newLocation.Y += LIGHT_SPEED;
                         break;
                     case Entity.DirectionType.South:
-                        newBoundingBox.Y += LIGHT_SPEED;
+                        newLocation.X += LIGHT_SPEED;
                         break;
                     case Entity.DirectionType.West:
-                        newBoundingBox.X -= LIGHT_SPEED;
+                        newLocation.Y -= LIGHT_SPEED;
                         break;
                 }
 
-                light.BoundingBox = newBoundingBox;
+                light.Location = newLocation;
+                light.BoundingBox = Display.GetTextureBoundingBox(MediaRepository.Textures["Light"], newLocation, 0);
                 CollisionLogic(light);
             }
 

@@ -21,7 +21,7 @@ namespace Illumination.Components.Panels {
 
         public InformationPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) {
-            detailPanel = new Panel(new Rectangle(175, 0, 250, 175), Color.White);
+            detailPanel = new Panel(new Rectangle(200, 0, 400, 175), Color.White);
             directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200), World.ChangeDirection);
             professionPanel = new ProfessionPanel(new Rectangle(0, 60, 250, 50));
 

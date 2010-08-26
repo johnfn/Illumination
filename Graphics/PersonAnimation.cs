@@ -29,7 +29,8 @@ namespace Illumination.Graphics {
                 double time = 0;
                 animation.AddColorFrame(new Color(255, 255, 255, 100), 0.01);
                 for (; startNode != null; time += MOVEMENT_INTERVAL, startNode = startNode.nextNode) {
-                    animation.AddTranslationFrame(Display.GridLocationToViewport(startNode.point), time);
+                    Rectangle newLocation = Display.GetTextureBoundingBox(person.PersonTexture, startNode.point, 0);
+                    animation.AddTranslationFrame(new Point(newLocation.X, newLocation.Y), time);
                 }
                 animation.AddEventFrame(this, time - MOVEMENT_INTERVAL);
             }

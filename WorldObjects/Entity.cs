@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Illumination.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
@@ -48,17 +49,17 @@ namespace Illumination.WorldObjects {
 
         public Entity() { /* Default constructor */ }
 
-        public Entity(int x, int y, int width, int height) {
-            Initialize(x, y, width, height);
+        public Entity(int x, int y, int width, int height, Texture2D texture) {
+            Initialize(x, y, width, height, texture);
         }
 
-        public virtual void Initialize(int x, int y, int width, int height) {
+        public virtual void Initialize(int x, int y, int width, int height, Texture2D texture) {
             gridLocation.X = x;
             gridLocation.Y = y;
             gridLocation.Width = width;
             gridLocation.Height = height;
 
-            base.BoundingBox = Display.GridLocationToViewport(gridLocation);
+            base.BoundingBox = Display.GetTextureBoundingBox(texture, gridLocation, 0);
         }
 
         public virtual IEnumerable<Point> GetRange() {

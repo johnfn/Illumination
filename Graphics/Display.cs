@@ -41,7 +41,7 @@ namespace Illumination.Graphics
 
         public static void InitializeDisplay(int numRows, int numCols, Rectangle displayWindow) 
         {
-            tileSize = new Dimension(displayWindow.Width / numCols, displayWindow.Height / numRows);
+            tileSize = new Dimension(displayWindow.Width / (numCols + numRows) * 2, displayWindow.Height / (numCols + numRows) * 2);
             gridViewportSize = new Dimension(displayWindow.Width, displayWindow.Height);
             gridOrigin = new Point(displayWindow.X, displayWindow.Y);
         }
@@ -60,7 +60,7 @@ namespace Illumination.Graphics
 
             if (World.SelectedEntities.Count > 0) {
                 foreach (Entity e in World.SelectedEntities) {
-                    spriteBatch.Draw(MediaRepository.Textures["TileBorder"], e.BoundingBox, Color.White);
+                    spriteBatch.Draw(MediaRepository.Textures["TileBorder"], Display.GridLocationToViewport(e.GridLocation), Color.White);
                 }
             }
 
@@ -109,19 +109,20 @@ namespace Illumination.Graphics
         }
 
         public static Point ViewportToGridLocation(Point p) {
-            return new Point((p.Y - gridOrigin.Y) / tileSize.Height, (p.X - gridOrigin.X) / tileSize.Width);
-        }
-
-        public static Rectangle ViewportToGridLocation(Rectangle viewport) {
-            Point anchorPoint = ViewportToGridLocation(new Point(viewport.X, viewport.Y));
-            int gridWidth = (int) Math.Ceiling((double) viewport.Width / tileSize.Width);
-            int gridHeight = (int) Math.Ceiling((double) viewport.Height / tileSize.Height);
-
-            return new Rectangle(anchorPoint.X, anchorPoint.Y, gridWidth, gridHeight);
+            p = Geometry.Difference(p, gridOrigin);
+            float shift = (World.Grid.GetLength(1) - 1) / 2;
+            
+            return new Point((int)Math.Floor(p.Y / (double)tileSize.Height - p.X / (double)tileSize.Width + shift + 1),
+                (int)Math.Floor(p.Y / (double)tileSize.Height + p.X / (double)tileSize.Width - shift - 1));
         }
 
         public static Point GridLocationToViewport(Point p) {
-            return new Point(gridOrigin.X + p.Y * tileSize.Height, gridOrigin.Y + p.X * tileSize.Width);
+            return GridLocationToViewport(new Vector2(p.X, p.Y));
+        }
+
+        public static Point GridLocationToViewport(Vector2 v) {
+            return new Point((int)((World.Grid.GetLength(1) + v.Y - v.X - 1) * tileSize.Width / 2) + gridOrigin.X, 
+                (int)((v.X + v.Y) * tileSize.Height / 2) + gridOrigin.Y);
         }
 
         public static Point GridCenterToViewport(Point p) {
@@ -135,10 +136,31 @@ namespace Illumination.Graphics
 
         public static Rectangle GridLocationToViewport(Rectangle gridLocation) {
             Point anchorPoint = GridLocationToViewport(new Point(gridLocation.X, gridLocation.Y));
-            int gridWidth = gridLocation.Width * tileSize.Width;
-            int gridHeight = gridLocation.Height * tileSize.Height;
+            anchorPoint.X -= (gridLocation.Width - 1) * tileSize.Width / 2;
+            int gridWidth = (gridLocation.Width + gridLocation.Height) * tileSize.Width / 2;
+            int gridHeight = (gridLocation.Width + gridLocation.Height) * tileSize.Height / 2;
 
             return new Rectangle(anchorPoint.X, anchorPoint.Y, gridWidth, gridHeight);
+        }
+
+        public static Rectangle GetTextureBoundingBox(Texture2D texture, Rectangle gridLocation, int elevation)
+        {
+            Rectangle boundingBox = GridLocationToViewport(gridLocation);
+            int newHeight = (int)(texture.Height * boundingBox.Width / (double)texture.Width);
+            return new Rectangle(boundingBox.X, boundingBox.Y - newHeight + boundingBox.Height - elevation, boundingBox.Width, newHeight);
+        }
+
+        public static Rectangle GetTextureBoundingBox(Texture2D texture, Point gridLocation, int elevation)
+        {
+            return GetTextureBoundingBox(texture, new Rectangle(gridLocation.X, gridLocation.Y, 1, 1), elevation);
+        }
+
+        public static Rectangle GetTextureBoundingBox(Texture2D texture, Vector2 gridLocation, int elevation)
+        {
+            Rectangle boundingBox = GetTextureBoundingBox(texture, new Rectangle((int)Math.Floor(gridLocation.X), (int)Math.Floor(gridLocation.Y), 1, 1), elevation);
+            Point anchorPoint = GridLocationToViewport(gridLocation);
+            Point difference = Geometry.Difference(anchorPoint, new Point(boundingBox.X, boundingBox.Y));
+            return Geometry.Translate(boundingBox, difference.X, difference.Y);
         }
     }
 }

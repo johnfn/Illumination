@@ -15,10 +15,18 @@ namespace Illumination.WorldObjects {
             SIZE
         }
 
-        private Point lastCollisionLocation;
-
+        
         static Dictionary<char, LightType> shortNames;
         static Dictionary<LightType, Color> colorTable;
+        
+        Point lastCollisionLocation;
+        Vector2 location;
+        public Vector2 Location
+        {
+            get { return location; }
+            set { location = value; }
+        }
+
         
         static Light () {
             colorTable = new Dictionary<LightType, Color>();
@@ -69,10 +77,11 @@ namespace Illumination.WorldObjects {
             set { type = value; }
         }
 
-        public Light(int x, int y) : base(x, y, 1, 1) {
+        public Light(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["Light"]) {
             type = LightType.White;
 
             lastCollisionLocation = new Point(x, y);
+            location = new Vector2(x, y);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {

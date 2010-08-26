@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Illumination.Logic;
 using Illumination.Graphics;
 using Illumination.Graphics.AnimationHandler;
+using Illumination.Utility;
 
 namespace Illumination.WorldObjects {
     public class Person : Entity {
@@ -113,7 +114,7 @@ namespace Illumination.WorldObjects {
 
         #endregion
 
-        public Person(int x, int y) : base(x, y, 1, 1) {
+        public Person(int x, int y) : base(x, y, 1, 1, texturesMap[ProfessionType.Worker]) {
             age = 0;
             education = 0;
             gender = GenderType.Male;
@@ -127,27 +128,30 @@ namespace Illumination.WorldObjects {
 
         public void Move(int newX, int newY) {
             GridLocation = new Rectangle(newX, newY, 1, 1);
-            BoundingBox = Graphics.Display.GridLocationToViewport(GridLocation);
+            BoundingBox = Display.GetTextureBoundingBox(texturesMap[ProfessionType.Worker], GridLocation, 0);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(PersonTexture, base.BoundingBox, Color.White);
 
+            Rectangle arrowBox = Display.GridLocationToViewport(GridLocation);
+            Color arrowColor = new Color(255, 255, 255, 200);
             switch (direction)
             {
                 case DirectionType.North:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_N"], BoundingBox, Color.White);
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_N"], arrowBox, arrowColor);
                     break;
                 case DirectionType.East:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_E"], BoundingBox, Color.White);
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_E"], arrowBox, arrowColor);
                     break;
                 case DirectionType.South:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_S"], BoundingBox, Color.White);
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_S"], arrowBox, arrowColor);
                     break;
                 case DirectionType.West:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], BoundingBox, Color.White);
+                    spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], arrowBox, arrowColor);
                     break;
             }
+
+            spriteBatch.Draw(PersonTexture, base.BoundingBox, Color.White);
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {
@@ -162,8 +166,8 @@ namespace Illumination.WorldObjects {
             {
                 education += increment;
             }
-
-            Animation educateEffect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], BoundingBox, 2, 0.1);
+            Rectangle boundingBox = Display.GridLocationToViewport(GridLocation);
+            Animation educateEffect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], boundingBox, 2, 0.1);
             educateEffect.AddColorFrame(Color.TransparentWhite, 0);
             educateEffect.AddColorFrame(Color.Yellow, 0.5);
             educateEffect.AddColorFrame(Color.TransparentWhite, 2);

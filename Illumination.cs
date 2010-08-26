@@ -37,7 +37,7 @@ namespace Illumination {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            this.graphics.PreferredBackBufferWidth = 600;
+            this.graphics.PreferredBackBufferWidth = 800;
             this.graphics.PreferredBackBufferHeight = 700;
 
             this.IsMouseVisible = true;
@@ -50,7 +50,7 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-            Display.InitializeDisplay(10, 10, new Rectangle(50, 25, 500, 500));
+            Display.InitializeDisplay(10, 10, new Rectangle(0, 125, 800, 400));
             World.InitalizeWorld(10, 10);
 
             base.Initialize();
@@ -61,8 +61,8 @@ namespace Illumination {
             MouseController.AddMouseListener(this);
             KeyController.AddKeyListener(this);
 
-            informationPanel = new InformationPanel(new Rectangle(0, 525, 600, 175));
-            menuBar = new MenuBar(new Rectangle(0, 0, 600, 25));
+            informationPanel = new InformationPanel(new Rectangle(0, 525, 800, 175));
+            menuBar = new MenuBar(new Rectangle(0, 0, 800, 25));
 
 
             World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
@@ -168,9 +168,6 @@ namespace Illumination {
             spriteBatch.Begin();
 
             Display.DrawWorld(spriteBatch, gameTime);
-            //menuButton.Draw(spriteBatch);
-
-            //spriteBatch.DrawString(MediaRepository.Fonts["DefaultFont"], "Press 'D' for Day ... Press 'N' for Night", new Vector2(100, 510), Color.White);
 
             informationPanel.Draw(spriteBatch);
             menuBar.Draw(spriteBatch);
@@ -184,6 +181,7 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            Console.WriteLine(gridLocation.ToString());
             if (!World.InBound(gridLocation)) {
                 return;
             }

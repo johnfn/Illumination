@@ -13,8 +13,8 @@ namespace Illumination.WorldObjects {
 
         public Building() : base() { /* Default constructor */ }
 
-        public Building(int x, int y, int width, int height) {
-            Initialize(x, y, width, height);
+        public Building(int x, int y, int width, int height, Texture2D texture) {
+            Initialize(x, y, width, height, texture);
         }
 
         public int Width {
@@ -29,8 +29,8 @@ namespace Illumination.WorldObjects {
 
         protected abstract Dictionary<LightSequence, DoEffect> GetEffects();
 
-        public override void Initialize(int x, int y, int width, int height) {
-            base.Initialize(x, y, width, height);
+        public override void Initialize(int x, int y, int width, int height, Texture2D texture) {
+            base.Initialize(x, y, width, height, texture);
 
             lightBeams = new LightSequence();
             triggeredSequences = new HashSet<LightSequence>();

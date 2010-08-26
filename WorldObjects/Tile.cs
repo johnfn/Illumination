@@ -69,7 +69,7 @@ namespace Illumination.WorldObjects {
                     break;
             }
             if (highlighted) {
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], BoundingBox, new Color(0, 255, 0, 150));
+                spriteBatch.Draw(MediaRepository.Textures["BlankTile"], BoundingBox, new Color(0, 255, 0, 150));
             }
 
             foreach (Entity entity in entities) {

@@ -32,11 +32,11 @@ namespace Illumination.WorldObjects {
         }
 
         public override void Initialize(int x, int y) {
-            base.Initialize(x, y, WIDTH, HEIGHT);
+            base.Initialize(x, y, WIDTH, HEIGHT, MediaRepository.Textures["School"]);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(MediaRepository.Textures["School"], base.BoundingBox, Color.White);
+            spriteBatch.Draw(MediaRepository.Textures["School"], BoundingBox, Color.White);
         }
 
         protected override Dictionary<LightSequence, Building.DoEffect> GetEffects() {
@@ -65,11 +65,9 @@ namespace Illumination.WorldObjects {
         
         public static void StandardEffect(Building building)
         {
-            Animation effect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], Geometry.Translate(building.BoundingBox,
-                building.BoundingBox.Width / 2, building.BoundingBox.Height / 2), 2, 0.1);
-            effect.SetRelativeOrigin(new Vector2(32, 32));
-            effect.AddExtensionFrame(new Dimension((building.BoundingBox.Width / 2) * (building.GridLocation.Height + EFFECT_RANGE * 2), 
-                (building.BoundingBox.Height / 2) * (building.GridLocation.Width + EFFECT_RANGE * 2)), 0);
+            Rectangle boundingBox = new Rectangle(building.GridLocation.Left - EFFECT_RANGE + 1, building.GridLocation.Top - EFFECT_RANGE + 1,
+                building.GridLocation.Width + EFFECT_RANGE * 2 - 2, building.GridLocation.Height + EFFECT_RANGE * 2 - 2);
+            Animation effect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], Display.GridLocationToViewport(boundingBox), 2, 0.1);
             effect.AddColorFrame(Color.TransparentWhite, 0);
             effect.AddColorFrame(Color.Yellow, 0.5);
             effect.AddColorFrame(Color.TransparentWhite, 2);

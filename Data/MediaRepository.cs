@@ -22,41 +22,41 @@ namespace Illumination.Data {
             Fonts = new Dictionary<string, SpriteFont>();
             Sheets = new Dictionary<string, SpriteSheet>();
 
-            Textures.Add("Blank", gameInstance.Content.Load<Texture2D>("whitetile"));
+            Textures.Add("Blank", gameInstance.Content.Load<Texture2D>("Blank"));
 
-            Textures.Add("GrassTile", gameInstance.Content.Load<Texture2D>("grasstile"));
-            Textures.Add("WaterTile", gameInstance.Content.Load<Texture2D>("watertile"));
+            Textures.Add("BlankTile", gameInstance.Content.Load<Texture2D>("BlankTile"));
+            Textures.Add("GrassTile", gameInstance.Content.Load<Texture2D>("GrassTile"));
+            Textures.Add("WaterTile", gameInstance.Content.Load<Texture2D>("WaterTile"));
 
-            Textures.Add("TileBorder", gameInstance.Content.Load<Texture2D>("border"));
+            Textures.Add("TileBorder", gameInstance.Content.Load<Texture2D>("BorderTile"));
 
-            Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("worker"));
-            Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("educator"));
-            Textures.Add("Scientist", gameInstance.Content.Load<Texture2D>("developer"));
-            Textures.Add("Doctor", gameInstance.Content.Load<Texture2D>("doctor"));
-            Textures.Add("Environmentalist", gameInstance.Content.Load<Texture2D>("environmentalist"));
+            Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("WorkerTile"));
+            Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("EducatorTile"));
+            Textures.Add("Scientist", gameInstance.Content.Load<Texture2D>("DeveloperTile"));
+            Textures.Add("Doctor", gameInstance.Content.Load<Texture2D>("DoctorTile"));
+            Textures.Add("Environmentalist", gameInstance.Content.Load<Texture2D>("EnvironmentalistTile"));
 
-            Textures.Add("Light", gameInstance.Content.Load<Texture2D>("whitelight"));
+            Textures.Add("Light", gameInstance.Content.Load<Texture2D>("Light"));
 
-            Textures.Add("Mirror_NE", gameInstance.Content.Load<Texture2D>("mirror_NE"));
-            Textures.Add("Mirror_NW", gameInstance.Content.Load<Texture2D>("mirror_NW"));
-            Textures.Add("Mirror_SE", gameInstance.Content.Load<Texture2D>("mirror_SE"));
-            Textures.Add("Mirror_SW", gameInstance.Content.Load<Texture2D>("mirror_SW"));
+            Textures.Add("Mirror_NE", gameInstance.Content.Load<Texture2D>("MirrorTile_NE"));
+            Textures.Add("Mirror_NW", gameInstance.Content.Load<Texture2D>("MirrorTile_NW"));
+            Textures.Add("Mirror_SE", gameInstance.Content.Load<Texture2D>("MirrorTile_SE"));
+            Textures.Add("Mirror_SW", gameInstance.Content.Load<Texture2D>("MirrorTile_SW"));
 
-            Textures.Add("Arrow_N", gameInstance.Content.Load<Texture2D>("arrow_N"));
-            Textures.Add("Arrow_E", gameInstance.Content.Load<Texture2D>("arrow_E"));
-            Textures.Add("Arrow_S", gameInstance.Content.Load<Texture2D>("arrow_S"));
-            Textures.Add("Arrow_W", gameInstance.Content.Load<Texture2D>("arrow_W"));
+            Textures.Add("Arrow_N", gameInstance.Content.Load<Texture2D>("ArrowTile_N"));
+            Textures.Add("Arrow_E", gameInstance.Content.Load<Texture2D>("ArrowTile_E"));
+            Textures.Add("Arrow_S", gameInstance.Content.Load<Texture2D>("ArrowTile_S"));
+            Textures.Add("Arrow_W", gameInstance.Content.Load<Texture2D>("ArrowTile_W"));
 
             Textures.Add("Notice", gameInstance.Content.Load<Texture2D>("notice"));
 
-            Textures.Add("TreeOfLight", gameInstance.Content.Load<Texture2D>("treeoflight"));
+            Textures.Add("TreeOfLight", gameInstance.Content.Load<Texture2D>("TreeOfLight"));
 
-            Textures.Add("School", gameInstance.Content.Load<Texture2D>("school"));
+            Textures.Add("School", gameInstance.Content.Load<Texture2D>("School"));
 
             Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
 
             Sheets.Add("Glow", gameInstance.Content.Load<SpriteSheet>("Glow"));
-
 
             loaded = true;
         }
