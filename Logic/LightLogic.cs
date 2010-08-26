@@ -101,6 +101,10 @@ namespace Illumination.Logic {
 
                         light.LastCollisionLocation = gridLocation;
                     }
+                    else if ((light.Type == Light.LightType.Yellow) && 
+                        (thisPerson.Profession == Person.ProfessionType.Worker) && !thisPerson.IsEducated) {
+                        thisPerson.Educate(1);
+                    }
                 } else if (entity is Building) {
                     Building building = (Building) entity;
                     building.Illuminate(light.Type);
