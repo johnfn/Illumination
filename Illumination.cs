@@ -163,7 +163,7 @@ namespace Illumination {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
-            spriteBatch.GraphicsDevice.Clear(Color.White);
+            spriteBatch.GraphicsDevice.Clear(World.IsNight ? Color.SlateBlue : Color.SkyBlue);
 
             spriteBatch.Begin();
 

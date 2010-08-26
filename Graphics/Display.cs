@@ -66,9 +66,10 @@ namespace Illumination.Graphics
 
             animationController.Draw(spriteBatch, gameTime);
 
-            if (World.IsNight) {
+            if (World.IsNight)
+            {
                 /* Transparent Black Mask */
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
+                spriteBatch.Draw(MediaRepository.Textures["BlankTile"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
             }
 
             foreach (Light light in World.LightSet) {
