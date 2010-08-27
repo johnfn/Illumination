@@ -26,6 +26,7 @@ namespace Illumination.Graphics
         static AnimationController animationController = new AnimationController();
 
         static Point gridOrigin;
+        static Point viewportShift;
         static Dimension tileSize;
         static Dimension gridViewportSize;
 
@@ -39,14 +40,30 @@ namespace Illumination.Graphics
             get { return gridViewportSize; }
         }
 
+        public static Point ViewportShift {
+            get { return viewportShift; }
+            set { viewportShift = value; }
+        }
+
+        public static void TranslateViewport(int x, int y) {
+            viewportShift.X += x;
+            viewportShift.Y += y;
+        }
+
+        public static bool InGridDisplay(Point p) {
+            return p.X >= gridOrigin.X && p.X <= gridOrigin.X + gridViewportSize.Width &&
+                   p.Y >= gridOrigin.Y && p.Y <= gridOrigin.Y + gridViewportSize.Height;
+        }
+
         public static void InitializeDisplay(int numRows, int numCols, Rectangle displayWindow) 
         {
             tileSize = new Dimension(displayWindow.Width / (numCols + numRows) * 2, displayWindow.Height / (numCols + numRows) * 2);
             gridViewportSize = new Dimension(displayWindow.Width, displayWindow.Height);
             gridOrigin = new Point(displayWindow.X, displayWindow.Y);
+            viewportShift = new Point(200, 30);
         }
 
-        public static void DrawWorld(SpriteBatch spriteBatch, GameTime gameTime) 
+        public static void DrawWorld(SpriteBatchRelative spriteBatch, GameTime gameTime) 
         {
             foreach (Tile tile in World.Grid) {
                 tile.Draw(spriteBatch);
@@ -69,7 +86,7 @@ namespace Illumination.Graphics
             if (World.IsNight)
             {
                 /* Transparent Black Mask */
-                spriteBatch.Draw(MediaRepository.Textures["BlankTile"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
+                //spriteBatch.Draw(MediaRepository.Textures["BlankTile"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
             }
 
             foreach (Light light in World.LightSet) {
@@ -115,6 +132,10 @@ namespace Illumination.Graphics
             
             return new Point((int)Math.Floor(p.Y / (double)tileSize.Height - p.X / (double)tileSize.Width + shift + 1),
                 (int)Math.Floor(p.Y / (double)tileSize.Height + p.X / (double)tileSize.Width - shift - 1));
+        }
+
+        public static Point RelativeViewportToGridLocation(Point p) {
+            return ViewportToGridLocation(Geometry.Translate(p, viewportShift.X, viewportShift.Y));
         }
 
         public static Point GridLocationToViewport(Point p) {

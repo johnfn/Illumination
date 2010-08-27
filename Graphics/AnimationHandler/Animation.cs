@@ -147,7 +147,7 @@ namespace Illumination.Graphics.AnimationHandler
             eventSequence.AddFrame(eventFrame, targetTime, EaseType.None);
         }
 
-        public bool Update(SpriteBatch spriteBatch, GameTime gameTime)
+        public bool Update(SpriteBatchRelative spriteBatch, GameTime gameTime)
         {
             if (stopped) {
                 return false;

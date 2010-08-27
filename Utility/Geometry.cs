@@ -40,6 +40,10 @@ namespace Illumination.Utility {
             return new Rectangle(r.X + x, r.Y + y, r.Width, r.Height);
         }
 
+        public static Point Translate(Point p, int x, int y) {
+            return new Point(p.X + x, p.Y + y);
+        }
+
         public static Rectangle ConstructRectangle(Point p, Dimension d)
         {
             return new Rectangle(p.X, p.Y, d.Width, d.Height);

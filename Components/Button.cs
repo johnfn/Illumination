@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Illumination.Logic.ActionHandler;
 using Illumination.Data;
 using Illumination.Utility;
+using Illumination.Graphics;
 
 namespace Illumination.Components {
     public class Button : Component, MouseListener {

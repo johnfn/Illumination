@@ -35,7 +35,7 @@ namespace Illumination.WorldObjects {
             base.Initialize(x, y, WIDTH, HEIGHT, MediaRepository.Textures["School"]);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatchRelative spriteBatch) {
             spriteBatch.Draw(MediaRepository.Textures["School"], BoundingBox, Color.White);
         }
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Illumination.Utility;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects
 {
@@ -13,6 +15,6 @@ namespace Illumination.WorldObjects
             set { boundingBox = value; }
         }
 
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public abstract void Draw(SpriteBatchRelative spriteBatch);
     }
 }

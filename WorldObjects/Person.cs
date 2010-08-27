@@ -131,7 +131,7 @@ namespace Illumination.WorldObjects {
             BoundingBox = Display.GetTextureBoundingBox(texturesMap[ProfessionType.Worker], GridLocation, 0);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatchRelative spriteBatch) {
 
             Rectangle arrowBox = Display.GridLocationToViewport(GridLocation);
             Color arrowColor = new Color(255, 255, 255, 200);
@@ -151,7 +151,7 @@ namespace Illumination.WorldObjects {
                     break;
             }
 
-            spriteBatch.Draw(PersonTexture, base.BoundingBox, Color.White);
+            spriteBatch.Draw(PersonTexture, BoundingBox, Color.White);
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {

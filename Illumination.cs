@@ -21,6 +21,7 @@ using Illumination.Logic.KeyHandler;
 using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
 using Illumination.Components.Panels;
+using Illumination.Utility;
 
 namespace Illumination {
     /// <summary>
@@ -28,7 +29,7 @@ namespace Illumination {
     /// </summary>
     public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, KeyListener {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        SpriteBatchRelative spriteBatch;
 
         InformationPanel informationPanel;
         MenuBar menuBar;
@@ -37,7 +38,7 @@ namespace Illumination {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            this.graphics.PreferredBackBufferWidth = 800;
+            this.graphics.PreferredBackBufferWidth = 1000;
             this.graphics.PreferredBackBufferHeight = 700;
 
             this.IsMouseVisible = true;
@@ -50,7 +51,7 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
-            Display.InitializeDisplay(10, 10, new Rectangle(0, 125, 800, 400));
+            Display.InitializeDisplay(10, 10, new Rectangle(0, 25, 1000, 500));
             World.InitalizeWorld(10, 10);
 
             base.Initialize();
@@ -61,15 +62,14 @@ namespace Illumination {
             MouseController.AddMouseListener(this);
             KeyController.AddKeyListener(this);
 
-            informationPanel = new InformationPanel(new Rectangle(0, 525, 800, 175));
-            menuBar = new MenuBar(new Rectangle(0, 0, 800, 25));
-
+            informationPanel = new InformationPanel(new Rectangle(0, 525, 1000, 175));
+            menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
             World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
-            Tree t1 = World.CreateTree(2, 1);
-            t1.Direction = Entity.DirectionType.East;
-            Tree t2 = World.CreateTree(9, 9);
-            t2.Direction = Entity.DirectionType.North;
+            //Tree t1 = World.CreateTree(2, 1);
+            //t1.Direction = Entity.DirectionType.East;
+            //Tree t2 = World.CreateTree(9, 9);
+            //t2.Direction = Entity.DirectionType.North;
             World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
 
             Random random = new Random();
@@ -131,7 +131,7 @@ namespace Illumination {
         /// </summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatchRelative(GraphicsDevice);
 
             MediaRepository.LoadAll(this);
         }
@@ -152,6 +152,20 @@ namespace Illumination {
         protected override void Update(GameTime gameTime) {
             MouseController.Update();
             KeyController.Update();
+
+            if (Display.InGridDisplay(new Point(MouseController.CurrentState.X, MouseController.CurrentState.Y))) {
+                if (MouseController.CurrentState.X > 0.95 * 1000) {
+                    Display.TranslateViewport(3, 0);
+                } else if (MouseController.CurrentState.X < 0.05 * 1000) {
+                    Display.TranslateViewport(-3, 0);
+                }
+
+                if (MouseController.CurrentState.Y > 0.95 * 500) {
+                    Display.TranslateViewport(0, 3);
+                } else if (MouseController.CurrentState.Y - 25 < 0.05 * 500) {
+                    Display.TranslateViewport(0, -3);
+                }
+            }
 
             World.NextTimestep(gameTime);
 
@@ -180,10 +194,11 @@ namespace Illumination {
         public void ActionPerformed(ActionEvent evt) { }
 
         public void MouseClicked(MouseEvent evt) {
-            Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
-            Console.WriteLine(gridLocation.ToString());
-            if (!World.InBound(gridLocation)) {
-                return;
+            Point gridLocation;
+            if (Display.InGridDisplay(evt.CurrentLocation)) {
+                gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
+            } else {
+                gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
             }
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
@@ -211,8 +226,14 @@ namespace Illumination {
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
 
         public void MouseReleased(MouseEvent evt) {
+            Point gridLocation;
+            if (Display.InGridDisplay(evt.CurrentLocation)) {
+                gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
+            } else {
+                gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            }
+
             if (evt.Button == MouseEvent.MouseButton.Right) {
-                Point gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
                 if (World.SelectedEntities.Count == 0) {
                     return;
                 }

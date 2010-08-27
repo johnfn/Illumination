@@ -59,7 +59,7 @@ namespace Illumination.WorldObjects {
 
         #region Public Methods
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatchRelative spriteBatch) {
             switch (type) {
                 case TileType.Grass:
                     spriteBatch.Draw(MediaRepository.Textures["GrassTile"], BoundingBox, Color.White);

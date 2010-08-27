@@ -15,7 +15,7 @@ namespace Illumination.Graphics.AnimationHandler
             animations = new HashSet<Animation>();
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void Draw(SpriteBatchRelative spriteBatch, GameTime gameTime)
         {
             HashSet<Animation> oldAnimations = new HashSet<Animation>(animations);
             foreach (Animation animation in oldAnimations)

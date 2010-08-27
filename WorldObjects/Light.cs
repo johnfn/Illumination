@@ -2,6 +2,7 @@
 using Illumination.Data;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public class Light : Entity {
@@ -84,7 +85,7 @@ namespace Illumination.WorldObjects {
             location = new Vector2(x, y);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatchRelative spriteBatch) {
             spriteBatch.Draw(MediaRepository.Textures["Light"], BoundingBox, colorTable[type]);
         }
     }

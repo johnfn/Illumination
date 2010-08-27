@@ -22,8 +22,8 @@ namespace Illumination.WorldObjects
         public Tree(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["TreeOfLight"]) {
             direction = DirectionType.South;
         }
-        
-        public override void Draw(SpriteBatch spriteBatch)
+
+        public override void Draw(SpriteBatchRelative spriteBatch)
         {
             Rectangle arrowBox = Display.GridLocationToViewport(GridLocation);
             Color arrowColor = new Color(255, 255, 255, 200);

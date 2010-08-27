@@ -20,6 +20,10 @@ namespace Illumination.Logic.MouseHandler {
         private static HashSet<MouseListener> mouseListeners;
         private static HashSet<MouseMotionListener> mouseMotionListeners;
 
+        public static MouseState CurrentState {
+            get { return currentState; }
+        }
+
         public static void Initialize() {
             previousState = currentState = Mouse.GetState();
 
