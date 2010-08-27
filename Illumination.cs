@@ -66,10 +66,10 @@ namespace Illumination {
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
             World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
-            //Tree t1 = World.CreateTree(2, 1);
-            //t1.Direction = Entity.DirectionType.East;
-            //Tree t2 = World.CreateTree(9, 9);
-            //t2.Direction = Entity.DirectionType.North;
+            Tree t1 = World.CreateTree(2, 1);
+            t1.Direction = Entity.DirectionType.East;
+            Tree t2 = World.CreateTree(9, 9);
+            t2.Direction = Entity.DirectionType.North;
             World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
 
             Random random = new Random();
@@ -194,12 +194,10 @@ namespace Illumination {
         public void ActionPerformed(ActionEvent evt) { }
 
         public void MouseClicked(MouseEvent evt) {
-            Point gridLocation;
-            if (Display.InGridDisplay(evt.CurrentLocation)) {
-                gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
-            } else {
-                gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            if (!Display.InGridDisplay(evt.CurrentLocation)) {
+                return;
             }
+            Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
@@ -226,12 +224,10 @@ namespace Illumination {
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
 
         public void MouseReleased(MouseEvent evt) {
-            Point gridLocation;
-            if (Display.InGridDisplay(evt.CurrentLocation)) {
-                gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
-            } else {
-                gridLocation = Display.ViewportToGridLocation(evt.CurrentLocation);
+            if (!Display.InGridDisplay(evt.CurrentLocation)) {
+                return;
             }
+            Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
 
             if (evt.Button == MouseEvent.MouseButton.Right) {
                 if (World.SelectedEntities.Count == 0) {
