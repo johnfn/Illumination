@@ -29,6 +29,11 @@ namespace Illumination.Graphics
         static Point viewportShift;
         static Dimension tileSize;
         static Dimension gridViewportSize;
+        static Rectangle displayWindow;
+
+        public static Rectangle DisplayWindow {
+            get { return displayWindow; }
+        }
 
         public static Dimension TileSize 
         {
@@ -55,8 +60,14 @@ namespace Illumination.Graphics
                    p.Y >= gridOrigin.Y && p.Y <= gridOrigin.Y + gridViewportSize.Height;
         }
 
+        public static bool InGameWindow(Point p) {
+            return displayWindow.Contains(p);
+        }
+
         public static void InitializeDisplay(int numRows, int numCols, Rectangle displayWindow) 
         {
+            Display.displayWindow = displayWindow;
+
             tileSize = new Dimension(displayWindow.Width / (numCols + numRows) * 2, displayWindow.Height / (numCols + numRows) * 2);
             gridViewportSize = new Dimension(displayWindow.Width, displayWindow.Height);
             gridOrigin = new Point(displayWindow.X, displayWindow.Y);

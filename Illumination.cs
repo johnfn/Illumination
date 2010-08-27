@@ -34,6 +34,8 @@ namespace Illumination {
         InformationPanel informationPanel;
         MenuBar menuBar;
 
+        Rectangle gameWindow;
+
         public Illumination() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -51,6 +53,9 @@ namespace Illumination {
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize() {
+            gameWindow = new Rectangle(0, 0, this.graphics.GraphicsDevice.Viewport.Width,
+                    this.graphics.GraphicsDevice.Viewport.Height);
+
             Display.InitializeDisplay(10, 10, new Rectangle(0, 25, 1000, 500));
             World.InitalizeWorld(10, 10);
 
@@ -153,16 +158,16 @@ namespace Illumination {
             MouseController.Update();
             KeyController.Update();
 
-            if (Display.InGridDisplay(new Point(MouseController.CurrentState.X, MouseController.CurrentState.Y))) {
-                if (MouseController.CurrentState.X > 0.95 * 1000) {
+            if (gameWindow.Contains(new Point(MouseController.CurrentState.X, MouseController.CurrentState.Y))) {
+                if (MouseController.CurrentState.X > 0.95 * gameWindow.Width) {
                     Display.TranslateViewport(3, 0);
-                } else if (MouseController.CurrentState.X < 0.05 * 1000) {
+                } else if (MouseController.CurrentState.X < 0.05 * gameWindow.Width) {
                     Display.TranslateViewport(-3, 0);
                 }
 
-                if (MouseController.CurrentState.Y > 0.95 * 500) {
+                if (MouseController.CurrentState.Y > 0.95 * gameWindow.Height) {
                     Display.TranslateViewport(0, 3);
-                } else if (MouseController.CurrentState.Y - 25 < 0.05 * 500) {
+                } else if (MouseController.CurrentState.Y < 0.05 * gameWindow.Height) {
                     Display.TranslateViewport(0, -3);
                 }
             }
