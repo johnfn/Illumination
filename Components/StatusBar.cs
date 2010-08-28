@@ -11,7 +11,7 @@ namespace Illumination.Components
     public class StatusBar : Component
     {
         double fraction = 0;
-        Color color;
+        Color frontColor;
 
         public double Fraction
         {
@@ -21,7 +21,7 @@ namespace Illumination.Components
 
         public StatusBar(Rectangle boundingBox, Color frontColor, Color backColor) : base(MediaRepository.Textures["Blank"], boundingBox, backColor)
         {
-            this.color = frontColor;
+            this.frontColor = frontColor;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -31,7 +31,7 @@ namespace Illumination.Components
             Rectangle frontBarBoundingBox = BoundingBox;
             frontBarBoundingBox.Width = (int)(frontBarBoundingBox.Width * fraction);
 
-            spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, color);
+            spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
         }
         
     }

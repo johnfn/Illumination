@@ -9,11 +9,11 @@ using Illumination.Graphics;
 
 namespace Illumination.Components {
     public abstract class Component {
-        Point origin;
-        Rectangle boundingBox;
-        Texture2D background;
-        Color color;
-        bool isActive = true;
+        protected Point origin;
+        protected Rectangle boundingBox;
+        protected Texture2D background;
+        protected Color color;
+        protected bool isActive = true;
 
         public Point Origin {
             get { return origin; }

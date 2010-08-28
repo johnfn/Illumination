@@ -10,9 +10,10 @@ using Illumination.Data;
 using Illumination.Logic.MouseHandler;
 
 namespace Illumination.Components.Panels {
-    public class Panel : Component {
+    public class Panel : Component, MouseListener {
         protected HashSet <Component> components;
         protected Point relativePosition;
+        protected bool consumesMouseEvent = true;
 
         public Panel(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.White) { }
 
@@ -22,6 +23,13 @@ namespace Illumination.Components.Panels {
             components = new HashSet<Component>();
             relativePosition = new Point(boundingBox.X, boundingBox.Y);
             Origin = new Point(boundingBox.X, boundingBox.Y);
+
+            MouseController.AddMouseListener(this);
+        }
+
+        public bool ConsumesMouseEvent {
+            get { return consumesMouseEvent; }
+            set { consumesMouseEvent = value; }
         }
 
         public Point RelativePosition {
@@ -89,6 +97,24 @@ namespace Illumination.Components.Panels {
 
             foreach (Component c in components) {
                 c.Deactivate();
+            }
+        }
+
+        public void MouseClicked(MouseEvent evt) {
+            ConsumeMouseEvent(evt);
+        }
+
+        public void MousePressed(MouseEvent evt) {
+            ConsumeMouseEvent(evt);
+        }
+
+        public void MouseReleased(MouseEvent evt) {
+            ConsumeMouseEvent(evt);
+        }
+
+        private void ConsumeMouseEvent(MouseEvent evt) {
+            if (consumesMouseEvent && isActive && boundingBox.Contains(evt.CurrentLocation)) {
+                evt.Consumed = true;
             }
         }
     }

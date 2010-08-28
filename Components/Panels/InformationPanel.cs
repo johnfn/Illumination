@@ -35,6 +35,8 @@ namespace Illumination.Components.Panels {
 
             detailPanel.AddComponent(directionPanel);
             detailPanel.AddComponent(professionPanel);
+
+            this.consumesMouseEvent = false;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
