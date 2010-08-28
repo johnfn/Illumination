@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Illumination.Graphics;
 using Illumination.Utility;
 using Illumination.Data;
+using Illumination.Logic.MouseHandler;
 
 namespace Illumination.Components.Panels {
     public class Panel : Component {

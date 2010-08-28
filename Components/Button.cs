@@ -47,6 +47,7 @@ namespace Illumination.Components {
                 foreach (ActionListener al in actionListeners) {
                     al.ActionPerformed(new ActionEvent(this));
                 }
+                evt.Consumed = true;
             }
         }
     }

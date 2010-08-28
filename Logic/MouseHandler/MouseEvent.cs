@@ -21,6 +21,13 @@ namespace Illumination.Logic.MouseHandler {
         private Point currentLocation;
         private MouseButton button;
 
+        private bool consumed = false;
+
+        public bool Consumed {
+            get { return consumed; }
+            set { consumed = value; }
+        }
+
         public Point StartLocation {
             get { return startLocation; }
         }

@@ -201,9 +201,6 @@ namespace Illumination {
         public void ActionPerformed(ActionEvent evt) { }
 
         public void MouseClicked(MouseEvent evt) {
-            if (!Display.InGridDisplay(evt.CurrentLocation)) {
-                return;
-            }
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
@@ -231,9 +228,6 @@ namespace Illumination {
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
 
         public void MouseReleased(MouseEvent evt) {
-            if (!Display.InGridDisplay(evt.CurrentLocation)) {
-                return;
-            }
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
 
             if (evt.Button == MouseEvent.MouseButton.Right) {

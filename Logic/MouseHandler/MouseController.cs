@@ -17,8 +17,8 @@ namespace Illumination.Logic.MouseHandler {
         private static MouseState previousState;
         private static MouseState currentState;
 
-        private static HashSet<MouseListener> mouseListeners;
-        private static HashSet<MouseMotionListener> mouseMotionListeners;
+        private static LinkedList<MouseListener> mouseListeners;
+        private static LinkedList<MouseMotionListener> mouseMotionListeners;
 
         public static MouseState CurrentState {
             get { return currentState; }
@@ -28,20 +28,20 @@ namespace Illumination.Logic.MouseHandler {
             previousState = currentState = Mouse.GetState();
 
             mousePressed = false;
-            mouseListeners = new HashSet<MouseListener>();
-            mouseMotionListeners = new HashSet<MouseMotionListener>();
+            mouseListeners = new LinkedList<MouseListener>();
+            mouseMotionListeners = new LinkedList<MouseMotionListener>();
         }
 
         public static void AddMouseListener(MouseListener ml) {
-            mouseListeners.Add(ml);
+            mouseListeners.AddFirst(ml);
         }
 
         public static void RemoveMouseListener(MouseListener ml) {
-            mouseListeners.Add(ml);
+            mouseListeners.Remove(ml);
         }
 
         public static void AddMouseMotionListener(MouseMotionListener mml) {
-            mouseMotionListeners.Add(mml);
+            mouseMotionListeners.AddFirst(mml);
         }
 
         public static void RemoveMouseMotionListener(MouseMotionListener mml) {
@@ -104,30 +104,40 @@ namespace Illumination.Logic.MouseHandler {
 
         private static void FireMouseMoved(MouseEvent evt) {
             foreach (MouseMotionListener mml in mouseMotionListeners) {
+                if (evt.Consumed)
+                    break;
                 mml.MouseMoved(evt);
             }
         }
 
         private static void FireMousePressed(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
+                if (evt.Consumed)
+                    break;
                 ml.MousePressed(evt);
             }
         }
 
         private static void FireMouseReleased(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
+                if (evt.Consumed)
+                    break;
                 ml.MouseReleased(evt);
             }
         }
 
         private static void FireMouseDragged(MouseEvent evt) {
             foreach (MouseMotionListener mml in mouseMotionListeners) {
+                if (evt.Consumed)
+                    break;
                 mml.MouseDragged(evt);
             }
         }
 
         private static void FireMouseClicked(MouseEvent evt) {
             foreach (MouseListener ml in mouseListeners) {
+                if (evt.Consumed)
+                    break;
                 ml.MouseClicked(evt);
             }
         }
