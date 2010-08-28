@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Illumination.Graphics;
+using Illumination.Logic.Missions;
 
 namespace Illumination.Logic {
     public static class World {
@@ -22,11 +23,13 @@ namespace Illumination.Logic {
         static HashSet<Tree> treeSet;
 
         static LightLogic lightLogic = new LightLogic();
+        static MissionLogic missionLogic = new MissionLogic();
 
         static bool isNight;
         static bool isDayAndNightToggled = false;
 
         static double timeLeft;
+        static int dayCount;
 
         static HashSet <Entity> selectedEntities = new HashSet<Entity>();
         static EntityType selectedEntityType = EntityType.None;
@@ -47,12 +50,37 @@ namespace Illumination.Logic {
             }
         }
 
+        public static bool IsMissionCompleted
+        {
+            get { return missionLogic.IsComplete; }
+        }
+
+        public static bool IsMissionFailed
+        {
+            get { return missionLogic.IsFail; }
+        }
+
+        public static int MissionCount
+        {
+            get { return missionLogic.MissionCount; }
+        }
+
+        public static int DayCount
+        {
+            get { return dayCount; }
+            set { dayCount = value; }
+        }
+
         public static HashSet<Tree> TreeSet {
             get { return treeSet; }
         }
 
         public static HashSet<Light> LightSet {
             get { return lightLogic.LightSet; }
+        }
+
+        public static HashSet<Mission> MissionSet {
+            get { return missionLogic.MissionSet; }
         }
 
         public static HashSet<Person> PersonSet {
@@ -144,6 +172,11 @@ namespace Illumination.Logic {
 
             isNight = false;
             timeLeft = DAY_TIME_LIMIT;
+            dayCount = 0;
+
+            missionLogic.AddMission(new Demo1Mission());
+            missionLogic.AddMission(new Demo2Mission());
+            missionLogic.AddMission(new Demo3Mission());
         }
 
         public static bool InBound(int x, int y) {
@@ -292,6 +325,8 @@ namespace Illumination.Logic {
                     IsNight = false;
                 }
             }
+
+            missionLogic.Update();
         }
 
         public static void BeginNight() {
@@ -305,6 +340,7 @@ namespace Illumination.Logic {
                 building.ClearLightSequences();
             }
             timeLeft = DAY_TIME_LIMIT;
+            dayCount++;
         }
 
         public static void AddHighlight(int x, int y) {

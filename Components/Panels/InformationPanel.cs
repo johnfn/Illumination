@@ -18,17 +18,39 @@ namespace Illumination.Components.Panels {
         Panel professionPanel;
         //Panel personStatusPanel;
         //Panel buildingStatusPanel;
+        TextBox missionResultBox;
+        Panel missionPanel;
 
         public InformationPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.Green) {
-            detailPanel = new Panel(new Rectangle(300, 0, 400, 175), Color.White);
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
+            detailPanel = new Panel(new Rectangle(0, 0, 400, 150), new Color(255, 255, 255, 100));
             directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200), World.ChangeDirection);
-            professionPanel = new ProfessionPanel(new Rectangle(0, 60, 250, 50));
+            professionPanel = new ProfessionPanel(new Rectangle(0, 110, 250, 50));
+            missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White);
+            missionPanel = new MissionPanel(new Rectangle(575, 35, 375, 120));  
 
             AddComponent(detailPanel);
+            AddComponent(missionResultBox);
+            AddComponent(missionPanel);
 
             detailPanel.AddComponent(directionPanel);
             detailPanel.AddComponent(professionPanel);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if (World.IsMissionFailed)
+            {
+                missionResultBox.Color = new Color(255, 0, 0, 100);
+                missionResultBox.Text = "Mission Fail!";
+            }
+            else if (World.IsMissionCompleted)
+            {
+                missionResultBox.Color = new Color(0, 0, 255, 100);
+                missionResultBox.Text = "Mission Complete!";
+            }
+
+            base.Draw(spriteBatch);
         }
 
         public void DisplayPerson(Person p) {

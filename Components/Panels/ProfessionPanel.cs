@@ -29,11 +29,7 @@ namespace Illumination.Components.Panels
                 Button button = new Button(Person.GetTexture(profession), new Rectangle(80 * (int)profession, 0, 80, 50), Color.White);
                 professionButtons[(int)profession] = button;
 
-                Console.WriteLine("Button created at position " + button.BoundingBox);
-                
                 AddComponent(button);
-
-                Console.WriteLine("Button added to position " + button.BoundingBox);
 
                 button.AddActionListener(this);
             }

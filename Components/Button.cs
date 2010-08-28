@@ -11,22 +11,8 @@ using Illumination.Utility;
 using Illumination.Graphics;
 
 namespace Illumination.Components {
-    public class Button : Component, MouseListener {
-        SpriteFont font;
-        string text;
-        Vector2 textLocation;
-        Color textColor;
-        
+    public class Button : TextBox, MouseListener {
         HashSet<ActionListener> actionListeners;
-
-        public string Text
-        {
-            get { return text; }
-            set { 
-                text = value;
-                textLocation = Geometry.CenterText(text, font, BoundingBox);
-            }
-        }
 
         public Button(Texture2D background, Rectangle boundingBox, Color color) 
             : this(background, boundingBox, color, "", MediaRepository.Fonts["DefaultFont"], Color.White) { }
@@ -35,16 +21,10 @@ namespace Illumination.Components {
             : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor) { }
 
         public Button(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor)
-            : base(background, boundingBox, color)
+            : base(background, boundingBox, color, text, font, textColor)
         {
-            this.text = text;
-            this.font = font;
-            this.textColor = textColor;
-
-            textLocation = Geometry.CenterText(text, font, boundingBox);
-
             MouseController.AddMouseListener(this);
-
+            
             actionListeners = new HashSet<ActionListener>();
         }
 
@@ -58,14 +38,12 @@ namespace Illumination.Components {
 
         public override void Draw(SpriteBatch spriteBatch) {
             base.Draw(spriteBatch);
-
-            spriteBatch.DrawString(font, text, textLocation, textColor);
         }
 
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseClicked(MouseEvent evt) {
-            if (IsActive && base.BoundingBox.Contains(evt.CurrentLocation)) {
+            if (IsActive && BoundingBox.Contains(evt.CurrentLocation)) {
                 foreach (ActionListener al in actionListeners) {
                     al.ActionPerformed(new ActionEvent(this));
                 }

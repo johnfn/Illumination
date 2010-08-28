@@ -5,13 +5,20 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
+using Illumination.Graphics;
 
 namespace Illumination.Components {
     public abstract class Component {
+        Point origin;
         Rectangle boundingBox;
         Texture2D background;
         Color color;
         bool isActive = true;
+
+        public Point Origin {
+            get { return origin; }
+            set { origin = value; }
+        }
 
         public bool IsActive {
             get { return isActive; }
@@ -38,6 +45,8 @@ namespace Illumination.Components {
             this.background = background;
             this.boundingBox = boundingBox;
             this.color = color;
+            
+            origin = new Point(0, 0);
         }
 
         public Component(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) { }
