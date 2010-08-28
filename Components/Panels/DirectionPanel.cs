@@ -31,7 +31,7 @@ namespace Illumination.Components.Panels {
             southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(40, 80, 40, 40), Color.Black);
             eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(80, 40, 40, 40), Color.Black);
             westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 40, 40, 40), Color.Black);
-
+            
             AddComponent(northButton);
             AddComponent(southButton);
             AddComponent(eastButton);

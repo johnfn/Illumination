@@ -67,7 +67,7 @@ namespace Illumination {
             MouseController.AddMouseListener(this);
             KeyController.AddKeyListener(this);
 
-            informationPanel = new InformationPanel(new Rectangle(0, 525, 1000, 175));
+            informationPanel = new InformationPanel(new Rectangle(25, 525, 1000, 150));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
             World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
@@ -78,7 +78,7 @@ namespace Illumination {
             World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
 
             Random random = new Random();
-            for (int n = 2; n <= 9; n++) {
+            for (int n = 2; n <= 3; n++) {
                 Person p = World.CreatePerson(2, n);
                 p.Direction = Entity.DirectionType.South;
                 if (n == 3)
@@ -88,8 +88,10 @@ namespace Illumination {
                     p.Education = 3;
                 }
             }
+            Person p1 = World.CreatePerson(4, 6);
             Person p2 = World.CreatePerson(6, 4);
             Person p3 = World.CreatePerson(4, 7);
+            Person p4 = World.CreatePerson(6, 1);
             p3.Profession = Person.ProfessionType.Educator;
             p3.Education = 3;
             p3.Direction = Entity.DirectionType.West;

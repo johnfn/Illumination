@@ -20,11 +20,7 @@ namespace Illumination.Components.Panels {
         public Panel(Texture2D background, Rectangle boundingBox, Color color) : base(background, boundingBox, color) {
             components = new HashSet<Component>();
             relativePosition = new Point(boundingBox.X, boundingBox.Y);
-        }
-
-        public Color BackgroundColor {
-            get { return base.Color; }
-            set { base.Color = value; }
+            Origin = new Point(boundingBox.X, boundingBox.Y);
         }
 
         public Point RelativePosition {
@@ -66,9 +62,16 @@ namespace Illumination.Components.Panels {
         }
 
         public void UpdateComponent(Component c) {
-            c.BoundingBox = Geometry.Translate(c.BoundingBox, this.BoundingBox.X, this.BoundingBox.Y);
-            if (c is Panel) {
-                ((Panel) c).UpdateComponents();
+            c.BoundingBox = Geometry.Translate(c.BoundingBox, this.Origin.X, this.Origin.Y);
+            c.Origin = this.Origin;
+
+            if (c is Panel)
+            {
+                ((Panel)c).UpdateComponents();
+            }
+            else if (c is TextBox)
+            {
+                ((TextBox)c).UpdateTextLocation();
             }
         }
 
