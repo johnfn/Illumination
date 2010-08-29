@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Illumination.Utility;
 using Illumination.WorldObjects;
 using Illumination.Logic;
+using Illumination.Logic.Missions;
 
 namespace Illumination.Components.Panels {
     public class InformationPanel : Panel {
@@ -41,12 +42,12 @@ namespace Illumination.Components.Panels {
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (World.IsMissionFailed)
+            if (World.CurrentMission.GetMissionStatus() == Objective.StatusType.Failure)
             {
                 missionResultBox.Color = new Color(255, 0, 0, 100);
                 missionResultBox.Text = "Mission Fail!";
             }
-            else if (World.IsMissionCompleted)
+            else if (World.CurrentMission.GetMissionStatus() == Objective.StatusType.Success)
             {
                 missionResultBox.Color = new Color(0, 0, 255, 100);
                 missionResultBox.Text = "Mission Complete!";

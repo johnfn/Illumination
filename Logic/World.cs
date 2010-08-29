@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using Illumination.Graphics;
 using Illumination.Logic.Missions;
 using Illumination.Graphics.AnimationHandler;
+using Illumination.Logic.Missions.Conditions;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Illumination.Logic {
     public static class World {
@@ -24,7 +27,7 @@ namespace Illumination.Logic {
         static HashSet<Tree> treeSet;
 
         static LightLogic lightLogic = new LightLogic();
-        static MissionLogic missionLogic = new MissionLogic();
+        static Mission currentMission = new Mission();
 
         static bool isNight;
         static bool isDayAndNightToggled = false;
@@ -51,19 +54,8 @@ namespace Illumination.Logic {
             }
         }
 
-        public static bool IsMissionCompleted
-        {
-            get { return missionLogic.IsComplete; }
-        }
-
-        public static bool IsMissionFailed
-        {
-            get { return missionLogic.IsFail; }
-        }
-
-        public static int MissionCount
-        {
-            get { return missionLogic.MissionCount; }
+        public static Mission CurrentMission {
+            get { return currentMission; }
         }
 
         public static int DayCount
@@ -83,10 +75,6 @@ namespace Illumination.Logic {
 
         public static HashSet<Light> LightSet {
             get { return lightLogic.LightSet; }
-        }
-
-        public static HashSet<Mission> MissionSet {
-            get { return missionLogic.MissionSet; }
         }
 
         public static HashSet<Person> PersonSet {
@@ -180,9 +168,9 @@ namespace Illumination.Logic {
             timeLeft = DAY_TIME_LIMIT;
             dayCount = 0;
 
-            missionLogic.AddMission(new Demo1Mission());
-            missionLogic.AddMission(new Demo2Mission());
-            missionLogic.AddMission(new Demo3Mission());
+            XmlSerializer serializer = new XmlSerializer(typeof(Mission));
+            FileStream fs = new FileStream("test.xml", FileMode.Open);
+            currentMission = (Mission) serializer.Deserialize(fs);
         }
 
         public static bool InBound(int x, int y) {
@@ -339,8 +327,6 @@ namespace Illumination.Logic {
                     isNight = false;
                 }
             }
-
-            missionLogic.Update();
         }
 
         public static void BeginNight() {

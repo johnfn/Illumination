@@ -1,4 +1,5 @@
 using System;
+using Illumination.Logic.Missions;
 
 namespace Illumination {
     static class Program {
@@ -7,6 +8,7 @@ namespace Illumination {
         /// </summary>
         static void Main(string[] args) {
             using (Illumination game = new Illumination()) {
+                XMLTest.Test();
                 game.Run();
             }
         }
