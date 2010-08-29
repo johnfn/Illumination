@@ -17,15 +17,15 @@ namespace Illumination.Components.Panels
         public MissionPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite)
         {
-            missionBoxes = new TextBox[World.MissionCount];
+            missionBoxes = new TextBox[World.CurrentMission.GetNumConditions()];
 
-            int boxHeight = boundingBox.Height / World.MissionCount;
+            int boxHeight = boundingBox.Height / World.CurrentMission.GetNumConditions();
 
             int index = 0;
-            foreach (Mission mission in World.MissionSet)
+            foreach (Objective objective in World.CurrentMission.PrimaryObjectives)
             {
                 missionBoxes[index] = new TextBox(new Rectangle(0, index * boxHeight, boundingBox.Width, boxHeight),
-                    mission.Instruction, Color.Black);
+                    objective.Description, Color.Black);
                 missionBoxes[index].Color = new Color(255, 255, 255, 100);
 
                 AddComponent(missionBoxes[index]);
@@ -37,13 +37,14 @@ namespace Illumination.Components.Panels
         public override void Draw(SpriteBatch spriteBatch)
         {
             int index = 0;
-            foreach (Mission mission in World.MissionSet)
+            foreach (Objective objective in World.CurrentMission.PrimaryObjectives)
             {
-                if (mission.IsFail)
+                Objective.StatusType status = objective.GetStatus();
+                if (status == Objective.StatusType.Failure)
                 {
                     missionBoxes[index].Color = new Color(255, 0, 0, 100);
                 }
-                else if (mission.IsComplete)
+                else if (status == Objective.StatusType.Success)
                 {
                     missionBoxes[index].Color = new Color(0, 0, 255, 100);
                 }
