@@ -27,7 +27,6 @@ namespace Illumination.Logic {
 
         static LightLogic lightLogic = new LightLogic();
         static Mission currentMission = new Mission();
-        //static MissionLogic missionLogic = new MissionLogic();
 
         static bool isNight;
         static bool isDayAndNightToggled = false;
