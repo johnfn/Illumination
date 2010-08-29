@@ -34,7 +34,7 @@ namespace Illumination.Graphics {
                 }
                 animation.AddEventFrame(this, time - MOVEMENT_INTERVAL);
             }
-
+           
             public override void DoEvent(Animation a) {
                 person.Hidden = false;
                 person.Selectable = true;

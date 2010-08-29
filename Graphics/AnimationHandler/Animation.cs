@@ -53,6 +53,12 @@ namespace Illumination.Graphics.AnimationHandler
         double animationDuration;
         double spriteFrameDuration; // only for multiple images
 
+        public double ElapsedTotalSec
+        {
+            get { return elapsedTotalSec; }
+            set { elapsedTotalSec = value; }
+        }
+        
         Vector2 relativeOrigin = new Vector2(0, 0);
 
         bool stopped = false;

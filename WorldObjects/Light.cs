@@ -6,7 +6,8 @@ using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public class Light : Entity {
-        public enum LightType {
+        public enum LightType
+        {
             White,
             Gray,
             Yellow,
@@ -15,19 +16,9 @@ namespace Illumination.WorldObjects {
             Green,
             SIZE
         }
-
         
         static Dictionary<char, LightType> shortNames;
         static Dictionary<LightType, Color> colorTable;
-        
-        Point lastCollisionLocation;
-        Vector2 location;
-        public Vector2 Location
-        {
-            get { return location; }
-            set { location = value; }
-        }
-
         
         static Light () {
             colorTable = new Dictionary<LightType, Color>();
@@ -57,36 +48,30 @@ namespace Illumination.WorldObjects {
             return colorTable[type];
         }
 
-        DirectionType direction;
+        public static Texture2D LightTexture {
+            get { return MediaRepository.Textures["Light"]; }
+        }
 
+        DirectionType direction;
         public DirectionType Direction
         {
             get { return direction; }
             set { direction = value; }
         }
 
-        public Point LastCollisionLocation {
-            get { return lastCollisionLocation; }
-            set { lastCollisionLocation = value; }
-        }
-
         LightType type;
-
         public LightType Type
         {
             get { return type; }
             set { type = value; }
         }
 
-        public Light(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["Light"]) {
+        public Light(int x, int y) : base(x, y, 1, 1, LightTexture) {
             type = LightType.White;
-
-            lastCollisionLocation = new Point(x, y);
-            location = new Vector2(x, y);
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.Draw(MediaRepository.Textures["Light"], BoundingBox, colorTable[type]);
+            spriteBatch.Draw(LightTexture, BoundingBox, colorTable[type]);
         }
     }
 }

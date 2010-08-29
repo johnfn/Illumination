@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using Illumination.Graphics;
 using Illumination.Logic.Missions;
+using Illumination.Graphics.AnimationHandler;
 
 namespace Illumination.Logic {
     public static class World {
@@ -69,6 +70,11 @@ namespace Illumination.Logic {
         {
             get { return dayCount; }
             set { dayCount = value; }
+        }
+
+        public static double LightSpeed
+        {
+            get { return lightLogic.LightSpeed; }
         }
 
         public static HashSet<Tree> TreeSet {
@@ -290,8 +296,8 @@ namespace Illumination.Logic {
             throw new NotImplementedException();
         }
 
-        public static Light CreateLight(int x, int y) {
-            return lightLogic.CreateLight(x, y);
+        public static Animation CreateLight(Point location, Light.LightType lightColor, Entity.DirectionType direction) {
+            return lightLogic.CreateLight(location, lightColor, direction);
         }
 
         public static void RemoveLight(Light light) {
@@ -299,15 +305,21 @@ namespace Illumination.Logic {
         }
 
         public static void NextTimestep(GameTime gameTime) {
+            /* Toggling is done only by user input. */
             if (isDayAndNightToggled) {
                 if (isNight)
+                {
                     BeginNight();
+                }
                 else
-                    BeginDay();
-
+                {
+                    lightLogic.SetLightSpeed(LightLogic.SpeedType.Fast);
+                    isNight = true;
+                }
                 isDayAndNightToggled = false;
             }
 
+            /* Natural transition by game flow. */
             if (!isNight)
             {
                 double elapsedSec = gameTime.ElapsedGameTime.Milliseconds / (double)1000;
@@ -315,14 +327,16 @@ namespace Illumination.Logic {
 
                 if (timeLeft <= 0)
                 {
-                    IsNight = true;
+                    BeginNight();
+                    isNight = true;
                 }
             }
             else
             {
                 if (!lightLogic.NextTimestep())
                 {
-                    IsNight = false;
+                    BeginDay(); 
+                    isNight = false;
                 }
             }
 
@@ -336,6 +350,7 @@ namespace Illumination.Logic {
 
         public static void BeginDay() {
             lightLogic.Clear();
+            lightLogic.SetLightSpeed(LightLogic.SpeedType.Normal);
             foreach (Building building in buildingSet) {
                 building.ClearLightSequences();
             }

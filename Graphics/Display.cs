@@ -99,12 +99,6 @@ namespace Illumination.Graphics
                 /* Transparent Black Mask */
                 //spriteBatch.Draw(MediaRepository.Textures["BlankTile"], Geometry.ConstructRectangle(gridOrigin, gridViewportSize), new Color(0, 0, 0, 50));
             }
-
-            foreach (Light light in World.LightSet) {
-                if (!light.Hidden) {
-                    light.Draw(spriteBatch);
-                }
-            }
         }
 
         public static Animation CreateAnimation(Texture2D texture, Point position, Dimension size, double durationInSec)
