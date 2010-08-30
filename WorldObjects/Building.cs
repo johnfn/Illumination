@@ -15,6 +15,8 @@ namespace Illumination.WorldObjects {
 
         public Building(int x, int y, int width, int height, Texture2D texture) {
             Initialize(x, y, width, height, texture);
+
+            Name = "Building";
         }
 
         public int Width {

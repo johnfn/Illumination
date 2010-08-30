@@ -12,12 +12,20 @@ namespace Illumination.WorldObjects {
         private bool hidden = false;
         private bool selectable = true;
 
+        string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
         public enum DirectionType {
             North,
             East,
             South,
             West,
-            SIZE
+            SIZE,
+            NONE
         }
 
         Rectangle gridLocation = new Rectangle();
@@ -51,6 +59,8 @@ namespace Illumination.WorldObjects {
 
         public Entity(int x, int y, int width, int height, Texture2D texture) {
             Initialize(x, y, width, height, texture);
+
+            name = "Entity";
         }
 
         public virtual void Initialize(int x, int y, int width, int height, Texture2D texture) {

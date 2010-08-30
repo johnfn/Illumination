@@ -84,6 +84,14 @@ namespace Illumination.Graphics
                 if (!building.Hidden) {
                     building.Draw(spriteBatch);
                 }
+            } 
+            
+            foreach (Item item in World.ItemSet)
+            {
+                if (!item.Hidden)
+                {
+                    item.Draw(spriteBatch);
+                }
             }
 
             if (World.SelectedEntities.Count > 0) {

@@ -19,8 +19,19 @@ namespace Illumination.WorldObjects
             set { direction = value; }
         }
 
-        public Tree(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["TreeOfLight"]) {
+        public Texture2D Texture
+        {
+            get { return MediaRepository.Textures["TreeOfLight"]; }
+        }
+
+        public Tree() : base() { /* Default Constructor */ }
+
+        public Tree(int x, int y) {
+            base.Initialize(x, y, 1, 1, Texture);
+
             direction = DirectionType.South;
+
+            Name = "Tree";
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch)
@@ -43,7 +54,7 @@ namespace Illumination.WorldObjects
                     break;
             }
 
-            spriteBatch.Draw(MediaRepository.Textures["TreeOfLight"], BoundingBox, Color.White);
+            spriteBatch.Draw(Texture, BoundingBox, Color.White);
         }
     }
 }

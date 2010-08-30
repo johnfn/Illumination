@@ -21,7 +21,7 @@ namespace Illumination.Graphics {
             public void Move(Person.SearchNode endNode) {
                 person.Hidden = true;
                 person.Selectable = false;
-                Animation a = Display.CreateAnimation(person.PersonTexture, person.BoundingBox, Double.MaxValue);
+                Animation a = Display.CreateAnimation(person.Texture, person.BoundingBox, Double.MaxValue);
                 AddPathAnimation(a, Person.SearchNode.GetForwardPath(endNode));
             }
 
@@ -29,7 +29,7 @@ namespace Illumination.Graphics {
                 double time = 0;
                 animation.AddColorFrame(new Color(255, 255, 255, 100), 0.01);
                 for (; startNode != null; time += MOVEMENT_INTERVAL, startNode = startNode.nextNode) {
-                    Rectangle newLocation = Display.GetTextureBoundingBox(person.PersonTexture, startNode.point, 0);
+                    Rectangle newLocation = Display.GetTextureBoundingBox(person.Texture, startNode.point, 0);
                     animation.AddTranslationFrame(new Point(newLocation.X, newLocation.Y), time);
                 }
                 animation.AddEventFrame(this, time - MOVEMENT_INTERVAL);

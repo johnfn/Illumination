@@ -25,6 +25,7 @@ namespace Illumination.Logic {
         static HashSet<Person> personSet;
         static HashSet<Building> buildingSet;
         static HashSet<Tree> treeSet;
+        static HashSet<Item> itemSet;
 
         static LightLogic lightLogic = new LightLogic();
         static Mission currentMission = new Mission();
@@ -83,6 +84,10 @@ namespace Illumination.Logic {
 
         public static HashSet<Building> BuildingSet {
             get { return buildingSet; }
+        }
+
+        public static HashSet<Item> ItemSet {
+            get { return itemSet; }
         }
 
         public static Tile[,] Grid {
@@ -161,6 +166,7 @@ namespace Illumination.Logic {
             personSet = new HashSet<Person>();
             buildingSet = new HashSet<Building>();
             treeSet = new HashSet<Tree>();
+            itemSet = new HashSet<Item>();
 
             highlightedTiles = new HashSet<Tile>();
 
@@ -181,13 +187,13 @@ namespace Illumination.Logic {
             return InBound(p.X, p.Y);
         }
 
-        public static bool IsClear(int x, int y, int width, int height) {
-            if (width < 0 || height < 0 || !InBound(x, y) || !InBound(x + width - 1, y + height - 1)) {
+        public static bool IsClear(Rectangle r) {
+            if (r.Width < 0 || r.Height < 0 || !InBound(r.X, r.Y) || !InBound(r.X + r.Width - 1, r.Y + r.Height - 1)) {
                 return false;
             }
             
-            for (int i = x; i < x + width; i++) {
-                for (int j = y; j < y + height; j++) {
+            for (int i = r.X; i < r.X + r.Width; i++) {
+                for (int j = r.Y; j < r.Y + r.Height; j++) {
                     if (grid[i, j].IsBlocked()) {
                         return false;
                     }
@@ -198,7 +204,7 @@ namespace Illumination.Logic {
         }
 
         public static bool IsClear(int x, int y) {
-            return IsClear(x, y, 1, 1);
+            return IsClear(new Rectangle(x, y, 1, 1));
         }
 
         public static int GetMovementCost(Point point) {
@@ -207,24 +213,66 @@ namespace Illumination.Logic {
             }
             return Grid[point.X, point.Y].GetMovementCost();
         }
-
-        public static Person CreatePerson(int x, int y) {
-            if (!IsClear(x, y, 1, 1)) {
-                return null;
+        
+        public static bool AddEntity(Entity entity)
+        {
+            if (!IsClear(entity.GridLocation))
+            {
+                return false;
             }
 
-            Person newPerson = new Person(x, y);
-            Grid[x, y].AddEntity(newPerson);
-            personSet.Add(newPerson);
+            for (int i = entity.GridLocation.X; i < entity.GridLocation.X + entity.GridLocation.Width; i++)
+            {
+                for (int j = entity.GridLocation.Y; j < entity.GridLocation.Y + entity.GridLocation.Height; j++)
+                {
+                    Grid[i, j].AddEntity(entity);
+                }
+            }
 
-            return newPerson;
+            if (entity is Person)
+            {
+                personSet.Add((Person)entity);
+            }
+            else if (entity is Building)
+            {
+                buildingSet.Add((Building)entity);
+            }
+            else if (entity is Tree)
+            {
+                treeSet.Add((Tree)entity);
+            }
+            else if (entity is Item)
+            {
+                itemSet.Add((Item)entity);
+            }
+
+            return true;
         }
 
-        public static void RemovePerson(Person person) {
-            if (personSet.Contains(person)) {
-                Grid[person.GridLocation.X, person.GridLocation.Y].RemoveEntity(person);
-                personSet.Remove(person);
+        public static void RemoveEntity(Entity entity)
+        {
+            if (entity is Person)
+            {
+                if (!personSet.Contains((Person)entity)) { return; }
+                personSet.Remove((Person)entity);
             }
+            else if (entity is Building)
+            {
+                if (!buildingSet.Contains((Building)entity)) { return; }
+                buildingSet.Remove((Building)entity);
+            }
+            else if (entity is Tree)
+            {
+                if (!treeSet.Contains((Tree)entity)) { return; }
+                treeSet.Remove((Tree)entity);
+            }
+            else if (entity is Item)
+            {
+                if (!itemSet.Contains((Item)entity)) { return; }
+                itemSet.Remove((Item)entity);
+            }
+
+            Grid[entity.GridLocation.X, entity.GridLocation.Y].RemoveEntity(entity);
         }
 
         public static Person MovePerson(Person person, Point newLocation) {
@@ -235,53 +283,6 @@ namespace Illumination.Logic {
             }
 
             return person;
-        }
-
-        public static Building CreateBuilding(int x, int y, string buildingClass) {
-            Type buildingType = Type.GetType(buildingClass);
-
-            School newBuilding = new School();
-
-            //Building newBuilding = (Building) Activator.CreateInstance(buildingType);
-            newBuilding.Initialize(x, y);
-
-            if (!IsClear(x, y, newBuilding.Width, newBuilding.Height)) {
-                return null;
-            }
-
-            for (int i = x; i < x + newBuilding.Width; i++) {
-                for (int j = y; j < y + newBuilding.Height; j++) {
-                    Grid[i, j].AddEntity(newBuilding);
-                }
-            }
-            buildingSet.Add(newBuilding);
-
-            return newBuilding;
-        }
-
-        public static void RemoveBuilding(Building building) {
-            if (buildingSet.Contains(building)) {
-                Rectangle loc = building.GridLocation;
-                for (int i = loc.X; i < loc.X + loc.Width; i++) {
-                    for (int j = loc.Y; j < loc.Y + loc.Height; j++) {
-                        Grid[i, j].RemoveEntity(building);
-                    }
-                }
-
-                buildingSet.Remove(building);
-            }
-        }
-
-        public static Tree CreateTree(int x, int y) {
-            Tree newTree = new Tree(x, y);
-            Grid[x, y].AddEntity(newTree);
-            treeSet.Add(newTree);
-
-            return newTree;
-        }
-
-        public static void RemoveTree(Tree tree) {
-            throw new NotImplementedException();
         }
 
         public static Animation CreateLight(Point location, Light.LightType lightColor, Entity.DirectionType direction) {

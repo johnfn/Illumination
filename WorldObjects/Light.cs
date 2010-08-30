@@ -48,7 +48,7 @@ namespace Illumination.WorldObjects {
             return colorTable[type];
         }
 
-        public static Texture2D LightTexture {
+        public static Texture2D Texture {
             get { return MediaRepository.Textures["Light"]; }
         }
 
@@ -66,12 +66,12 @@ namespace Illumination.WorldObjects {
             set { type = value; }
         }
 
-        public Light(int x, int y) : base(x, y, 1, 1, LightTexture) {
+        public Light(int x, int y) : base(x, y, 1, 1, Texture) {
             type = LightType.White;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.Draw(LightTexture, BoundingBox, colorTable[type]);
+            spriteBatch.Draw(Texture, BoundingBox, colorTable[type]);
         }
     }
 }

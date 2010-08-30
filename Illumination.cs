@@ -70,32 +70,52 @@ namespace Illumination {
             informationPanel = new InformationPanel(new Rectangle(25, 525, 1000, 150));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
-            World.CreateTree(4, 5).Direction = Entity.DirectionType.East;
-            Tree t1 = World.CreateTree(2, 1);
+            Tree t1 = new Tree(2, 1);
             t1.Direction = Entity.DirectionType.East;
-            Tree t2 = World.CreateTree(9, 9);
-            t2.Direction = Entity.DirectionType.North;
-            World.CreateBuilding(6, 6, "Illumination.WorldObjects.School");
+            World.AddEntity(t1);
+
+            Tree t2 = new Tree(4, 5);
+            t2.Direction = Entity.DirectionType.East;
+            World.AddEntity(t2);
+
+            Tree t3 = new Tree(9, 9);
+            t3.Direction = Entity.DirectionType.North;
+            World.AddEntity(t3);
+
+            School s = new School(6, 6);
+            World.AddEntity(s);
 
             Random random = new Random();
             for (int n = 2; n <= 3; n++) {
-                Person p = World.CreatePerson(2, n);
+                Person p = new Person(3, n);
                 p.Direction = Entity.DirectionType.South;
-                if (n == 3)
-                    p.Direction = Entity.DirectionType.North;
+                if (n == 2)
+                    p.Direction = Entity.DirectionType.East;
                 p.Profession = (Person.ProfessionType) (random.Next() % (int) Person.ProfessionType.SIZE);
                 if (p.Profession != Person.ProfessionType.Worker) {
                     p.Education = 3;
                 }
+                World.AddEntity(p);
             }
-            Person p1 = World.CreatePerson(4, 6);
-            Person p2 = World.CreatePerson(6, 4);
-            Person p3 = World.CreatePerson(4, 7);
-            Person p4 = World.CreatePerson(6, 1);
+            Person p1 = new Person(4, 6);
+            Person p2 = new Person(6, 7);
+            Person p3 = new Person(4, 7);
+            Person p4 = new Person(6, 1);
             p3.Profession = Person.ProfessionType.Educator;
             p3.Education = 3;
             p3.Direction = Entity.DirectionType.West;
             p2.Direction = Entity.DirectionType.West;
+            World.AddEntity(p1);
+            World.AddEntity(p2);
+            World.AddEntity(p3);
+            World.AddEntity(p4);
+
+            Mirror m1 = new Mirror(2, 4);
+            Mirror m2 = new Mirror(5, 4);
+            m1.Reflection = Mirror.ReflectionType.SouthWest;
+            m2.Reflection = Mirror.ReflectionType.NorthEast;
+            World.AddEntity(m1);
+            World.AddEntity(m2);
 
             //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
             //a2.AddTranslationFrame(new Point(p2.BoundingBox.X + Display.TileWidth, p2.BoundingBox.Y), 2);

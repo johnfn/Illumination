@@ -108,7 +108,7 @@ namespace Illumination.WorldObjects {
             set { movementRange = value; }
         }
 
-        public Texture2D PersonTexture {
+        public Texture2D Texture {
             get { return texturesMap[profession]; }
         }
 
@@ -124,6 +124,8 @@ namespace Illumination.WorldObjects {
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
             movementRange = 3;
             BlocksMovement = false;
+
+            Name = "Person";
         }
 
         public void Move(int newX, int newY) {
@@ -151,7 +153,7 @@ namespace Illumination.WorldObjects {
                     break;
             }
 
-            spriteBatch.Draw(PersonTexture, BoundingBox, Color.White);
+            spriteBatch.Draw(Texture, BoundingBox, Color.White);
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {

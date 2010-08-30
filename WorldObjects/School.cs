@@ -29,14 +29,20 @@ namespace Illumination.WorldObjects {
 
         public School(int x, int y) {
             Initialize(x, y);
+
+            Name = "School";
+        }
+
+        public Texture2D Texture {
+            get { return MediaRepository.Textures["School"]; }
         }
 
         public override void Initialize(int x, int y) {
-            base.Initialize(x, y, WIDTH, HEIGHT, MediaRepository.Textures["School"]);
+            base.Initialize(x, y, WIDTH, HEIGHT, Texture);
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.Draw(MediaRepository.Textures["School"], BoundingBox, Color.White);
+            spriteBatch.Draw(Texture, BoundingBox, Color.White);
         }
 
         protected override Dictionary<LightSequence, Building.DoEffect> GetEffects() {

@@ -95,7 +95,7 @@ namespace Illumination.Graphics
                 }
 
                 light.GridLocation = new Rectangle(newLocation.X, newLocation.Y, 1, 1);
-                Rectangle newBoundingBox = Display.GetTextureBoundingBox(Light.LightTexture, newLocation, 0);
+                Rectangle newBoundingBox = Display.GetTextureBoundingBox(Light.Texture, newLocation, 0);
                 light.BoundingBox = newBoundingBox;
 
                 animation.AddTranslationFrame(new Point(newBoundingBox.X, newBoundingBox.Y), targetTime);
@@ -135,20 +135,30 @@ namespace Illumination.Graphics
                         else
                         {
                             animation.AddEventFrame(new Stop(light), lastFrameTime);
-                            continue;
-                        }
-                        
+                        }   
                     }
                     else if (entity is Building)
                     {
                         Building building = (Building)entity;
                         building.Illuminate(light.Type);
-                    }
 
-                    if (light.Type != Light.LightType.White && !(entity is Tree))
-                    {
                         animation.StopAnimation();
                         World.RemoveLight(light);
+                    }
+                    else if (entity is Mirror)
+                    {
+                        Mirror mirror = (Mirror)entity;
+                        Entity.DirectionType newDirection = mirror.Reflect(light.Direction);
+
+                        if (newDirection == Entity.DirectionType.NONE)
+                        {
+                            animation.StopAnimation();
+                            World.RemoveLight(light);
+                        }
+                        else
+                        {
+                            light.Direction = newDirection;
+                        }
                     }
                 }
 
@@ -158,7 +168,7 @@ namespace Illumination.Graphics
 
         public static Animation CreateMovementAnimation(Light light) 
         {
-            Animation animation = Display.CreateAnimation(Light.LightTexture, light.BoundingBox, double.MaxValue);
+            Animation animation = Display.CreateAnimation(Light.Texture, light.BoundingBox, double.MaxValue);
             animation.AddColorFrame(Light.GetLightColor(light.Type), 0);
             new Movement(light, animation, 0).Play();
 
