@@ -142,6 +142,11 @@ namespace Illumination.Graphics
                         Building building = (Building)entity;
                         building.Illuminate(light.Type);
 
+                        if (building is Factory)
+                        {
+                            ((Factory)building).EarnMoney(5);
+                        }
+
                         animation.StopAnimation();
                         World.RemoveLight(light);
                     }

@@ -37,20 +37,20 @@ namespace Illumination.Components.Panels {
             set { relativePosition = value; }
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
-            base.Draw(spriteBatch);
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
+            base.Draw(spriteBatch, isRelative);
 
             foreach (Component c in components) {
                 if (c is Panel)
                 {
                     if (((Panel)c).IsActive)
                     {
-                        c.Draw(spriteBatch);
+                        c.Draw(spriteBatch, isRelative);
                     }
                 }
                 else
                 {
-                    c.Draw(spriteBatch);
+                    c.Draw(spriteBatch, isRelative);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace Illumination.Components.Panels {
             components.Remove(newComponent);
         }
 
-        public void UpdateComponents() {
+        public override void Update() {
             foreach (Component c in components) {
                 UpdateComponent(c);
             }
@@ -76,11 +76,11 @@ namespace Illumination.Components.Panels {
 
             if (c is Panel)
             {
-                ((Panel)c).UpdateComponents();
+                ((Panel)c).Update();
             }
             else if (c is TextBox)
             {
-                ((TextBox)c).UpdateTextLocation();
+                ((TextBox)c).Update();
             }
         }
 

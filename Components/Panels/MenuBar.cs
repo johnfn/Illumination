@@ -10,6 +10,7 @@ using Illumination.Logic.MouseHandler;
 using Illumination.Logic.ActionHandler;
 using Illumination.Utility;
 using Illumination.Logic;
+using Illumination.Graphics;
 
 namespace Illumination.Components.Panels
 {
@@ -19,6 +20,8 @@ namespace Illumination.Components.Panels
         Button dayNightButton;
         StatusBar timeBar;
         TextBox dayBox;
+        TextBox moneyBox;
+        TextBox moneyNumBox;
 
         public MenuBar(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.Blue)
@@ -35,10 +38,16 @@ namespace Illumination.Components.Panels
 
             dayBox = new TextBox(new Rectangle(900, 0, 100, 25), "Day " + World.DayCount.ToString(), Color.White);
 
+            moneyBox = new TextBox(new Rectangle(700, 0, 50, 25), "Money: ", Color.White);
+
+            moneyNumBox = new TextBox(new Rectangle(750, 0, 100, 25), "$" + World.Money.ToString(), Color.White);
+
             AddComponent(menuButton);
             AddComponent(dayNightButton);
             AddComponent(timeBar);
             AddComponent(dayBox);
+            AddComponent(moneyBox);
+            AddComponent(moneyNumBox);
 
             menuButton.AddActionListener(this);
             dayNightButton.AddActionListener(this);
@@ -49,6 +58,7 @@ namespace Illumination.Components.Panels
             dayNightButton.Text = World.IsNight ? "Begin Day" : "Begin Night";
             timeBar.Fraction = World.TimeLeft / World.DAY_TIME_LIMIT;
             dayBox.Text = "Day " + World.DayCount.ToString();
+            moneyNumBox.Text = "$" + World.Money.ToString();
 
             base.Draw(spriteBatch);
         }

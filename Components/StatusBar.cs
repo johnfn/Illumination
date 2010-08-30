@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
+using Illumination.Graphics;
 
 namespace Illumination.Components
 {

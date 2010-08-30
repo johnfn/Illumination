@@ -83,8 +83,9 @@ namespace Illumination {
             t3.Direction = Entity.DirectionType.North;
             World.AddEntity(t3);
 
-            School s = new School(6, 6);
-            World.AddEntity(s);
+            World.AddEntity(new School(6, 6));
+            World.AddEntity(new Factory(8, 3));
+           
 
             Random random = new Random();
             for (int n = 2; n <= 3; n++) {

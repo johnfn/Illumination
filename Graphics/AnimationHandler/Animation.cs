@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using SpriteSheetRuntime;
 using Illumination.Graphics;
+using Illumination.Components;
 
 namespace Illumination.Graphics.AnimationHandler
 {
@@ -13,8 +14,9 @@ namespace Illumination.Graphics.AnimationHandler
     {
         public enum ImageType
         {
-            Single,
-            Multiple
+            Texture,
+            Sheet,
+            Component
         }
 
         public enum EaseType
@@ -41,6 +43,7 @@ namespace Illumination.Graphics.AnimationHandler
         /* Image */
         Texture2D texture;
         SpriteSheet spriteSheet;
+        Component component;
 
         AnimationSequence<Dimension> sizeSequence;
         AnimationSequence<Point> positionSequence;
@@ -65,7 +68,7 @@ namespace Illumination.Graphics.AnimationHandler
 
         public Animation(Texture2D texture, Point position, Dimension size, double durationInSec)
         {
-            image = ImageType.Single;
+            image = ImageType.Texture;
             this.texture = texture;
             animationDuration = durationInSec;
 
@@ -74,12 +77,22 @@ namespace Illumination.Graphics.AnimationHandler
 
         public Animation(SpriteSheet spriteSheet, Point position, Dimension size, double durationInSec, double spriteFrameDurationInSec)
         {
-            image = ImageType.Multiple;
+            image = ImageType.Sheet;
             this.spriteSheet = spriteSheet;
             animationDuration = durationInSec;
             spriteFrameDuration = spriteFrameDurationInSec;
 
             Initialize(position, size);
+        }
+
+        public Animation(Component component, double durationInSec)
+        {
+            image = ImageType.Component;
+            this.component = component;
+            animationDuration = durationInSec;
+
+            Initialize(new Point(component.BoundingBox.X, component.BoundingBox.Y),
+                new Dimension(component.BoundingBox.Width, component.BoundingBox.Height));
         }
 
         void Initialize(Point position, Dimension size)
@@ -166,14 +179,20 @@ namespace Illumination.Graphics.AnimationHandler
 
             Rectangle boundingBox = new Rectangle(position.X, position.Y, size.Width, size.Height);
 
-            if (image == ImageType.Single)
+            if (image == ImageType.Texture)
             {
                 spriteBatch.Draw(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, 0);
             }
-            else
+            else if (image == ImageType.Sheet)
             {
                 int index = (int)(elapsedTotalSec / spriteFrameDuration) % spriteSheet.Count; 
                 spriteBatch.Draw(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
+            }
+            else if (image == ImageType.Component)
+            {
+                component.BoundingBox = boundingBox;
+                component.Update();
+                component.Draw(spriteBatch, true);
             }
 
             if (!eventSequence.Empty())

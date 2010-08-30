@@ -24,7 +24,7 @@ namespace Illumination.Components
             get { return text; }
             set {
                 text = value;
-                UpdateTextLocation();
+                Update();
             }
         }
 
@@ -44,16 +44,23 @@ namespace Illumination.Components
             textLocation = Geometry.CenterText(text, font, boundingBox);
         }
 
-        public void UpdateTextLocation()
+        public override void Update()
         {
             textLocation = Geometry.CenterText(text, font, BoundingBox);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative)
         {
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, isRelative);
 
-            spriteBatch.DrawString(font, text, textLocation, textColor);
+            if (!isRelative)
+            {
+                ((SpriteBatch)spriteBatch).DrawString(font, text, textLocation, textColor);
+            }
+            else
+            {
+                spriteBatch.DrawString(font, text, textLocation, textColor);
+            }
         }
     }
 }

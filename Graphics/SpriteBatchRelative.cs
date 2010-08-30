@@ -19,9 +19,17 @@ namespace Illumination.Graphics {
             base.Draw(texture, transform(destinationRectangle), sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
-        private Rectangle transform(Rectangle rectangle) {
+        public new void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color) {
+            base.DrawString(spriteFont, text, transform(position), color);
+        }   
+
+        Rectangle transform(Rectangle rectangle) {
             return Geometry.Translate(Geometry.Scale(rectangle, Display.Scale),
                 -Display.ViewportShift.X, -Display.ViewportShift.Y);
+        }
+
+        Vector2 transform(Vector2 vector) {
+            return new Vector2(vector.X - Display.ViewportShift.X, vector.Y - Display.ViewportShift.Y);
         }
     }
 }

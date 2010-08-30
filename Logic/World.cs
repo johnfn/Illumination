@@ -35,6 +35,7 @@ namespace Illumination.Logic {
 
         static double timeLeft;
         static int dayCount;
+        static int money;
 
         static HashSet <Entity> selectedEntities = new HashSet<Entity>();
         static EntityType selectedEntityType = EntityType.None;
@@ -43,6 +44,12 @@ namespace Illumination.Logic {
         {
             get { return timeLeft; }
             set { timeLeft = value; }
+        }
+
+        public static int Money
+        {
+            get { return money; }
+            set { money = value; }
         }
 
         static HashSet <Tile> highlightedTiles;
@@ -173,6 +180,7 @@ namespace Illumination.Logic {
             isNight = false;
             timeLeft = DAY_TIME_LIMIT;
             dayCount = 0;
+            money = 0;
 
             XmlSerializer serializer = new XmlSerializer(typeof(Mission));
             FileStream fs = new FileStream("test.xml", FileMode.Open);

@@ -51,8 +51,25 @@ namespace Illumination.Components {
 
         public Component(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) { }
 
-        public virtual void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(background, boundingBox, color);
+        /* Called when bounding box has changed */
+        public virtual void Update() {
+            /* Update position depending fields */
+        }
+
+        public virtual void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
+            if (!isRelative)
+            {
+                ((SpriteBatch)spriteBatch).Draw(background, boundingBox, color);
+            }
+            else
+            {
+                spriteBatch.Draw(background, boundingBox, color);
+            }
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            Draw(((SpriteBatchRelative)spriteBatch), false);
         }
 
         public virtual void Activate() {

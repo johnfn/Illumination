@@ -7,6 +7,7 @@ using Illumination.Data;
 using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
 using Illumination.Utility;
+using Illumination.Components;
 
 namespace Illumination.Graphics
 {
@@ -111,6 +112,14 @@ namespace Illumination.Graphics
         public static Animation CreateAnimation(Texture2D texture, Rectangle rect, double durationInSec) 
         {
             return CreateAnimation(texture, new Point(rect.X, rect.Y), new Dimension(rect.Width, rect.Height), durationInSec);
+        }
+
+        public static Animation CreateAnimation(Component component, double durationInSec)
+        {
+            Animation animation = new Animation(component, durationInSec);
+            animationController.AddAnimation(animation);
+
+            return animation;
         }
 
         public static Animation CreateAnimation(SpriteSheet spriteSheet, Point position, Dimension size, double durationInSec, double spriteFrameDurationInSec)
