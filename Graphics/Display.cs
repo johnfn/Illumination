@@ -29,7 +29,7 @@ namespace Illumination.Graphics
         static Point viewportShift;
         static Dimension tileSize;
         static Dimension viewportDimension;
-        static double aspectRatio;
+        static double scale;
 
         public static Dimension TileSize 
         {
@@ -52,13 +52,18 @@ namespace Illumination.Graphics
             viewportShift.Y += y;
         }
 
+        public static double Scale {
+            get { return scale; }
+            set { scale = value; }
+        }
+
         public static void InitializeDisplay(Dimension tileSize, Point gridOrigin, Dimension viewportDimension) 
         {
             Display.tileSize = tileSize;
             Display.gridOrigin = gridOrigin;
             Display.viewportDimension = viewportDimension;
 
-            Display.aspectRatio = tileSize.Height / (double) tileSize.Width;
+            Display.scale = 1.0;
         }
 
         public static void DrawWorld(SpriteBatchRelative spriteBatch, GameTime gameTime) 
@@ -91,7 +96,7 @@ namespace Illumination.Graphics
 
             if (World.IsNight)
             {
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(viewportShift.X, viewportShift.Y, viewportDimension.Width, viewportDimension.Height), new Color(0, 0, 0, 50));
+                //spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(viewportShift.X, viewportShift.Y, viewportDimension.Width, viewportDimension.Height), new Color(0, 0, 0, 50));
             }
         }
 
@@ -134,7 +139,8 @@ namespace Illumination.Graphics
         }
 
         public static Point RelativeViewportToGridLocation(Point p) {
-            return ViewportToGridLocation(Geometry.Translate(p, viewportShift.X, viewportShift.Y));
+            return ViewportToGridLocation(Geometry.Scale(
+                Geometry.Translate(p, viewportShift.X, viewportShift.Y), 1 / Display.Scale));
         }
 
         public static Point GridLocationToViewport(Point p) {
@@ -184,9 +190,8 @@ namespace Illumination.Graphics
             return Geometry.Translate(boundingBox, difference.X, difference.Y);
         }
 
-        public static void AlterDimension(double multiplier) {
-            tileSize.Width = (int) (tileSize.Width * multiplier);
-            tileSize.Height = (int) (aspectRatio * tileSize.Width);
+        public static void ScaleView(double multiplier) {
+            scale *= multiplier;
 
             viewportShift.X = (int) (viewportShift.X * multiplier);
             viewportShift.Y = (int) (viewportShift.Y * multiplier);

@@ -49,6 +49,16 @@ namespace Illumination.Utility {
             return new Rectangle(p.X, p.Y, d.Width, d.Height);
         }
 
+        public static Rectangle Scale(Rectangle rect, double scale) {
+            return new Rectangle((int) (rect.X * scale), (int) (rect.Y * scale),
+                (int) (rect.Width * scale),
+                (int) (rect.Height * scale));
+        }
+
+        public static Point Scale(Point p, double scale) {
+            return new Point((int) (p.X * scale), (int) (p.Y * scale));
+        }
+
         public static Vector2 CenterText(string text, SpriteFont font, Rectangle boundingBox)
         {
             Vector2 textSize = font.MeasureString(text);

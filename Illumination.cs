@@ -287,19 +287,7 @@ namespace Illumination {
         }
 
         public void MouseScrolled(MouseScrollEvent evt) {
-            if (!World.IsNight) {
-                if (evt.Change > 0) {
-                    Display.AlterDimension(1.1);
-                    foreach (Tile t in World.Grid) {
-                        t.UpdateBoundingBox();
-                    }
-                } else {
-                    Display.AlterDimension(0.9);
-                    foreach (Tile t in World.Grid) {
-                        t.UpdateBoundingBox();
-                    }
-                }
-            }
+            Display.ScaleView(evt.Change >= 0 ? 1.1 : 0.9);
         }
 
         #region KeyListener Members
