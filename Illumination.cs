@@ -56,7 +56,7 @@ namespace Illumination {
             gameWindow = new Rectangle(0, 0, this.graphics.GraphicsDevice.Viewport.Width,
                     this.graphics.GraphicsDevice.Viewport.Height);
 
-            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(800, 560));
+            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(1000, 560));
             World.InitalizeWorld(12, 11);
 
             base.Initialize();
