@@ -41,7 +41,7 @@ namespace Illumination {
             Content.RootDirectory = "Content";
 
             this.graphics.PreferredBackBufferWidth = 1000;
-            this.graphics.PreferredBackBufferHeight = 700;
+            this.graphics.PreferredBackBufferHeight = 560;
 
             this.IsMouseVisible = true;
         }
@@ -56,7 +56,7 @@ namespace Illumination {
             gameWindow = new Rectangle(0, 0, this.graphics.GraphicsDevice.Viewport.Width,
                     this.graphics.GraphicsDevice.Viewport.Height);
 
-            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(gameWindow.Width, gameWindow.Height));
+            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(800, 560));
             World.InitalizeWorld(12, 11);
 
             base.Initialize();
@@ -68,7 +68,7 @@ namespace Illumination {
             MouseController.AddMouseScrollListener(this);
             KeyController.AddKeyListener(this);
 
-            informationPanel = new InformationPanel(new Rectangle(25, 525, 1000, 150));
+            informationPanel = new InformationPanel(new Rectangle(25, 385, 1000, 150));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
             Tree t1 = new Tree(2, 1);
