@@ -43,6 +43,10 @@ namespace Illumination.WorldObjects
             get { return texturesMap[reflection]; }
         }
 
+        public override Texture2D GetTexture() {
+            return Texture;
+        }
+
         public Mirror() : base() { /* Default Constructor */ }
 
         public Mirror(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["Mirror_NE"]) {
