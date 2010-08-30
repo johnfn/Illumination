@@ -9,6 +9,7 @@ using Illumination.Graphics.AnimationHandler;
 using Illumination.Logic.Missions.Conditions;
 using System.Xml.Serialization;
 using System.IO;
+using Illumination.Components.Panels;
 
 namespace Illumination.Logic {
     public static class World {
@@ -339,11 +340,13 @@ namespace Illumination.Logic {
         }
 
         public static void BeginNight() {
+            Display.NightOverlay(true);
             lightLogic.ActivateTrees();
             timeLeft = 0;
         }
 
         public static void BeginDay() {
+            Display.NightOverlay(false);
             lightLogic.Clear();
             lightLogic.SetLightSpeed(LightLogic.SpeedType.Normal);
             foreach (Building building in buildingSet) {

@@ -8,6 +8,7 @@ using Illumination.Graphics.AnimationHandler;
 using SpriteSheetRuntime;
 using Illumination.Utility;
 using Illumination.Components;
+using Illumination.Components.Panels;
 
 namespace Illumination.Graphics
 {
@@ -31,6 +32,19 @@ namespace Illumination.Graphics
         static Dimension tileSize;
         static Dimension viewportDimension;
         static double scale;
+
+        static Panel nightOverlay;
+        public static void NightOverlay(bool isOn)
+        {
+            if (isOn)
+            {
+                nightOverlay.Activate();
+            }
+            else
+            {
+                nightOverlay.Deactivate();
+            }
+        }
 
         public static Dimension TileSize 
         {
@@ -64,6 +78,9 @@ namespace Illumination.Graphics
             Display.gridOrigin = gridOrigin;
             Display.viewportDimension = viewportDimension;
 
+            nightOverlay = new Panel(Geometry.ConstructRectangle(gridOrigin, viewportDimension), new Color(0, 0, 0, 50));
+            nightOverlay.Deactivate();
+
             Display.scale = 1.0;
         }
 
@@ -94,11 +111,7 @@ namespace Illumination.Graphics
             }
 
             animationController.Draw(spriteBatch, gameTime);
-
-            if (World.IsNight)
-            {
-                //spriteBatch.Draw(MediaRepository.Textures["Blank"], new Rectangle(viewportShift.X, viewportShift.Y, viewportDimension.Width, viewportDimension.Height), new Color(0, 0, 0, 50));
-            }
+            nightOverlay.Draw(spriteBatch);
         }
 
         public static Animation CreateAnimation(Texture2D texture, Point position, Dimension size, double durationInSec)

@@ -38,20 +38,15 @@ namespace Illumination.Components.Panels {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
+            if (!IsActive)
+            {
+                return;
+            }
+
             base.Draw(spriteBatch, isRelative);
 
             foreach (Component c in components) {
-                if (c is Panel)
-                {
-                    if (((Panel)c).IsActive)
-                    {
-                        c.Draw(spriteBatch, isRelative);
-                    }
-                }
-                else
-                {
-                    c.Draw(spriteBatch, isRelative);
-                }
+                c.Draw(spriteBatch, isRelative);
             }
         }
 

@@ -56,9 +56,6 @@ namespace Illumination {
             gameWindow = new Rectangle(0, 0, this.graphics.GraphicsDevice.Viewport.Width,
                     this.graphics.GraphicsDevice.Viewport.Height);
 
-            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(1000, 560));
-            World.InitalizeWorld(12, 11);
-
             base.Initialize();
 
             MouseController.Initialize();
@@ -67,6 +64,9 @@ namespace Illumination {
             MouseController.AddMouseListener(this);
             MouseController.AddMouseScrollListener(this);
             KeyController.AddKeyListener(this);
+
+            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(1000, 560));
+            World.InitalizeWorld(12, 11);
 
             informationPanel = new InformationPanel(new Rectangle(25, 385, 1000, 150));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
