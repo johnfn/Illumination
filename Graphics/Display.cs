@@ -80,6 +80,7 @@ namespace Illumination.Graphics
 
             nightOverlay = new Panel(Geometry.ConstructRectangle(gridOrigin, viewportDimension), new Color(0, 0, 0, 50));
             nightOverlay.Deactivate();
+            nightOverlay.ConsumesMouseEvent = false;
 
             Display.scale = 1.0;
         }
