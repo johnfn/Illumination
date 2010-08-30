@@ -8,7 +8,7 @@ namespace Illumination {
         /// </summary>
         static void Main(string[] args) {
             using (Illumination game = new Illumination()) {
-                XMLTest.Test();
+                //XMLTest.Test();
                 game.Run();
             }
         }

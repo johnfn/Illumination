@@ -27,7 +27,7 @@ namespace Illumination {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, KeyListener {
+    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, MouseScrollListener, KeyListener {
         GraphicsDeviceManager graphics;
         SpriteBatchRelative spriteBatch;
 
@@ -56,8 +56,8 @@ namespace Illumination {
             gameWindow = new Rectangle(0, 0, this.graphics.GraphicsDevice.Viewport.Width,
                     this.graphics.GraphicsDevice.Viewport.Height);
 
-            Display.InitializeDisplay(10, 10, new Rectangle(0, 25, 1000, 500));
-            World.InitalizeWorld(10, 10);
+            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(gameWindow.Width, gameWindow.Height));
+            World.InitalizeWorld(12, 11);
 
             base.Initialize();
 
@@ -65,6 +65,7 @@ namespace Illumination {
             KeyController.Initialize();
 
             MouseController.AddMouseListener(this);
+            MouseController.AddMouseScrollListener(this);
             KeyController.AddKeyListener(this);
 
             informationPanel = new InformationPanel(new Rectangle(25, 525, 1000, 150));
@@ -162,16 +163,29 @@ namespace Illumination {
 
             if (gameWindow.Contains(new Point(MouseController.CurrentState.X, MouseController.CurrentState.Y))) {
                 if (MouseController.CurrentState.X > 0.95 * gameWindow.Width) {
-                    Display.TranslateViewport(3, 0);
+                    Display.TranslateViewport(6, 0);
                 } else if (MouseController.CurrentState.X < 0.05 * gameWindow.Width) {
-                    Display.TranslateViewport(-3, 0);
+                    Display.TranslateViewport(-6, 0);
                 }
 
                 if (MouseController.CurrentState.Y > 0.95 * gameWindow.Height) {
-                    Display.TranslateViewport(0, 3);
+                    Display.TranslateViewport(0, 6);
                 } else if (MouseController.CurrentState.Y < 0.05 * gameWindow.Height) {
-                    Display.TranslateViewport(0, -3);
+                    Display.TranslateViewport(0, -6);
                 }
+            }
+
+            if (KeyController.CurrentState.IsKeyDown(Keys.Left)) {
+                Display.TranslateViewport(-6, 0);
+            }
+            if (KeyController.CurrentState.IsKeyDown(Keys.Right)) {
+                Display.TranslateViewport(6, 0);
+            }
+            if (KeyController.CurrentState.IsKeyDown(Keys.Up)) {
+                Display.TranslateViewport(0, -6);
+            }
+            if (KeyController.CurrentState.IsKeyDown(Keys.Down)) {
+                Display.TranslateViewport(0, 6);
             }
 
             World.NextTimestep(gameTime);
@@ -202,6 +216,8 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
+
+            Console.WriteLine(gridLocation);
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
@@ -249,6 +265,23 @@ namespace Illumination {
                 }
             }
         }
+
+        public void MouseScrolled(MouseScrollEvent evt) {
+            if (!World.IsNight) {
+                if (evt.Change > 0) {
+                    Display.AlterDimension(1.1);
+                    foreach (Tile t in World.Grid) {
+                        t.UpdateBoundingBox();
+                    }
+                } else {
+                    Display.AlterDimension(0.9);
+                    foreach (Tile t in World.Grid) {
+                        t.UpdateBoundingBox();
+                    }
+                }
+            }
+        }
+
         #region KeyListener Members
 
         public void KeysPressed(KeyEvent evt) {

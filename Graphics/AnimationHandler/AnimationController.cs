@@ -9,7 +9,7 @@ namespace Illumination.Graphics.AnimationHandler
 {
     public class AnimationController
     {
-        HashSet<Animation> animations;
+        public static HashSet<Animation> animations;
         public AnimationController()
         {
             animations = new HashSet<Animation>();

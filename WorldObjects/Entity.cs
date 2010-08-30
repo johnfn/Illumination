@@ -62,6 +62,12 @@ namespace Illumination.WorldObjects {
             base.BoundingBox = Display.GetTextureBoundingBox(texture, gridLocation, 0);
         }
 
+        public abstract Texture2D GetTexture();
+
+        public virtual void UpdateBoundingBox() {
+            base.BoundingBox = Display.GetTextureBoundingBox(GetTexture(), gridLocation, 0);
+        }
+
         public virtual IEnumerable<Point> GetRange() {
             return EMPTY_SET;
         }

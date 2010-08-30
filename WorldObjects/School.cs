@@ -96,7 +96,10 @@ namespace Illumination.WorldObjects {
                     }
                 }
             }
-                
+        }
+
+        public override Texture2D GetTexture() {
+            return MediaRepository.Textures["School"];
         }
     }
 }

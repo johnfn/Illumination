@@ -52,6 +52,10 @@ namespace Illumination.WorldObjects {
             get { return MediaRepository.Textures["Light"]; }
         }
 
+        public override Texture2D GetTexture() {
+            return MediaRepository.Textures["Light"];
+        }
+
         DirectionType direction;
         public DirectionType Direction
         {
