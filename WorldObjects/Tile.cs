@@ -29,6 +29,7 @@ namespace Illumination.WorldObjects {
         TileType type;
         HashSet<Entity> entities;
         bool highlighted;
+        public Point gridLocation;
 
         public HashSet<Entity> Entities {
             get { return entities; }
@@ -44,6 +45,11 @@ namespace Illumination.WorldObjects {
             set { highlighted = value; }
         }
 
+        public Point GridLocation {
+            get { return gridLocation; }
+            set { gridLocation = value; }
+        }
+
         #endregion
 
         #region Constructor
@@ -52,6 +58,7 @@ namespace Illumination.WorldObjects {
             base.BoundingBox = Display.GridLocationToViewport(new Rectangle(gridX, gridY, 1, 1));
             this.type = type;
             this.highlighted = false;
+            this.gridLocation = new Point(gridX, gridY);
             entities = new HashSet<Entity>();
         }
 
@@ -101,5 +108,12 @@ namespace Illumination.WorldObjects {
         }
 
         #endregion
+
+        public void UpdateBoundingBox() {
+            base.BoundingBox = Display.GridLocationToViewport(new Rectangle(gridLocation.X, gridLocation.Y, 1, 1));
+            foreach (Entity e in entities) {
+                e.UpdateBoundingBox();
+            }
+        }
     }
 }

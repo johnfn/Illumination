@@ -19,6 +19,7 @@ namespace Illumination.Logic.MouseHandler {
 
         private static LinkedList<MouseListener> mouseListeners;
         private static LinkedList<MouseMotionListener> mouseMotionListeners;
+        private static LinkedList<MouseScrollListener> mouseScrollListeners;
 
         public static MouseState CurrentState {
             get { return currentState; }
@@ -30,6 +31,7 @@ namespace Illumination.Logic.MouseHandler {
             mousePressed = false;
             mouseListeners = new LinkedList<MouseListener>();
             mouseMotionListeners = new LinkedList<MouseMotionListener>();
+            mouseScrollListeners = new LinkedList<MouseScrollListener>();
         }
 
         public static void AddMouseListener(MouseListener ml) {
@@ -46,6 +48,14 @@ namespace Illumination.Logic.MouseHandler {
 
         public static void RemoveMouseMotionListener(MouseMotionListener mml) {
             mouseMotionListeners.Remove(mml);
+        }
+
+        public static void AddMouseScrollListener(MouseScrollListener msl) {
+            mouseScrollListeners.AddFirst(msl);
+        }
+
+        public static void RemoveMouseScrollListener(MouseScrollListener msl) {
+            mouseScrollListeners.Remove(msl);
         }
 
         public static void Update() {
@@ -100,6 +110,10 @@ namespace Illumination.Logic.MouseHandler {
             if (previousState.RightButton == ButtonState.Released && currentState.RightButton == ButtonState.Pressed) {
                 FireMousePressed(new MouseEvent(startLocation, MouseEvent.MouseButton.Right, modifiers));
             }
+
+            if (previousState.ScrollWheelValue != currentState.ScrollWheelValue) {
+                FireMouseScrolled(new MouseScrollEvent(currentState.ScrollWheelValue - previousState.ScrollWheelValue));
+            }
         }
 
         private static void FireMouseMoved(MouseEvent evt) {
@@ -139,6 +153,14 @@ namespace Illumination.Logic.MouseHandler {
                 if (evt.Consumed)
                     break;
                 ml.MouseClicked(evt);
+            }
+        }
+
+        private static void FireMouseScrolled(MouseScrollEvent evt) {
+            foreach (MouseScrollListener msl in mouseScrollListeners) {
+                if (evt.Consumed)
+                    break;
+                msl.MouseScrolled(evt);
             }
         }
     }

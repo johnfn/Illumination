@@ -56,5 +56,9 @@ namespace Illumination.WorldObjects
 
             spriteBatch.Draw(Texture, BoundingBox, Color.White);
         }
+
+        public override Texture2D GetTexture() {
+            return MediaRepository.Textures["TreeOfLight"];
+        }
     }
 }

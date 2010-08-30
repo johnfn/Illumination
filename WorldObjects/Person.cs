@@ -223,6 +223,10 @@ namespace Illumination.WorldObjects {
             }
         };
 
+        public override Texture2D GetTexture() {
+            return texturesMap[profession];
+        }
+
         public Dictionary<Point, SearchNode> ComputeMovementRange() {
             Dictionary<Point, SearchNode> possibleLocations = new Dictionary<Point, SearchNode>();
             

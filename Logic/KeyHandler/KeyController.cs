@@ -9,6 +9,10 @@ namespace Illumination.Logic.KeyHandler {
         private static KeyboardState previousState;
         private static KeyboardState currentState;
 
+        public static KeyboardState CurrentState {
+            get { return currentState; }
+        }
+
         private static HashSet <Keys> previousKeySet;
 
         private static HashSet <KeyListener> keyListeners;
