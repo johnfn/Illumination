@@ -25,8 +25,7 @@ namespace Illumination.WorldObjects
         static Factory()
         {
             effects = new Dictionary<LightSequence, DoEffect>();
-
-            //effects.Add(new LightSequence("Y"), StandardEffect);
+            effects.Add(new LightSequence("*"), StandardEffect);
         }
 
         public Factory() { /* Default constructor */ }
@@ -89,6 +88,12 @@ namespace Illumination.WorldObjects
         public override Texture2D GetTexture()
         {
             return MediaRepository.Textures["Factory"];
+        }
+
+        private static bool StandardEffect(Building building) {
+            ((Factory) building).EarnMoney(5);
+
+            return false;
         }
     }
 }

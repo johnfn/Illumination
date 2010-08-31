@@ -69,7 +69,7 @@ namespace Illumination.WorldObjects {
             return points;
         }
         
-        public static void StandardEffect(Building building)
+        private static bool StandardEffect(Building building)
         {
             Rectangle boundingBox = new Rectangle(building.GridLocation.Left - EFFECT_RANGE + 1, building.GridLocation.Top - EFFECT_RANGE + 1,
                 building.GridLocation.Width + EFFECT_RANGE * 2 - 2, building.GridLocation.Height + EFFECT_RANGE * 2 - 2);
@@ -102,6 +102,8 @@ namespace Illumination.WorldObjects {
                     }
                 }
             }
+
+            return true;
         }
 
         public override Texture2D GetTexture() {
