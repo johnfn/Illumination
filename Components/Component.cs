@@ -6,18 +6,25 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Data;
 using Illumination.Graphics;
+using Illumination.Utility;
 
 namespace Illumination.Components {
     public abstract class Component {
-        protected Point origin;
+        protected Point relativePosition;
+        public Point RelativePosition {
+            get { return relativePosition; }
+            set { relativePosition = value; }
+        }
+
         protected Rectangle boundingBox;
         protected Texture2D background;
         protected Color color;
         protected bool isActive = true;
+        protected Component parent = null;
 
-        public Point Origin {
-            get { return origin; }
-            set { origin = value; }
+        public Component Parent {
+            get { return parent; }
+            set { parent = value; }
         }
 
         public bool IsActive {
@@ -45,31 +52,26 @@ namespace Illumination.Components {
             this.background = background;
             this.boundingBox = boundingBox;
             this.color = color;
-            
-            origin = new Point(0, 0);
+
+            relativePosition = new Point(boundingBox.X, boundingBox.Y);
         }
 
         public Component(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) { }
 
         /* Called when bounding box has changed */
         public virtual void Update() {
-            /* Update position depending fields */
+            if (parent != null) {
+                Point absolutePosition = Geometry.Translate(relativePosition, parent.boundingBox.X, parent.boundingBox.Y);
+                boundingBox = new Rectangle(absolutePosition.X, absolutePosition.Y, boundingBox.Width, boundingBox.Height);
+            }
         }
 
         public virtual void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
-            if (!isRelative)
-            {
-                ((SpriteBatch)spriteBatch).Draw(background, boundingBox, color);
-            }
-            else
-            {
+            if (!isRelative) {
+                spriteBatch.DrawAbsolute(background, boundingBox, color);
+            } else {
                 spriteBatch.Draw(background, boundingBox, color);
             }
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            Draw(((SpriteBatchRelative)spriteBatch), false);
         }
 
         public virtual void Activate() {

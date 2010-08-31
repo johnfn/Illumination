@@ -44,6 +44,10 @@ namespace Illumination.Utility {
             return new Point(p.X + x, p.Y + y);
         }
 
+        public static Vector2 Translate(Vector2 v, int x, int y) {
+            return new Vector2(v.X + x, v.Y + y);
+        }
+
         public static Rectangle ConstructRectangle(Point p, Dimension d)
         {
             return new Rectangle(p.X, p.Y, d.Width, d.Height);
@@ -57,6 +61,10 @@ namespace Illumination.Utility {
 
         public static Point Scale(Point p, double scale) {
             return new Point((int) (p.X * scale), (int) (p.Y * scale));
+        }
+
+        public static Vector2 Scale(Vector2 v, double scale) {
+            return new Vector2((float) (v.X * scale), (float) (v.Y * scale));
         }
 
         public static Vector2 CenterText(string text, SpriteFont font, Rectangle boundingBox)

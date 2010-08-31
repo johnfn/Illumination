@@ -25,19 +25,18 @@ namespace Illumination.Components
             this.frontColor = frontColor;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative)
         {
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, isRelative);
 
             Rectangle frontBarBoundingBox = BoundingBox;
             frontBarBoundingBox.Width = (int)(frontBarBoundingBox.Width * fraction);
 
-            spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
-        }
-
-        public override void Update()
-        {
-            base.Update();
+            if (isRelative) {
+                spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
+            } else {
+                spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
+            }
         }
     }
 }

@@ -191,8 +191,8 @@ namespace Illumination {
 
             Display.DrawWorld(spriteBatch, gameTime);
 
-            informationPanel.Draw(spriteBatch);
-            menuBar.Draw(spriteBatch);
+            informationPanel.Draw(spriteBatch, false);
+            menuBar.Draw(spriteBatch, false);
 
             spriteBatch.End();
 
@@ -203,8 +203,6 @@ namespace Illumination {
 
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
-
-            Console.WriteLine(gridLocation);
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {

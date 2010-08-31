@@ -12,7 +12,6 @@ using Illumination.Logic.MouseHandler;
 namespace Illumination.Components.Panels {
     public class Panel : Component, MouseListener {
         protected HashSet <Component> components;
-        protected Point relativePosition;
         protected bool consumesMouseEvent = true;
 
         public Panel(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.White) { }
@@ -22,7 +21,6 @@ namespace Illumination.Components.Panels {
         public Panel(Texture2D background, Rectangle boundingBox, Color color) : base(background, boundingBox, color) {
             components = new HashSet<Component>();
             relativePosition = new Point(boundingBox.X, boundingBox.Y);
-            Origin = new Point(boundingBox.X, boundingBox.Y);
 
             MouseController.AddMouseListener(this);
         }
@@ -32,14 +30,8 @@ namespace Illumination.Components.Panels {
             set { consumesMouseEvent = value; }
         }
 
-        public Point RelativePosition {
-            get { return relativePosition; }
-            set { relativePosition = value; }
-        }
-
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
-            if (!IsActive)
-            {
+            if (!IsActive) {
                 return;
             }
 
@@ -51,7 +43,9 @@ namespace Illumination.Components.Panels {
         }
 
         public void AddComponent(Component c) {
-            UpdateComponent(c);
+            c.Parent = this;
+
+            c.Update();
             components.Add(c);
         }
 
@@ -60,22 +54,9 @@ namespace Illumination.Components.Panels {
         }
 
         public override void Update() {
+            base.Update();
             foreach (Component c in components) {
-                UpdateComponent(c);
-            }
-        }
-
-        public void UpdateComponent(Component c) {
-            c.BoundingBox = Geometry.Translate(c.BoundingBox, this.Origin.X, this.Origin.Y);
-            c.Origin = this.Origin;
-
-            if (c is Panel)
-            {
-                ((Panel)c).Update();
-            }
-            else if (c is TextBox)
-            {
-                ((TextBox)c).Update();
+                c.Update();
             }
         }
 

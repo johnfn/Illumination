@@ -36,10 +36,6 @@ namespace Illumination.Components {
             actionListeners.Remove(al);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
-            base.Draw(spriteBatch);
-        }
-
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseClicked(MouseEvent evt) {
