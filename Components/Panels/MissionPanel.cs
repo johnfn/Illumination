@@ -7,23 +7,20 @@ using Illumination.Logic;
 using Microsoft.Xna.Framework.Graphics;
 using Illumination.Logic.Missions;
 using Microsoft.Xna.Framework;
+using Illumination.Graphics;
 
-namespace Illumination.Components.Panels
-{
-    public class MissionPanel : Panel 
-    {
+namespace Illumination.Components.Panels {
+    public class MissionPanel : Panel {
         TextBox[] missionBoxes;
 
         public MissionPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite)
-        {
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
             missionBoxes = new TextBox[World.CurrentMission.GetNumConditions()];
 
             int boxHeight = boundingBox.Height / World.CurrentMission.GetNumConditions();
 
             int index = 0;
-            foreach (Objective objective in World.CurrentMission.PrimaryObjectives)
-            {
+            foreach (Objective objective in World.CurrentMission.PrimaryObjectives) {
                 missionBoxes[index] = new TextBox(new Rectangle(0, index * boxHeight, boundingBox.Width, boxHeight),
                     objective.Description, Color.Black);
                 missionBoxes[index].Color = new Color(255, 255, 255, 100);
@@ -34,29 +31,22 @@ namespace Illumination.Components.Panels
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
             int index = 0;
-            foreach (Objective objective in World.CurrentMission.PrimaryObjectives)
-            {
+            foreach (Objective objective in World.CurrentMission.PrimaryObjectives) {
                 Objective.StatusType status = objective.GetStatus();
-                if (status == Objective.StatusType.Failure)
-                {
+                if (status == Objective.StatusType.Failure) {
                     missionBoxes[index].Color = new Color(255, 0, 0, 100);
-                }
-                else if (status == Objective.StatusType.Success)
-                {
+                } else if (status == Objective.StatusType.Success) {
                     missionBoxes[index].Color = new Color(0, 0, 255, 100);
-                }
-                else
-                {
-                    missionBoxes[index].Color = new Color(255,255,255,100);
+                } else {
+                    missionBoxes[index].Color = new Color(255, 255, 255, 100);
                 }
 
                 index++;
             }
 
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, isRelative);
         }
     }
 }

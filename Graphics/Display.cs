@@ -112,7 +112,7 @@ namespace Illumination.Graphics
             }
 
             animationController.Draw(spriteBatch, gameTime);
-            nightOverlay.Draw(spriteBatch);
+            nightOverlay.Draw(spriteBatch, false);
         }
 
         public static Animation CreateAnimation(Texture2D texture, Point position, Dimension size, double durationInSec)
@@ -215,9 +215,7 @@ namespace Illumination.Graphics
 
         public static void ScaleView(double multiplier) {
             scale *= multiplier;
-
-            viewportShift.X = (int) (viewportShift.X * multiplier);
-            viewportShift.Y = (int) (viewportShift.Y * multiplier);
+            viewportShift = Geometry.Scale(viewportShift, multiplier);
         }
     }
 }

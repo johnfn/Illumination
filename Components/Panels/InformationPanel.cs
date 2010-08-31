@@ -9,6 +9,7 @@ using Illumination.Utility;
 using Illumination.WorldObjects;
 using Illumination.Logic;
 using Illumination.Logic.Missions;
+using Illumination.Graphics;
 
 namespace Illumination.Components.Panels {
     public class InformationPanel : Panel {
@@ -28,9 +29,10 @@ namespace Illumination.Components.Panels {
             directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200), World.ChangeDirection);
             professionPanel = new ProfessionPanel(new Rectangle(0, 110, 250, 50));
             missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White);
-            missionPanel = new MissionPanel(new Rectangle(575, 35, 375, 120));  
+            missionPanel = new MissionPanel(new Rectangle(575, 35, 375, 120));
 
             AddComponent(detailPanel);
+
             AddComponent(missionResultBox);
             AddComponent(missionPanel);
 
@@ -40,7 +42,7 @@ namespace Illumination.Components.Panels {
             this.consumesMouseEvent = false;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative)
         {
             if (World.CurrentMission.GetMissionStatus() == Objective.StatusType.Failure)
             {
@@ -53,7 +55,7 @@ namespace Illumination.Components.Panels {
                 missionResultBox.Text = "Mission Complete!";
             }
 
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, isRelative);
         }
 
         public void DisplayPerson(Person p) {

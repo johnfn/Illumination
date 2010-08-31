@@ -53,14 +53,14 @@ namespace Illumination.Components.Panels
             dayNightButton.AddActionListener(this);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative)
         {
             dayNightButton.Text = World.IsNight ? "Begin Day" : "Begin Night";
             timeBar.Fraction = World.TimeLeft / World.DAY_TIME_LIMIT;
             dayBox.Text = "Day " + World.DayCount.ToString();
             moneyNumBox.Text = "$" + World.Money.ToString();
 
-            base.Draw(spriteBatch);
+            base.Draw(spriteBatch, isRelative);
         }
 
         public void ActionPerformed(ActionEvent evt)
