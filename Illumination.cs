@@ -85,7 +85,7 @@ namespace Illumination {
 
             World.AddEntity(new School(6, 6));
             World.AddEntity(new Factory(8, 3));
-           
+            World.AddEntity(new ResearchCenter(1, 7));
 
             Random random = new Random();
             for (int n = 2; n <= 3; n++) {
@@ -118,40 +118,6 @@ namespace Illumination {
             m2.Reflection = Mirror.ReflectionType.NorthEast;
             World.AddEntity(m1);
             World.AddEntity(m2);
-
-            //Animation a2 = Display.CreateAnimation(MediaRepository.Textures["Worker"], new Point(p2.BoundingBox.X, p2.BoundingBox.Y), new Dimension(p2.BoundingBox.Width, p2.BoundingBox.Height), 2);
-            //a2.AddTranslationFrame(new Point(p2.BoundingBox.X + Display.TileWidth, p2.BoundingBox.Y), 2);
-
-            /* Frame by frame manipulation demo 
-            Animation a1 = Display.CreateAnimation(MediaRepository.Textures["Blank"], new Point(25, 25), new Dimension(50, 50), 5.5);
-            a1.SetRelativeOrigin(new Vector2(25, 25));
-
-            a1.AddTranslationFrame(new Point(25, 175), 0, Animation.EaseType.Out);
-            a1.AddTranslationFrame(new Point(425, 175), 2);
-            a1.AddTranslationFrame(new Point(125, 325), 3, Animation.EaseType.In);
-            
-            a1.AddExtensionFrame(new Dimension(50, 50), 2);
-            a1.AddExtensionFrame(new Dimension(150, 150), 3);
-            
-            a1.AddColorFrame(Color.White, 2);
-            a1.AddColorFrame(new Color(0, 0, 255, 0), 5); // Time order does not matter
-            a1.AddColorFrame(new Color(0, 0, 255, 255), 3);
-            
-            a1.AddRotationFrame((float)(Math.PI * 5), 3);
-            a1.AddRotationFrame((float)(Math.PI * 0), 5);
-
-            a1.AddEventFrame(new TrickyHelloWorld(), 2);
-
-            // Ease in and out demo + Sprite sheet demo 
-            Animation a3 = Display.CreateAnimation(MediaRepository.Sheets["Glow"], new Point(0, 0), new Dimension(100, 100), 12, 0.1);
-            a3.AddTranslationFrame(new Point(0, 0), 0, Animation.EaseType.InAndOut);
-            a3.AddTranslationFrame(new Point(400, 0), 3, Animation.EaseType.InAndOut);
-            a3.AddTranslationFrame(new Point(0, 0), 6, Animation.EaseType.InAndOut);
-            a3.AddTranslationFrame(new Point(400, 0), 9, Animation.EaseType.InAndOut);
-
-            a3.AddColorFrame(Color.White, 9);
-            a3.AddColorFrame(Color.TransparentWhite, 12);
-            */
         }
 
         /// <summary>
