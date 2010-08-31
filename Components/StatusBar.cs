@@ -34,6 +34,10 @@ namespace Illumination.Components
 
             spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
         }
-        
+
+        public override void Update()
+        {
+            base.Update();
+        }
     }
 }

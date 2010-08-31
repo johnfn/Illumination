@@ -53,6 +53,7 @@ namespace Illumination.Data {
             Textures.Add("TreeOfLight", gameInstance.Content.Load<Texture2D>("TreeOfLight"));
 
             Textures.Add("School", gameInstance.Content.Load<Texture2D>("School"));
+            Textures.Add("Factory", gameInstance.Content.Load<Texture2D>("Factory"));
 
             Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
 

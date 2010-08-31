@@ -45,7 +45,7 @@ namespace Illumination.WorldObjects
 
         public override void Draw(SpriteBatchRelative spriteBatch)
         {
-            spriteBatch.Draw(GetTexture(), BoundingBox, Color.Gray);
+            spriteBatch.Draw(GetTexture(), BoundingBox, Color.White);
         }
 
         protected override Dictionary<LightSequence, Building.DoEffect> GetEffects()
@@ -88,7 +88,7 @@ namespace Illumination.WorldObjects
         
         public override Texture2D GetTexture()
         {
-            return MediaRepository.Textures["School"];
+            return MediaRepository.Textures["Factory"];
         }
     }
 }
