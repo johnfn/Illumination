@@ -140,25 +140,25 @@ namespace Illumination.WorldObjects {
             switch (direction)
             {
                 case DirectionType.North:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_N"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_N"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.East:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_E"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_E"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.South:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_S"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_S"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.West:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_W"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
             }
 
-            spriteBatch.Draw(Texture, BoundingBox, Color.White);
+            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {
                 Rectangle noticeBox = new Rectangle(BoundingBox.X, BoundingBox.Y, BoundingBox.Width / 2, BoundingBox.Height / 2);
-                spriteBatch.Draw(MediaRepository.Textures["Notice"], noticeBox, Color.Yellow);
+                spriteBatch.DrawRelative(MediaRepository.Textures["Notice"], noticeBox, Color.Yellow, Layer.Depth["Notice"]);
             }
         }
 

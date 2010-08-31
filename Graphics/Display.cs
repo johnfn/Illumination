@@ -22,7 +22,7 @@ namespace Illumination.Graphics
             this.Width = width;
             this.Height = height;
         }
-    };
+    }
 
     public static class Display {
         static AnimationController animationController = new AnimationController();
@@ -107,7 +107,7 @@ namespace Illumination.Graphics
 
             if (World.SelectedEntities.Count > 0) {
                 foreach (Entity e in World.SelectedEntities) {
-                    spriteBatch.Draw(MediaRepository.Textures["TileBorder"], Display.GridLocationToViewport(e.GridLocation), Color.White);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["TileBorder"], Display.GridLocationToViewport(e.GridLocation), Color.White, Layer.Depth["Border"]);
                 }
             }
 

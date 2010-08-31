@@ -42,7 +42,7 @@ namespace Illumination.WorldObjects {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.Draw(Texture, BoundingBox, Color.White);
+            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
         }
 
         protected override Dictionary<LightSequence, Building.DoEffect> GetEffects() {

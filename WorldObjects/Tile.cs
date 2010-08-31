@@ -69,14 +69,14 @@ namespace Illumination.WorldObjects {
         public override void Draw(SpriteBatchRelative spriteBatch) {
             switch (type) {
                 case TileType.Grass:
-                    spriteBatch.Draw(MediaRepository.Textures["GrassTile"], BoundingBox, Color.White);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["GrassTile"], BoundingBox, new Color(255, 255, 255, 100), Layer.Depth["Tile"]);
                     break;
                 case TileType.Water:
-                    spriteBatch.Draw(MediaRepository.Textures["WaterTile"], BoundingBox, Color.White);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["WaterTile"], BoundingBox, new Color(255, 255, 255, 100), Layer.Depth["Tile"]);
                     break;
             }
             if (highlighted) {
-                spriteBatch.Draw(MediaRepository.Textures["BlankTile"], BoundingBox, new Color(0, 255, 0, 150));
+                spriteBatch.DrawRelative(MediaRepository.Textures["BlankTile"], BoundingBox, new Color(0, 255, 0, 150), Layer.Depth["Highlight"]);
             }
 
             foreach (Entity entity in entities) {

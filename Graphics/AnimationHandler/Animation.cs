@@ -181,12 +181,12 @@ namespace Illumination.Graphics.AnimationHandler
 
             if (image == ImageType.Texture)
             {
-                spriteBatch.Draw(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, 0);
+                spriteBatch.DrawRelative(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, 0);
             }
             else if (image == ImageType.Sheet)
             {
                 int index = (int)(elapsedTotalSec / spriteFrameDuration) % spriteSheet.Count; 
-                spriteBatch.Draw(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
+                spriteBatch.DrawRelative(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
             }
             else if (image == ImageType.Component)
             {

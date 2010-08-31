@@ -41,20 +41,20 @@ namespace Illumination.WorldObjects
             switch (direction)
             {
                 case DirectionType.North:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_N"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_N"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.East:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_E"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_E"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.South:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_S"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_S"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
                 case DirectionType.West:
-                    spriteBatch.Draw(MediaRepository.Textures["Arrow_W"], arrowBox, arrowColor);
+                    spriteBatch.DrawRelative(MediaRepository.Textures["Arrow_W"], arrowBox, arrowColor, Layer.Depth["Arrow"]);
                     break;
             }
 
-            spriteBatch.Draw(Texture, BoundingBox, Color.White);
+            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
         }
 
         public override Texture2D GetTexture() {

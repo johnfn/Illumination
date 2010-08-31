@@ -33,9 +33,9 @@ namespace Illumination.Components
             frontBarBoundingBox.Width = (int)(frontBarBoundingBox.Width * fraction);
 
             if (isRelative) {
-                spriteBatch.Draw(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
+                spriteBatch.DrawRelative(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor, layerDepth);
             } else {
-                spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
+                spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor, layerDepth);
             }
         }
     }

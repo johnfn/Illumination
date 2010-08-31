@@ -75,7 +75,7 @@ namespace Illumination.WorldObjects {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.Draw(Texture, BoundingBox, colorTable[type]);
+        //    spriteBatch.Draw(Texture, BoundingBox, colorTable[type]);
         }
     }
 }

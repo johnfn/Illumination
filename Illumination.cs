@@ -67,6 +67,7 @@ namespace Illumination {
 
             Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(1000, 700));
             World.InitalizeWorld(12, 11);
+            Layer.Initialize();
 
             informationPanel = new InformationPanel(new Rectangle(25, 530, 1000, 150));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
@@ -118,6 +119,7 @@ namespace Illumination {
             m2.Reflection = Mirror.ReflectionType.NorthEast;
             World.AddEntity(m1);
             World.AddEntity(m2);
+
         }
 
         /// <summary>
@@ -187,9 +189,13 @@ namespace Illumination {
         protected override void Draw(GameTime gameTime) {
             spriteBatch.GraphicsDevice.Clear(World.IsNight ? Color.SlateBlue : Color.SkyBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, Layer.SortMode, SaveStateMode.SaveState);
 
             Display.DrawWorld(spriteBatch, gameTime);
+
+            spriteBatch.End();
+
+            spriteBatch.Begin();
 
             informationPanel.Draw(spriteBatch, false);
             menuBar.Draw(spriteBatch, false);

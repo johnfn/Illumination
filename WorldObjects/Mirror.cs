@@ -52,7 +52,7 @@ namespace Illumination.WorldObjects
 
         public override void Draw(SpriteBatchRelative spriteBatch)
         {
-            spriteBatch.Draw(GetTexture(), BoundingBox, Color.White);
+            spriteBatch.DrawRelative(GetTexture(), BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
         }
 
         public Entity.DirectionType Reflect(Entity.DirectionType lightIn)

@@ -21,6 +21,7 @@ namespace Illumination.Components {
         protected Color color;
         protected bool isActive = true;
         protected Component parent = null;
+        protected float layerDepth;
 
         public Component Parent {
             get { return parent; }
@@ -68,9 +69,9 @@ namespace Illumination.Components {
 
         public virtual void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
             if (!isRelative) {
-                spriteBatch.DrawAbsolute(background, boundingBox, color);
+                spriteBatch.DrawAbsolute(background, boundingBox, color, layerDepth);
             } else {
-                spriteBatch.Draw(background, boundingBox, color);
+                spriteBatch.DrawRelative(background, boundingBox, color, layerDepth);
             }
         }
 
