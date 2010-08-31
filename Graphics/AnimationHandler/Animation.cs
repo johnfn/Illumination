@@ -194,7 +194,10 @@ namespace Illumination.Graphics.AnimationHandler
                 component.Update();
                 component.Draw(spriteBatch, true);
             }
+            
+            elapsedTotalSec += gameTime.ElapsedGameTime.Milliseconds / 1000.0;
 
+            /* Events will be triggered one frame earlier. */
             if (!eventSequence.Empty())
             {
                 EventFrame eventFrame = eventSequence.InterpolateFrame(elapsedTotalSec);
@@ -204,8 +207,6 @@ namespace Illumination.Graphics.AnimationHandler
                     eventFrame.customEvent.MarkTriggered();
                 }
             }
-
-            elapsedTotalSec += gameTime.ElapsedGameTime.Milliseconds / 1000.0;
 
             return elapsedTotalSec <= animationDuration;
         }

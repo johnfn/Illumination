@@ -31,7 +31,7 @@ namespace Illumination.Graphics
 
             public override void DoEvent(Animation animation)
             {
-                double timeGap = animation.ElapsedTotalSec - targetTime + 0.0160003;
+                double timeGap = animation.ElapsedTotalSec - targetTime;
 
                 Animation newAnimation = World.CreateLight(location, lightColor, direction);
                 newAnimation.ElapsedTotalSec = timeGap;
