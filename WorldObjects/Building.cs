@@ -9,7 +9,8 @@ namespace Illumination.WorldObjects {
 
         HashSet <LightSequence> triggeredSequences;
 
-        protected delegate void DoEffect(Building triggeringBuilding);
+        // Returns whether to mark effect as completed or not
+        protected delegate bool DoEffect(Building triggeringBuilding);
 
         public Building() : base() { /* Default constructor */ }
 
@@ -54,8 +55,9 @@ namespace Illumination.WorldObjects {
             Dictionary<LightSequence, DoEffect> effects = GetEffects();
             foreach (LightSequence sequence in effects.Keys) {
                 if (lightBeams.IsSubsequence(sequence) && !triggeredSequences.Contains(sequence)) {
-                    effects[sequence](this);
-                    triggeredSequences.Add(sequence);
+                    if (effects[sequence](this)) {
+                        triggeredSequences.Add(sequence);
+                    }
                 }
             }
         }

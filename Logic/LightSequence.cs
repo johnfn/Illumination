@@ -24,8 +24,7 @@ namespace Illumination.Logic
             this.frequencies = new Dictionary<Light.LightType, int>(frequencies);
         }
 
-        public Dictionary<Light.LightType, int> Frequencies
-        {
+        public Dictionary<Light.LightType, int> Frequencies {
             get { return frequencies; }
         }
 
@@ -54,12 +53,20 @@ namespace Illumination.Logic
 
         public bool IsSubsequence(LightSequence otherSequence)
         {
+            int surplus = frequencies[Light.LightType.Gray];
+
             for (Light.LightType color = 0; color < Light.LightType.SIZE; color++)
             {
+                if (color == Light.LightType.Gray)
+                    continue;
                 if (frequencies[color] < otherSequence.frequencies[color])
                     return false;
+
+                if (color != Light.LightType.White) {
+                    surplus += frequencies[color] - otherSequence.frequencies[color];
+                }
             }
-            return true;
+            return surplus >= otherSequence.frequencies[Light.LightType.Gray];
         }
 
         public void ResetAllFrequencies() {

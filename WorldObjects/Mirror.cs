@@ -38,13 +38,8 @@ namespace Illumination.WorldObjects
             texturesMap[ReflectionType.SouthWest] = MediaRepository.Textures["Mirror_SW"];
         }
 
-        public Texture2D Texture
-        {
-            get { return texturesMap[reflection]; }
-        }
-
         public override Texture2D GetTexture() {
-            return Texture;
+            return texturesMap[reflection];;
         }
 
         public Mirror() : base() { /* Default Constructor */ }
@@ -57,7 +52,7 @@ namespace Illumination.WorldObjects
 
         public override void Draw(SpriteBatchRelative spriteBatch)
         {
-            spriteBatch.Draw(Texture, BoundingBox, Color.White);
+            spriteBatch.Draw(GetTexture(), BoundingBox, Color.White);
         }
 
         public Entity.DirectionType Reflect(Entity.DirectionType lightIn)

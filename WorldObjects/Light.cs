@@ -33,7 +33,7 @@ namespace Illumination.WorldObjects {
             shortNames = new Dictionary<char, LightType>();
 
             shortNames['B'] = LightType.Blue;
-            shortNames['g'] = LightType.Gray;
+            shortNames['*'] = LightType.Gray;
             shortNames['Y'] = LightType.Yellow;
             shortNames['W'] = LightType.White;
             shortNames['G'] = LightType.Green;
@@ -53,7 +53,7 @@ namespace Illumination.WorldObjects {
         }
 
         public override Texture2D GetTexture() {
-            return MediaRepository.Textures["Light"];
+            return Texture;
         }
 
         DirectionType direction;
