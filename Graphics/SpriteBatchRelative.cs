@@ -11,7 +11,7 @@ namespace Illumination.Graphics {
         public SpriteBatchRelative(GraphicsDevice device) : base(device) { }
 
         public void DrawRelative(Texture2D texture, Rectangle destinationRectangle, Color color, float layerDepth) {
-            DrawRelative(texture, transform(destinationRectangle), null, color, 0, new Vector2(0, 0), SpriteEffects.None, layerDepth);
+            DrawRelative(texture, destinationRectangle, null, color, 0, new Vector2(0, 0), SpriteEffects.None, layerDepth);
         }
 
         public void DrawAbsolute(Texture2D texture, Rectangle destinationRectangle, Color color, float layerDepth) {
