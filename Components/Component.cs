@@ -21,7 +21,7 @@ namespace Illumination.Components {
         protected Color color;
         protected bool isActive = true;
         protected Component parent = null;
-        protected float layerDepth;
+        protected float layerDepth = 1;
 
         public Component Parent {
             get { return parent; }

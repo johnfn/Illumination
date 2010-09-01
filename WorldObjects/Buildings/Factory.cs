@@ -80,7 +80,7 @@ namespace Illumination.WorldObjects
             textRect.Height /= 4;
             textRect = Geometry.Translate(textRect, textRect.Width * 2, textRect.Height);
             
-            TextBox textBox = new TextBox(textRect, "+$" + increment.ToString(), Color.White);
+            TextBox textBox = new TextBox(textRect, "+$" + increment.ToString(), Color.White, TextBox.AlignType.Center);
             Animation effect = Display.CreateAnimation(textBox, 1);
             effect.AddTranslationFrame(new Point(textRect.X, textRect.Y - textRect.Height), 1, Animation.EaseType.In);
         }

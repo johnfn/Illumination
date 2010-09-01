@@ -18,26 +18,29 @@ namespace Illumination.Components.Panels {
         // Panels in the detailPanel
         Panel directionPanel;
         Panel professionPanel;
-        //Panel personStatusPanel;
-        //Panel buildingStatusPanel;
+        Panel personStatusPanel;
+        Panel buildingStatusPanel;
         TextBox missionResultBox;
         Panel missionPanel;
 
         public InformationPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
             detailPanel = new Panel(new Rectangle(0, 0, 400, 150), new Color(255, 255, 255, 100));
-            directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 200), World.ChangeDirection);
+            directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 150), World.ChangeDirection);
             professionPanel = new ProfessionPanel(new Rectangle(0, 110, 250, 50));
-            missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White);
+            missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White, TextBox.AlignType.Center);
             missionPanel = new MissionPanel(new Rectangle(575, 35, 375, 120));
+            personStatusPanel = new PersonPanel(new Rectangle(200, 0, 200, 150));
+            buildingStatusPanel = new BuildingPanel(new Rectangle(200, 0, 200, 150));
 
             AddComponent(detailPanel);
-
             AddComponent(missionResultBox);
             AddComponent(missionPanel);
 
             detailPanel.AddComponent(directionPanel);
             detailPanel.AddComponent(professionPanel);
+            detailPanel.AddComponent(personStatusPanel);
+            detailPanel.AddComponent(buildingStatusPanel);
 
             this.consumesMouseEvent = false;
         }
@@ -65,6 +68,8 @@ namespace Illumination.Components.Panels {
         public void UpdateDetailPanel() {
             directionPanel.Deactivate();
             professionPanel.Deactivate();
+            personStatusPanel.Deactivate();
+            buildingStatusPanel.Deactivate();
 
             if (World.SelectedEntities.Count > 0) {
                 World.EntityType entityType = World.SelectedEntityType;
@@ -75,6 +80,9 @@ namespace Illumination.Components.Panels {
                         if (!thisPerson.IsEducated || thisPerson.Profession != Person.ProfessionType.Worker) {
                             activateProfessionPanel = false;
                         }
+                    }
+                    if (World.SelectedEntities.Count == 1) {
+                        personStatusPanel.Activate();
                     }
                     directionPanel.Activate();
                     if (activateProfessionPanel) {
@@ -93,7 +101,9 @@ namespace Illumination.Components.Panels {
                             continue;
                         }
                     }
-                    /* Something */
+                    if (World.SelectedEntities.Count == 1) {
+                        buildingStatusPanel.Activate();
+                    }
                 }
             }
         }

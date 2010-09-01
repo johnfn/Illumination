@@ -24,7 +24,7 @@ namespace Illumination.WorldObjects {
             Female
         }
 
-        const int EDUCATION_MAX = 3;
+        public const int EDUCATION_MAX = 3;
 
         #region Properties
 

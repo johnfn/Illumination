@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Illumination.Graphics;
 using Microsoft.Xna.Framework.Graphics;
+using Illumination.Components;
 
 namespace Illumination.Utility {
     static class Geometry {
@@ -67,12 +68,26 @@ namespace Illumination.Utility {
             return new Vector2((float) (v.X * scale), (float) (v.Y * scale));
         }
 
-        public static Vector2 CenterText(string text, SpriteFont font, Rectangle boundingBox)
+        public static Vector2 AlignText(string text, SpriteFont font, Rectangle boundingBox, TextBox.AlignType alignType)
         {
             Vector2 textSize = font.MeasureString(text);
-            int x = (int)(boundingBox.X + boundingBox.Width / 2 - textSize.X / 2);
-            int y = (int)(boundingBox.Y + boundingBox.Height / 2 - textSize.Y / 2);
-            return new Vector2(x, y);
+            Vector2 location = new Vector2();
+            location.Y = (int)(boundingBox.Y + boundingBox.Height / 2 - textSize.Y / 2);
+
+            switch (alignType)
+            {
+                case TextBox.AlignType.Center:
+                    location.X = (int)(boundingBox.X + boundingBox.Width / 2 - textSize.X / 2);
+                    break;
+                case TextBox.AlignType.Left:
+                    location.X = boundingBox.Left;
+                    break;
+                case TextBox.AlignType.Right:
+                    location.X = boundingBox.Right - textSize.X;
+                    break;
+            }
+
+            return location;
         }
     }
 }

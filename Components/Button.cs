@@ -21,7 +21,7 @@ namespace Illumination.Components {
             : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor) { }
 
         public Button(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor)
-            : base(background, boundingBox, color, text, font, textColor)
+            : base(background, boundingBox, color, text, font, textColor, AlignType.Center)
         {
             MouseController.AddMouseListener(this);
             

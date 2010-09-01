@@ -34,7 +34,7 @@ namespace Illumination.WorldObjects
         {
             Initialize(x, y);
 
-            Name = "ResearchCenter";
+            Name = "Research Center";
         }
 
         public override void Initialize(int x, int y)

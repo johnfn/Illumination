@@ -16,6 +16,13 @@ namespace Illumination.Components {
         string text;
         Vector2 textLocation;
         Color textColor;
+        AlignType align;
+
+        public enum AlignType {
+            Left,
+            Center,
+            Right
+        }
 
         public string Text {
             get { return text; }
@@ -25,24 +32,31 @@ namespace Illumination.Components {
             }
         }
 
-        public TextBox(Rectangle boundingBox, string text, Color textColor)
-            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, MediaRepository.Fonts["DefaultFont"], textColor) { }
+        public AlignType Align {
+            get { return align; }
+            set { align = value; }
+        }
 
-        public TextBox(Rectangle boundingBox, string text, Color textColor, SpriteFont font)
-            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor) { }
 
-        public TextBox(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor)
+        public TextBox(Rectangle boundingBox, string text, Color textColor, AlignType alignType)
+            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, MediaRepository.Fonts["DefaultFont"], textColor, alignType) { }
+
+        public TextBox(Rectangle boundingBox, string text, Color textColor, SpriteFont font, AlignType alignType)
+            : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, font, textColor, alignType) { }
+
+        public TextBox(Texture2D background, Rectangle boundingBox, Color color, string text, SpriteFont font, Color textColor, AlignType alignType)
             : base(background, boundingBox, color) {
             this.text = text;
             this.font = font;
             this.textColor = textColor;
+            this.align = alignType;
 
-            textLocation = Geometry.CenterText(text, font, boundingBox);
+            textLocation = Geometry.AlignText(text, font, boundingBox, align);
         }
 
         public override void Update() {
             base.Update();
-            textLocation = Geometry.CenterText(text, font, BoundingBox);
+            textLocation = Geometry.AlignText(text, font, BoundingBox, align);
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {

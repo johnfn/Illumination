@@ -22,7 +22,7 @@ namespace Illumination.Components.Panels {
             int index = 0;
             foreach (Objective objective in World.CurrentMission.PrimaryObjectives) {
                 missionBoxes[index] = new TextBox(new Rectangle(0, index * boxHeight, boundingBox.Width, boxHeight),
-                    objective.Description, Color.Black);
+                    objective.Description, Color.Black, TextBox.AlignType.Center);
                 missionBoxes[index].Color = new Color(255, 255, 255, 100);
 
                 AddComponent(missionBoxes[index]);
