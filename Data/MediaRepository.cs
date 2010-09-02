@@ -29,6 +29,7 @@ namespace Illumination.Data {
             Textures.Add("WaterTile", gameInstance.Content.Load<Texture2D>("WaterTile"));
 
             Textures.Add("TileBorder", gameInstance.Content.Load<Texture2D>("BorderTile"));
+            Textures.Add("Border", gameInstance.Content.Load<Texture2D>("Border"));
 
             Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("WorkerTile"));
             Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("EducatorTile"));
@@ -57,6 +58,7 @@ namespace Illumination.Data {
             Textures.Add("ResearchCenter", gameInstance.Content.Load<Texture2D>("ResearchCenter"));
 
             Fonts.Add("DefaultFont", gameInstance.Content.Load<SpriteFont>("DefaultFont"));
+            Fonts.Add("Arial10", gameInstance.Content.Load<SpriteFont>("Arial10"));
 
             Sheets.Add("Glow", gameInstance.Content.Load<SpriteSheet>("Glow"));
 

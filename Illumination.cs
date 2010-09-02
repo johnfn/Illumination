@@ -32,6 +32,7 @@ namespace Illumination {
         SpriteBatchRelative spriteBatch;
 
         InformationPanel informationPanel;
+        Panel missionPanel;
         MenuBar menuBar;
 
         Rectangle gameWindow;
@@ -70,6 +71,7 @@ namespace Illumination {
             Layer.Initialize();
 
             informationPanel = new InformationPanel(new Rectangle(25, 530, 1000, 150));
+            missionPanel = new MissionPanel(new Rectangle(0, 25, 300, 200));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
 
             Tree t1 = new Tree(2, 1);
@@ -198,6 +200,7 @@ namespace Illumination {
             spriteBatch.Begin();
 
             informationPanel.Draw(spriteBatch, false);
+            missionPanel.Draw(spriteBatch, false);
             menuBar.Draw(spriteBatch, false);
 
             spriteBatch.End();

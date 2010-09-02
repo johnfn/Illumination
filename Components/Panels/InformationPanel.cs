@@ -21,7 +21,6 @@ namespace Illumination.Components.Panels {
         Panel personStatusPanel;
         Panel buildingStatusPanel;
         TextBox missionResultBox;
-        Panel missionPanel;
 
         public InformationPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
@@ -29,14 +28,12 @@ namespace Illumination.Components.Panels {
             directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 150), World.ChangeDirection);
             professionPanel = new ProfessionPanel(new Rectangle(0, 110, 250, 50));
             missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White, TextBox.AlignType.Center);
-            missionPanel = new MissionPanel(new Rectangle(575, 35, 375, 120));
             personStatusPanel = new PersonPanel(new Rectangle(200, 0, 200, 150));
             buildingStatusPanel = new BuildingPanel(new Rectangle(200, 0, 200, 150));
 
             AddComponent(detailPanel);
             AddComponent(missionResultBox);
-            AddComponent(missionPanel);
-
+            
             detailPanel.AddComponent(directionPanel);
             detailPanel.AddComponent(professionPanel);
             detailPanel.AddComponent(personStatusPanel);

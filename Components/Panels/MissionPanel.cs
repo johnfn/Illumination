@@ -8,27 +8,43 @@ using Microsoft.Xna.Framework.Graphics;
 using Illumination.Logic.Missions;
 using Microsoft.Xna.Framework;
 using Illumination.Graphics;
+using Illumination.Utility;
 
 namespace Illumination.Components.Panels {
     public class MissionPanel : Panel {
-        TextBox[] missionBoxes;
+        TextBox[] conditions;
+        ImageBox[] iconBorders;
+        ImageBox[] statusIcons;
+
+        const int LineHeight = 25;
+        const int IconIndentation = 10;
+        const int IconSize = 15;
+        const int TextIndentation = 5;
 
         public MissionPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            missionBoxes = new TextBox[World.CurrentMission.GetNumConditions()];
-
-            int boxHeight = boundingBox.Height / World.CurrentMission.GetNumConditions();
+            conditions = new TextBox[World.CurrentMission.GetNumConditions()];
+            iconBorders = new ImageBox[World.CurrentMission.GetNumConditions()];
+            statusIcons = new ImageBox[World.CurrentMission.GetNumConditions()];
 
             int index = 0;
             foreach (Objective objective in World.CurrentMission.PrimaryObjectives) {
-                missionBoxes[index] = new TextBox(new Rectangle(0, index * boxHeight, boundingBox.Width, boxHeight),
-                    objective.Description, Color.Black, TextBox.AlignType.Center);
-                missionBoxes[index].Color = new Color(255, 255, 255, 100);
 
-                AddComponent(missionBoxes[index]);
+                Rectangle iconRect = new Rectangle(IconIndentation, (index + 1) * LineHeight - IconSize, IconSize, IconSize);
+                Rectangle textRect = Geometry.Translate(iconRect, IconSize + TextIndentation, 0);
+                
+                statusIcons[index] = new ImageBox(iconRect, Color.TransparentWhite);
+                iconBorders[index] = new ImageBox(MediaRepository.Textures["Border"], iconRect, Color.Black);
+                conditions[index] = new TextBox(textRect, objective.Description, Color.Black, MediaRepository.Fonts["Arial10"], TextBox.AlignType.Left);
+
+                AddComponent(statusIcons[index]);
+                AddComponent(iconBorders[index]);
+                AddComponent(conditions[index]);
 
                 index++;
             }
+
+            consumesMouseEvent = false;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
@@ -36,17 +52,27 @@ namespace Illumination.Components.Panels {
             foreach (Objective objective in World.CurrentMission.PrimaryObjectives) {
                 Objective.StatusType status = objective.GetStatus();
                 if (status == Objective.StatusType.Failure) {
-                    missionBoxes[index].Color = new Color(255, 0, 0, 100);
+                    statusIcons[index].Color = new Color(255, 0, 0, 100);
                 } else if (status == Objective.StatusType.Success) {
-                    missionBoxes[index].Color = new Color(0, 0, 255, 100);
+                    statusIcons[index].Color = new Color(0, 0, 255, 100);
                 } else {
-                    missionBoxes[index].Color = new Color(255, 255, 255, 100);
+                    statusIcons[index].Color = Color.TransparentWhite;
                 }
 
                 index++;
             }
 
-            base.Draw(spriteBatch, isRelative);
+            foreach (ImageBox icon in statusIcons) {
+                icon.Draw(spriteBatch, false);
+            }
+
+            foreach (ImageBox border in iconBorders) {
+                border.Draw(spriteBatch, false);
+            }
+
+            foreach (TextBox text in conditions) {
+                text.Draw(spriteBatch, false);
+            }
         }
     }
 }
