@@ -36,11 +36,11 @@ namespace Illumination.Components.Panels
             timeBar = new StatusBar(new Rectangle(375, 0, 200, 25), new Color(220, 220, 0), Color.White);
             timeBar.Fraction = 1;
 
-            dayBox = new TextBox(new Rectangle(900, 0, 100, 25), "Day " + World.DayCount.ToString(), Color.Black, TextBox.AlignType.Left);
+            dayBox = new TextBox(new Rectangle(800, 0, 100, 25), "Day " + World.DayCount.ToString(), Color.Black, TextBox.AlignType.Left);
 
-            moneyBox = new TextBox(new Rectangle(700, 0, 50, 25), "Money: ", Color.Black, TextBox.AlignType.Right);
+            moneyBox = new TextBox(new Rectangle(650, 0, 50, 25), "Money: ", Color.Black, TextBox.AlignType.Right);
 
-            moneyNumBox = new TextBox(new Rectangle(750, 0, 100, 25), "$" + World.Money.ToString(), Color.Black, TextBox.AlignType.Left);
+            moneyNumBox = new TextBox(new Rectangle(700, 0, 100, 25), "$" + World.Money.ToString(), Color.Black, TextBox.AlignType.Left);
 
             AddComponent(menuButton);
             AddComponent(dayNightButton);
