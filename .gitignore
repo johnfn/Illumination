@@ -1,0 +1,15 @@
+Illumination.csproj
+*.csproj
+*.csproj.user
+*.contentproj
+*.contentproj.user
+*.cachefile
+*.ico
+*.exe
+*.pdb
+*.txt
+*.cache
+*.dll
+*.xnb
+*.sln
+*.suo
