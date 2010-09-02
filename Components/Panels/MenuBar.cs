@@ -24,23 +24,23 @@ namespace Illumination.Components.Panels
         TextBox moneyNumBox;
 
         public MenuBar(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.Blue)
+            : base(MediaRepository.Textures["Blank"], boundingBox, new Color(255, 255, 255, 100))
         {
-            menuButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(25, 0, 100, 25), Color.DarkBlue, 
-                "Menu", MediaRepository.Fonts["DefaultFont"], Color.White);
+            menuButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(25, 0, 100, 25), Color.White, 
+                "Menu", MediaRepository.Fonts["DefaultFont"], Color.Black);
 
             string dayNightButtonText = World.IsNight ? "Begin Day" : "Begin Night";
-            dayNightButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(150, 0, 200, 25), Color.DarkRed,
-                dayNightButtonText, MediaRepository.Fonts["DefaultFont"], Color.White);
+            dayNightButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(150, 0, 200, 25), Color.White,
+                dayNightButtonText, MediaRepository.Fonts["DefaultFont"], Color.Black);
 
-            timeBar = new StatusBar(new Rectangle(375, 0, 200, 25), new Color(200, 200, 0, 255), new Color(255, 255, 220, 255));
+            timeBar = new StatusBar(new Rectangle(375, 0, 200, 25), new Color(220, 220, 0), Color.White);
             timeBar.Fraction = 1;
 
-            dayBox = new TextBox(new Rectangle(900, 0, 100, 25), "Day " + World.DayCount.ToString(), Color.White, TextBox.AlignType.Left);
+            dayBox = new TextBox(new Rectangle(900, 0, 100, 25), "Day " + World.DayCount.ToString(), Color.Black, TextBox.AlignType.Left);
 
-            moneyBox = new TextBox(new Rectangle(700, 0, 50, 25), "Money: ", Color.White, TextBox.AlignType.Right);
+            moneyBox = new TextBox(new Rectangle(700, 0, 50, 25), "Money: ", Color.Black, TextBox.AlignType.Right);
 
-            moneyNumBox = new TextBox(new Rectangle(750, 0, 100, 25), "$" + World.Money.ToString(), Color.White, TextBox.AlignType.Left);
+            moneyNumBox = new TextBox(new Rectangle(750, 0, 100, 25), "$" + World.Money.ToString(), Color.Black, TextBox.AlignType.Left);
 
             AddComponent(menuButton);
             AddComponent(dayNightButton);

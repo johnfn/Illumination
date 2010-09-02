@@ -27,10 +27,10 @@ namespace Illumination.Components.Panels {
         }
 
         public void Initialize() {
-            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(40, 0, 40, 40), Color.Black);
-            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(40, 80, 40, 40), Color.Black);
-            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(80, 40, 40, 40), Color.Black);
-            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 40, 40, 40), Color.Black);
+            northButton = new Button(MediaRepository.Textures["Arrow_N"], new Rectangle(50, 0, 60, 40), Color.White);
+            southButton = new Button(MediaRepository.Textures["Arrow_S"], new Rectangle(0, 40, 60, 40), Color.White);
+            eastButton = new Button(MediaRepository.Textures["Arrow_E"], new Rectangle(50, 40, 60, 40), Color.White);
+            westButton = new Button(MediaRepository.Textures["Arrow_W"], new Rectangle(0, 0, 60, 40), Color.White);
             
             AddComponent(northButton);
             AddComponent(southButton);
