@@ -15,7 +15,7 @@ namespace Illumination.Components.Panels
         TextBox title = new TextBox(new Rectangle(25, 10, 50, 25), "Building", Color.White, TextBox.AlignType.Left);
 
         public BuildingPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, new Color(0, 0, 0, 50))
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite)
         {
             AddComponent(title);
 

@@ -34,6 +34,7 @@ namespace Illumination {
         InformationPanel informationPanel;
         Panel missionPanel;
         MenuBar menuBar;
+        Panel worldStatsBar;
 
         Rectangle gameWindow;
 
@@ -70,9 +71,10 @@ namespace Illumination {
             World.InitalizeWorld(12, 11);
             Layer.Initialize();
 
-            informationPanel = new InformationPanel(new Rectangle(25, 430, 1000, 150));
+            informationPanel = new InformationPanel(new Rectangle(5, 445, 890, 150));
             missionPanel = new MissionPanel(new Rectangle(0, 25, 300, 200));
             menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
+            worldStatsBar = new WorldStatsPanel(new Rectangle(800, 25, 95, 100));
 
             Tree t1 = new Tree(2, 1);
             t1.Direction = Entity.DirectionType.East;
@@ -202,6 +204,7 @@ namespace Illumination {
             informationPanel.Draw(spriteBatch, false);
             missionPanel.Draw(spriteBatch, false);
             menuBar.Draw(spriteBatch, false);
+            worldStatsBar.Draw(spriteBatch, false);
 
             spriteBatch.End();
 
@@ -233,7 +236,7 @@ namespace Illumination {
                 World.ClearSelection();
             }
 
-            informationPanel.UpdateDetailPanel();
+            informationPanel.UpdateInformationPanel();
         }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
 
@@ -253,7 +256,7 @@ namespace Illumination {
                             PersonAnimation.CreateMovementAnimation(person, range[gridLocation]);
 
                             World.ClearSelection();
-                            informationPanel.UpdateDetailPanel();
+                            informationPanel.UpdateInformationPanel();
                         }
                     }
                 }

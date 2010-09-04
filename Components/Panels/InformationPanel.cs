@@ -13,29 +13,38 @@ using Illumination.Graphics;
 
 namespace Illumination.Components.Panels {
     public class InformationPanel : Panel {
-        Panel detailPanel;
-
-        // Panels in the detailPanel
         Panel directionPanel;
+        Panel detailPanel;
+        Panel mapPanel;
+
+        Panel arrowPanel;
         Panel professionPanel;
         Panel personStatusPanel;
         Panel buildingStatusPanel;
         TextBox missionResultBox;
 
         public InformationPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            detailPanel = new Panel(new Rectangle(0, 0, 400, 150), new Color(255, 255, 255, 100));
-            directionPanel = new DirectionPanel(new Rectangle(0, 0, 200, 150), World.ChangeDirection);
-            professionPanel = new ProfessionPanel(new Rectangle(0, 110, 250, 50));
-            missionResultBox = new TextBox(new Rectangle(0, 0, 400, 150), "", Color.White, TextBox.AlignType.Center);
-            personStatusPanel = new PersonPanel(new Rectangle(200, 0, 200, 150));
-            buildingStatusPanel = new BuildingPanel(new Rectangle(200, 0, 200, 150));
+            : base(MediaRepository.Textures["Blank"], boundingBox, new Color(255, 255, 255, 50)) {
+            directionPanel = new Panel(new Rectangle(5, 5, 240, 140), new Color(255, 255, 255, 100));
+            detailPanel = new Panel(new Rectangle(255, 5, 480, 140), new Color(0, 0, 0, 50));
+            mapPanel = new Panel(new Rectangle(745, 5, 140, 140), new Color(255, 255, 255, 100));
 
-            AddComponent(detailPanel);
-            AddComponent(missionResultBox);
+            arrowPanel = new DirectionPanel(new Rectangle(20, 20, 200, 100), World.ChangeDirection);
+            professionPanel = new ProfessionPanel(new Rectangle(285, -52, 320, 52));
+            missionResultBox = new TextBox(new Rectangle(0, -40, 230, 40), "", Color.White, TextBox.AlignType.Center);
             
-            detailPanel.AddComponent(directionPanel);
-            detailPanel.AddComponent(professionPanel);
+            personStatusPanel = new PersonPanel(new Rectangle(0, 0, 200, 140));
+            buildingStatusPanel = new BuildingPanel(new Rectangle(0, 0, 200, 140));
+
+            AddComponent(directionPanel);
+            AddComponent(detailPanel);
+            AddComponent(mapPanel);
+
+            AddComponent(missionResultBox);
+            AddComponent(professionPanel);
+
+            directionPanel.AddComponent(arrowPanel);
+
             detailPanel.AddComponent(personStatusPanel);
             detailPanel.AddComponent(buildingStatusPanel);
 
@@ -62,8 +71,8 @@ namespace Illumination.Components.Panels {
 
         }
 
-        public void UpdateDetailPanel() {
-            directionPanel.Deactivate();
+        public void UpdateInformationPanel() {
+            arrowPanel.Deactivate();
             professionPanel.Deactivate();
             personStatusPanel.Deactivate();
             buildingStatusPanel.Deactivate();
@@ -81,7 +90,7 @@ namespace Illumination.Components.Panels {
                     if (World.SelectedEntities.Count == 1) {
                         personStatusPanel.Activate();
                     }
-                    directionPanel.Activate();
+                    arrowPanel.Activate();
                     if (activateProfessionPanel) {
                         professionPanel.Activate();
                     }
@@ -90,7 +99,7 @@ namespace Illumination.Components.Panels {
                         if (!e.Selectable) {
                             continue;
                         }
-                        directionPanel.Activate();
+                        arrowPanel.Activate();
                     }
                 } else if (entityType == World.EntityType.Building) {
                     foreach (Entity e in World.SelectedEntities) {

@@ -22,7 +22,7 @@ namespace Illumination.Components.Panels
         Dictionary<Person.ProfessionType, Color> professionToColor;
 
         public PersonPanel(Rectangle boundingBox)
-            : base(MediaRepository.Textures["Blank"], boundingBox, new Color(0, 0, 0, 50))
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite)
         {
             professionToString = new Dictionary<Person.ProfessionType, string>();
             professionToString[Person.ProfessionType.Doctor] = "Doctor";
