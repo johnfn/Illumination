@@ -285,10 +285,12 @@ namespace Illumination.Logic {
         }
 
         public static Person MovePerson(Person person, Point newLocation) {
-            if (IsClear(newLocation.X, newLocation.Y)) {
+            if (IsClear(newLocation.X, newLocation.Y) && !person.HasMoved) {
                 Grid[person.GridLocation.X, person.GridLocation.Y].RemoveEntity(person);
                 Grid[newLocation.X, newLocation.Y].AddEntity(person);
                 person.Move(newLocation.X, newLocation.Y);
+
+                person.HasMoved = true;
             }
 
             return person;
@@ -351,6 +353,9 @@ namespace Illumination.Logic {
             lightLogic.SetLightSpeed(LightLogic.SpeedType.Normal);
             foreach (Building building in buildingSet) {
                 building.ClearLightSequences();
+            }
+            foreach (Person p in personSet) {
+                p.HasMoved = false;
             }
             timeLeft = DAY_TIME_LIMIT;
             dayCount++;

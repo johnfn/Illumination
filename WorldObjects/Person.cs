@@ -60,6 +60,7 @@ namespace Illumination.WorldObjects {
         int health;
         int education;
         int movementRange;
+        bool hasMoved;
 
         static int[] directionX = { -1, 1, 0, 0 };
         static int[] directionY = { 0, 0, -1, 1 };
@@ -112,6 +113,11 @@ namespace Illumination.WorldObjects {
             get { return texturesMap[profession]; }
         }
 
+        public bool HasMoved {
+            get { return hasMoved; }
+            set { hasMoved = value; }
+        }
+    
         #endregion
 
         public Person(int x, int y) : base(x, y, 1, 1, texturesMap[ProfessionType.Worker]) {
@@ -134,7 +140,6 @@ namespace Illumination.WorldObjects {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-
             Rectangle arrowBox = Display.GridLocationToViewport(GridLocation);
             Color arrowColor = new Color(255, 255, 255, 200);
             switch (direction)
@@ -153,7 +158,7 @@ namespace Illumination.WorldObjects {
                     break;
             }
 
-            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+            spriteBatch.DrawRelative(Texture, BoundingBox, hasMoved ? Color.DarkGray : Color.White, Layer.GetWorldDepth(GridLocation));
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {

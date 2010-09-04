@@ -250,13 +250,15 @@ namespace Illumination {
                 if (World.SelectedEntities.Count == 1 && World.SelectedEntityType == World.EntityType.Person) {
                     if (World.IsClear(gridLocation.X, gridLocation.Y)) {
                         Person person = (Person) World.SelectedEntities.First();
-                        Dictionary <Point, Person.SearchNode> range = person.ComputeMovementRange();
-                        if (range.ContainsKey(gridLocation)) {
-                            World.MovePerson(person, gridLocation);
-                            PersonAnimation.CreateMovementAnimation(person, range[gridLocation]);
+                        if (!person.HasMoved) {
+                            Dictionary <Point, Person.SearchNode> range = person.ComputeMovementRange();
+                            if (range.ContainsKey(gridLocation)) {
+                                World.MovePerson(person, gridLocation);
+                                PersonAnimation.CreateMovementAnimation(person, range[gridLocation]);
 
-                            World.ClearSelection();
-                            informationPanel.UpdateInformationPanel();
+                                World.ClearSelection();
+                                informationPanel.UpdateInformationPanel();
+                            }
                         }
                     }
                 }
