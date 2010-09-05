@@ -96,9 +96,9 @@ namespace Illumination.Components.Panels
             }
         }
 
-        public override void Activate()
+        public override void ActivatePanel(bool isRecursive)
         {
-            base.Activate();
+            base.ActivatePanel(isRecursive);
 
             Update();
 
