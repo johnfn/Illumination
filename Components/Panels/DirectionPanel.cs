@@ -58,7 +58,7 @@ namespace Illumination.Components.Panels {
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
             if (IsActive) {
                 foreach (Button button in buttons) {
-                    spriteBatch.DrawAbsolute(MediaRepository.Textures["BlankTile"], button.BoundingBox, new Color(0, 0, 0, 50), 0);
+                    spriteBatch.DrawAbsolute(MediaRepository.Textures["BlankTile"], button.BoundingBox, new Color(0, 0, 0, 50));
                 }
                 base.Draw(spriteBatch, isRelative);
             }

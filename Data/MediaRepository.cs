@@ -37,7 +37,8 @@ namespace Illumination.Data {
             Textures.Add("Doctor", gameInstance.Content.Load<Texture2D>("DoctorTile"));
             Textures.Add("Environmentalist", gameInstance.Content.Load<Texture2D>("EnvironmentalistTile"));
 
-            Textures.Add("Light", gameInstance.Content.Load<Texture2D>("Light"));
+            Textures.Add("BaseLight", gameInstance.Content.Load<Texture2D>("BaseLight"));
+            Textures.Add("WhiteLight", gameInstance.Content.Load<Texture2D>("WhiteLight"));
 
             Textures.Add("Mirror_NE", gameInstance.Content.Load<Texture2D>("MirrorTile_NE"));
             Textures.Add("Mirror_NW", gameInstance.Content.Load<Texture2D>("MirrorTile_NW"));

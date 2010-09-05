@@ -21,7 +21,7 @@ namespace Illumination.Components {
         protected Color color;
         protected bool isActive = true;
         protected Component parent = null;
-        protected float layerDepth = 1;
+        protected float layerDepth = 0;
 
         public Component Parent {
             get { return parent; }
@@ -47,6 +47,11 @@ namespace Illumination.Components {
             set { color = value; }
         }
 
+        public float LayerDepth {
+            get { return layerDepth; }
+            set { layerDepth = value; }
+        }
+
         public Component() { /* Default constructor */ }
 
         public Component(Texture2D background, Rectangle boundingBox, Color color) {
@@ -69,7 +74,7 @@ namespace Illumination.Components {
 
         public virtual void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
             if (!isRelative) {
-                spriteBatch.DrawAbsolute(background, boundingBox, color, layerDepth);
+                spriteBatch.DrawAbsolute(background, boundingBox, color);
             } else {
                 spriteBatch.DrawRelative(background, boundingBox, color, layerDepth);
             }

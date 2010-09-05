@@ -38,11 +38,11 @@ namespace Illumination.Components {
                     for (int count = 0; count < sequence.Frequencies[type]; count++) {
                         if (isRelative) {
                             spriteBatch.DrawRelative(MediaRepository.Textures["Blank"], Geometry.ConstructRectangle(curPivot, tileSize),
-                                Light.GetLightColor(type), 0);
+                                Light.GetLightColor(type), layerDepth);
                         }
                         else {
                             spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], Geometry.ConstructRectangle(curPivot, tileSize),
-                                Light.GetLightColor(type), 0);
+                                Light.GetLightColor(type));
                         }
 
                         curPivot = Geometry.Sum(curPivot, increment);

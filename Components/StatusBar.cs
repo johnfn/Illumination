@@ -35,7 +35,7 @@ namespace Illumination.Components
             if (isRelative) {
                 spriteBatch.DrawRelative(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor, layerDepth);
             } else {
-                spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor, layerDepth);
+                spriteBatch.DrawAbsolute(MediaRepository.Textures["Blank"], frontBarBoundingBox, frontColor);
             }
         }
     }

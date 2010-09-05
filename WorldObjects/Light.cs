@@ -49,11 +49,11 @@ namespace Illumination.WorldObjects {
         }
 
         public static Texture2D Texture {
-            get { return MediaRepository.Textures["Light"]; }
+            get { return MediaRepository.Textures["BaseLight"]; }
         }
 
         public override Texture2D GetTexture() {
-            return Texture;
+            return type == LightType.White ? MediaRepository.Textures["WhiteLight"] : Texture;
         }
 
         DirectionType direction;

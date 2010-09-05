@@ -18,21 +18,25 @@ namespace Illumination.Graphics
 
         static Layer()
         {
-            Depth["Background"] = 1;
+            Depth["Background"]     = 1;
 
-            Depth["Tile"] = 0.7f;
-            Depth["Highlight"] = 0.699f;
-            Depth["Border"] = 0.698f;
-            Depth["Arrow"] = 0.697f;
+            Depth["Tile"]           = 0.700f;
+            Depth["Highlight"]      = 0.699f;
+            Depth["Border"]         = 0.698f;
+            Depth["Arrow"]          = 0.697f;
 
-            Depth["WorldBottom"] = 0.6f;
-            Depth["WorldTop"] = 0.4f;
+            Depth["WorldBottom"]    = 0.600f;
+            Depth["WorldTop"]       = 0.400f;
+            Depth["NightOverlay"]   = 0.399f;
 
-            Depth["Notice"] = 0.3f;
-            
-            Depth["Panel"] = 0.1f;
+            Depth["LightSequence"]  = 0.300f;
+            Depth["Notice"]         = 0.299f;
+            Depth["TextNotice"]     = 0.298f;
 
-            Depth["Foreground"] = 0;
+            Depth["WhiteLight"]     = 0.250f;
+            Depth["ColoredLight"]   = 0.249f;
+
+            Depth["Foreground"]     = 0;
         }
 
         public static void Initialize()

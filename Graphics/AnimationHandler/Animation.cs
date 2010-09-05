@@ -66,6 +66,17 @@ namespace Illumination.Graphics.AnimationHandler
 
         bool stopped = false;
 
+        float layerDepth = 0;
+        public float LayerDepth {
+            get { return layerDepth; }
+            set { 
+                layerDepth = value;
+                if (image == ImageType.Component) {
+                    component.LayerDepth = layerDepth;
+                }
+            }
+        }
+
         public Animation(Texture2D texture, Point position, Dimension size, double durationInSec)
         {
             image = ImageType.Texture;
@@ -181,12 +192,12 @@ namespace Illumination.Graphics.AnimationHandler
 
             if (image == ImageType.Texture)
             {
-                spriteBatch.DrawRelative(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, 0);
+                spriteBatch.DrawRelative(texture, boundingBox, null, color, angle, relativeOrigin, SpriteEffects.None, layerDepth);
             }
             else if (image == ImageType.Sheet)
             {
                 int index = (int)(elapsedTotalSec / spriteFrameDuration) % spriteSheet.Count; 
-                spriteBatch.DrawRelative(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, 0);
+                spriteBatch.DrawRelative(spriteSheet.Texture, boundingBox, spriteSheet.SourceRectangle(index), color, angle, relativeOrigin, SpriteEffects.None, layerDepth);
             }
             else if (image == ImageType.Component)
             {

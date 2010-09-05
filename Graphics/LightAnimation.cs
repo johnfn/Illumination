@@ -168,7 +168,8 @@ namespace Illumination.Graphics
 
         public static Animation CreateMovementAnimation(Light light) 
         {
-            Animation animation = Display.CreateAnimation(Light.Texture, light.BoundingBox, double.MaxValue);
+            Animation animation = Display.CreateAnimation(light.GetTexture(), light.BoundingBox, double.MaxValue);
+            animation.LayerDepth = Layer.Depth[light.Type == Light.LightType.White ? "WhiteLight" : "ColoredLight"];
             animation.AddColorFrame(Light.GetLightColor(light.Type), 0);
             new Movement(light, animation, 0).Play();
 

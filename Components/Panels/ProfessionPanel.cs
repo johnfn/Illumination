@@ -41,12 +41,12 @@ namespace Illumination.Components.Panels
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
             if (IsActive) {
-                spriteBatch.DrawAbsolute(base.background, base.boundingBox, base.color, 0);
+                spriteBatch.DrawAbsolute(base.background, base.boundingBox, base.color);
                 
                 Rectangle tileRect = new Rectangle(boundingBox.X, boundingBox.Y + TilePosY, ButtonWidth, ButtonWidth / 2);
                 for (int n = 0; n < professionButtons.Count(); n++) {
                     spriteBatch.DrawAbsolute(MediaRepository.Textures["BlankTile"],
-                        tileRect, new Color(255, 255, 255, 100), 0);
+                        tileRect, new Color(255, 255, 255, 100));
                     tileRect = Geometry.Translate(tileRect, ButtonWidth, 0);
                 }
 

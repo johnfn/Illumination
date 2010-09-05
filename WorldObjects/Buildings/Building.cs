@@ -64,6 +64,7 @@ namespace Illumination.WorldObjects {
             triggeredSequences = new HashSet<LightSequence>();
             activatedEffect = 0;
             effectDisplay = new LightSequenceBar(new LightSequence(), new Point(BoundingBox.X + 30, BoundingBox.Y + 30), new Dimension(10, 10), 5);
+            effectDisplay.LayerDepth = Layer.Depth["LightSequence"];
 
             base.DeferDraw = true;
         }

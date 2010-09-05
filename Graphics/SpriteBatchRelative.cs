@@ -14,7 +14,7 @@ namespace Illumination.Graphics {
             DrawRelative(texture, destinationRectangle, null, color, 0, new Vector2(0, 0), SpriteEffects.None, layerDepth);
         }
 
-        public void DrawAbsolute(Texture2D texture, Rectangle destinationRectangle, Color color, float layerDepth) {
+        public void DrawAbsolute(Texture2D texture, Rectangle destinationRectangle, Color color) {
             base.Draw(texture, destinationRectangle, color);
         }
 
@@ -28,8 +28,8 @@ namespace Illumination.Graphics {
             base.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
 
-        public new void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color) {
-            base.DrawString(spriteFont, text, transform(position), color);
+        public void DrawStringRelative(SpriteFont spriteFont, string text, Vector2 position, Color color, float layerDepth) {
+            base.DrawString(spriteFont, text, transform(position), color, 0, new Vector2(0, 0), 1, SpriteEffects.None, layerDepth);
         }
 
         public void DrawStringAbsolute(SpriteFont spriteFont, string text, Vector2 position, Color color) {

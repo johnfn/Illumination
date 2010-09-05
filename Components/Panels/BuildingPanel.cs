@@ -92,7 +92,7 @@ namespace Illumination.Components.Panels
 
                 base.Draw(spriteBatch, isRelative);
 
-                spriteBatch.DrawAbsolute(MediaRepository.Textures["Border"], effectButtons[thisBuilding.ActivatedEffect].BoundingBox, World.IsNight ? Color.Black : Color.White, 0);
+                spriteBatch.DrawAbsolute(MediaRepository.Textures["Border"], effectButtons[thisBuilding.ActivatedEffect].BoundingBox, World.IsNight ? Color.Black : Color.White);
             }
         }
 

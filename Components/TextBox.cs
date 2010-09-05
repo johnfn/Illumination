@@ -37,7 +37,6 @@ namespace Illumination.Components {
             set { align = value; }
         }
 
-
         public TextBox(Rectangle boundingBox, string text, Color textColor, AlignType alignType)
             : this(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite, text, MediaRepository.Fonts["DefaultFont"], textColor, alignType) { }
 
@@ -67,7 +66,7 @@ namespace Illumination.Components {
                     spriteBatch.DrawStringAbsolute(font, text, textLocation, textColor);
                 }
                 else {
-                    spriteBatch.DrawString(font, text, textLocation, textColor);
+                    spriteBatch.DrawStringRelative(font, text, textLocation, textColor, layerDepth);
                 }
             }
         }
