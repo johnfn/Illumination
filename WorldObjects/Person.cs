@@ -60,7 +60,7 @@ namespace Illumination.WorldObjects {
         int health;
         int education;
         int movementRange;
-        bool hasMoved;
+        int remainingMovement;
 
         static int[] directionX = { -1, 1, 0, 0 };
         static int[] directionY = { 0, 0, -1, 1 };
@@ -113,9 +113,9 @@ namespace Illumination.WorldObjects {
             get { return texturesMap[profession]; }
         }
 
-        public bool HasMoved {
-            get { return hasMoved; }
-            set { hasMoved = value; }
+        public int RemainingMovement {
+            get { return remainingMovement; }
+            set { remainingMovement = value; }
         }
     
         #endregion
@@ -128,7 +128,7 @@ namespace Illumination.WorldObjects {
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
-            movementRange = 3;
+            remainingMovement = movementRange = 3;
             BlocksMovement = false;
 
             Name = "Person";
@@ -158,7 +158,7 @@ namespace Illumination.WorldObjects {
                     break;
             }
 
-            spriteBatch.DrawRelative(Texture, BoundingBox, hasMoved ? Color.DarkGray : Color.White, Layer.GetWorldDepth(GridLocation));
+            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
 
             if (IsEducated && (profession == ProfessionType.Worker))
             {
@@ -241,7 +241,7 @@ namespace Illumination.WorldObjects {
             while (queue.Count > 0) {
                 SearchNode node = queue.Dequeue();
                 Point currentPosition = node.point;
-                if (World.InBound(currentPosition) && node.cost <= movementRange) {
+                if (World.InBound(currentPosition) && node.cost <= remainingMovement) {
                     possibleLocations[node.point] = node;
                     for (int i = 0; i < directionX.Length; i++) {
                         Point nextPoint = new Point(currentPosition.X + directionX[i], currentPosition.Y + directionY[i]);

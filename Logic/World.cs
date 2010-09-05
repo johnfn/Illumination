@@ -41,14 +41,12 @@ namespace Illumination.Logic {
         static HashSet <Entity> selectedEntities = new HashSet<Entity>();
         static EntityType selectedEntityType = EntityType.None;
 
-        public static double TimeLeft
-        {
+        public static double TimeLeft {
             get { return timeLeft; }
             set { timeLeft = value; }
         }
 
-        public static int Money
-        {
+        public static int Money {
             get { return money; }
             set { money = value; }
         }
@@ -67,14 +65,12 @@ namespace Illumination.Logic {
             get { return currentMission; }
         }
 
-        public static int DayCount
-        {
+        public static int DayCount {
             get { return dayCount; }
             set { dayCount = value; }
         }
 
-        public static double LightSpeed
-        {
+        public static double LightSpeed {
             get { return lightLogic.LightSpeed; }
         }
 
@@ -110,7 +106,7 @@ namespace Illumination.Logic {
             EntityType entityType = GetEntityType(entity);
             if (selectedEntityType != entityType) {
                 selectedEntities.Clear();
-                
+
                 RemoveAllHighlight();
 
                 selectedEntityType = entityType;
@@ -200,7 +196,7 @@ namespace Illumination.Logic {
             if (r.Width < 0 || r.Height < 0 || !InBound(r.X, r.Y) || !InBound(r.X + r.Width - 1, r.Y + r.Height - 1)) {
                 return false;
             }
-            
+
             for (int i = r.X; i < r.X + r.Width; i++) {
                 for (int j = r.Y; j < r.Y + r.Height; j++) {
                     if (grid[i, j].IsBlocked()) {
@@ -208,7 +204,7 @@ namespace Illumination.Logic {
                     }
                 }
             }
-            
+
             return true;
         }
 
@@ -222,75 +218,54 @@ namespace Illumination.Logic {
             }
             return Grid[point.X, point.Y].GetMovementCost();
         }
-        
-        public static bool AddEntity(Entity entity)
-        {
-            if (!IsClear(entity.GridLocation))
-            {
+
+        public static bool AddEntity(Entity entity) {
+            if (!IsClear(entity.GridLocation)) {
                 return false;
             }
 
-            for (int i = entity.GridLocation.X; i < entity.GridLocation.X + entity.GridLocation.Width; i++)
-            {
-                for (int j = entity.GridLocation.Y; j < entity.GridLocation.Y + entity.GridLocation.Height; j++)
-                {
+            for (int i = entity.GridLocation.X; i < entity.GridLocation.X + entity.GridLocation.Width; i++) {
+                for (int j = entity.GridLocation.Y; j < entity.GridLocation.Y + entity.GridLocation.Height; j++) {
                     Grid[i, j].AddEntity(entity);
                 }
             }
 
-            if (entity is Person)
-            {
-                personSet.Add((Person)entity);
-            }
-            else if (entity is Building)
-            {
-                buildingSet.Add((Building)entity);
-            }
-            else if (entity is Tree)
-            {
-                treeSet.Add((Tree)entity);
-            }
-            else if (entity is Item)
-            {
-                itemSet.Add((Item)entity);
+            if (entity is Person) {
+                personSet.Add((Person) entity);
+            } else if (entity is Building) {
+                buildingSet.Add((Building) entity);
+            } else if (entity is Tree) {
+                treeSet.Add((Tree) entity);
+            } else if (entity is Item) {
+                itemSet.Add((Item) entity);
             }
 
             return true;
         }
 
-        public static void RemoveEntity(Entity entity)
-        {
-            if (entity is Person)
-            {
-                if (!personSet.Contains((Person)entity)) { return; }
-                personSet.Remove((Person)entity);
-            }
-            else if (entity is Building)
-            {
-                if (!buildingSet.Contains((Building)entity)) { return; }
-                buildingSet.Remove((Building)entity);
-            }
-            else if (entity is Tree)
-            {
-                if (!treeSet.Contains((Tree)entity)) { return; }
-                treeSet.Remove((Tree)entity);
-            }
-            else if (entity is Item)
-            {
-                if (!itemSet.Contains((Item)entity)) { return; }
-                itemSet.Remove((Item)entity);
+        public static void RemoveEntity(Entity entity) {
+            if (entity is Person) {
+                if (!personSet.Contains((Person) entity)) { return; }
+                personSet.Remove((Person) entity);
+            } else if (entity is Building) {
+                if (!buildingSet.Contains((Building) entity)) { return; }
+                buildingSet.Remove((Building) entity);
+            } else if (entity is Tree) {
+                if (!treeSet.Contains((Tree) entity)) { return; }
+                treeSet.Remove((Tree) entity);
+            } else if (entity is Item) {
+                if (!itemSet.Contains((Item) entity)) { return; }
+                itemSet.Remove((Item) entity);
             }
 
             Grid[entity.GridLocation.X, entity.GridLocation.Y].RemoveEntity(entity);
         }
 
         public static Person MovePerson(Person person, Point newLocation) {
-            if (IsClear(newLocation.X, newLocation.Y) && !person.HasMoved) {
+            if (IsClear(newLocation.X, newLocation.Y)) {
                 Grid[person.GridLocation.X, person.GridLocation.Y].RemoveEntity(person);
                 Grid[newLocation.X, newLocation.Y].AddEntity(person);
                 person.Move(newLocation.X, newLocation.Y);
-
-                person.HasMoved = true;
             }
 
             return person;
@@ -307,12 +282,9 @@ namespace Illumination.Logic {
         public static void NextTimestep(GameTime gameTime) {
             /* Toggling is done only by user input. */
             if (isDayAndNightToggled) {
-                if (isNight)
-                {
+                if (isNight) {
                     BeginNight();
-                }
-                else
-                {
+                } else {
                     lightLogic.SetLightSpeed(LightLogic.SpeedType.Fast);
                     isNight = true;
                 }
@@ -320,22 +292,17 @@ namespace Illumination.Logic {
             }
 
             /* Natural transition by game flow. */
-            if (!isNight)
-            {
-                double elapsedSec = gameTime.ElapsedGameTime.Milliseconds / (double)1000;
+            if (!isNight) {
+                double elapsedSec = gameTime.ElapsedGameTime.Milliseconds / (double) 1000;
                 timeLeft -= elapsedSec;
 
-                if (timeLeft <= 0)
-                {
+                if (timeLeft <= 0) {
                     BeginNight();
                     isNight = true;
                 }
-            }
-            else
-            {
-                if (!lightLogic.NextTimestep())
-                {
-                    BeginDay(); 
+            } else {
+                if (!lightLogic.NextTimestep()) {
+                    BeginDay();
                     isNight = false;
                 }
             }
@@ -344,6 +311,9 @@ namespace Illumination.Logic {
         public static void BeginNight() {
             Display.NightOverlay(true);
             lightLogic.ActivateTrees();
+            foreach (Person person in personSet) {
+                person.RemainingMovement = (int) ((person.MovementRange * 2 / 3.0 + 0.5));
+            }
             timeLeft = 0;
         }
 
@@ -354,8 +324,8 @@ namespace Illumination.Logic {
             foreach (Building building in buildingSet) {
                 building.ClearLightSequences();
             }
-            foreach (Person p in personSet) {
-                p.HasMoved = false;
+            foreach (Person person in personSet) {
+                person.RemainingMovement = person.MovementRange;
             }
             timeLeft = DAY_TIME_LIMIT;
             dayCount++;
