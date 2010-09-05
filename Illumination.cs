@@ -93,29 +93,32 @@ namespace Illumination {
             World.AddEntity(new ResearchCenter(1, 7));
 
             Random random = new Random();
-            for (int n = 2; n <= 3; n++) {
-                Person p = new Person(3, n);
-                p.Direction = Entity.DirectionType.South;
-                if (n == 2)
-                    p.Direction = Entity.DirectionType.East;
-                p.Profession = (Person.ProfessionType) (random.Next() % (int) Person.ProfessionType.SIZE);
-                if (p.Profession != Person.ProfessionType.Worker) {
-                    p.Education = 3;
-                }
-                World.AddEntity(p);
-            }
+
+            Person p0 = new Person(2, 3);
             Person p1 = new Person(4, 6);
             Person p2 = new Person(6, 7);
             Person p3 = new Person(4, 7);
             Person p4 = new Person(6, 1);
+            Person p5 = new Person(6, 9);
+            Person p6 = new Person(7, 9);
+            p0.Direction = Entity.DirectionType.South;
             p3.Profession = Person.ProfessionType.Educator;
             p3.Education = 3;
             p3.Direction = Entity.DirectionType.West;
             p2.Direction = Entity.DirectionType.West;
+            p5.Direction = Entity.DirectionType.West;
+            p6.Direction = Entity.DirectionType.West;
+            p5.Profession = Person.ProfessionType.Educator;
+            p6.Profession = Person.ProfessionType.Scientist;
+            p5.Education = 3;
+            p6.Education = 3;
+            World.AddEntity(p0);
             World.AddEntity(p1);
             World.AddEntity(p2);
             World.AddEntity(p3);
             World.AddEntity(p4);
+            World.AddEntity(p5);
+            World.AddEntity(p6);
 
             Mirror m1 = new Mirror(2, 4);
             Mirror m2 = new Mirror(5, 4);

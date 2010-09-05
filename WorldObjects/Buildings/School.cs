@@ -15,14 +15,19 @@ namespace Illumination.WorldObjects {
         const int WIDTH = 2;
         const int HEIGHT = 2;
 
-        const int EFFECT_RANGE = 2;
+        const int EffectRangeBasic = 2;
+        const int EffectRangeAdvanced = 3;
 
-        static Dictionary<LightSequence, DoEffect> effects;
+        //static Dictionary<LightSequence, DoEffect> effects;
+        static BuildingEffect[] effects;
 
         static School() {
-            effects = new Dictionary<LightSequence, DoEffect>();
+            effects = new BuildingEffect[4];
 
-            effects.Add(new LightSequence("Y"), StandardEffect);
+            effects[0] = new BuildingEffect("Education +1 (Range 2)", new LightSequence("Y"), Effect0, true);
+            effects[1] = new BuildingEffect("Education +1 (Range 3)", new LightSequence("YB"), Effect1, true);
+            effects[2] = new BuildingEffect("Education +2 (Range 2)", new LightSequence("YYY"), Effect2, true);
+            effects[3] = new BuildingEffect("Education +2 (Range 3)", new LightSequence("YYYB"), Effect3, true);
         }
 
         public School() { /* Default constructor */ }
@@ -43,20 +48,31 @@ namespace Illumination.WorldObjects {
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
             spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+
+            effectDisplay.Sequence = effects[ActivatedEffect].sequence;
+            effectDisplay.Draw(spriteBatch, true);
         }
 
-        protected override Dictionary<LightSequence, Building.DoEffect> GetEffects() {
+        public override BuildingEffect[] GetEffects() {
             return School.effects;
         }
         
-        public override HashSet<Point> GetEffectRange()
+        public override HashSet<Point> GetEffectRange(int effectIndex)
         {
             HashSet<Point> points = new HashSet<Point>();
 
-            int startRow = GridLocation.Left - EFFECT_RANGE;
-            int endRow = GridLocation.Right + EFFECT_RANGE;
-            int startCol = GridLocation.Top - EFFECT_RANGE;
-            int endCol = GridLocation.Bottom + EFFECT_RANGE;
+            int effectRange = 0;
+            if (effectIndex == 0 || effectIndex == 2) {
+                effectRange = EffectRangeBasic;
+            }
+            else {
+                effectRange = EffectRangeAdvanced;
+            }
+
+            int startRow = GridLocation.Left - effectRange;
+            int endRow = GridLocation.Right + effectRange;
+            int startCol = GridLocation.Top - effectRange;
+            int endCol = GridLocation.Bottom + effectRange;
 
             for (int row = startRow; row < endRow; row++)
             {
@@ -68,17 +84,21 @@ namespace Illumination.WorldObjects {
 
             return points;
         }
-        
-        private static bool StandardEffect(Building building)
-        {
-            Rectangle boundingBox = new Rectangle(building.GridLocation.Left - EFFECT_RANGE + 1, building.GridLocation.Top - EFFECT_RANGE + 1,
-                building.GridLocation.Width + EFFECT_RANGE * 2 - 2, building.GridLocation.Height + EFFECT_RANGE * 2 - 2);
+
+        static void EducateAnimation(Rectangle gridLocation, int effectRange) {
+            Rectangle boundingBox = new Rectangle(gridLocation.Left - effectRange + 1, gridLocation.Top - effectRange + 1,
+                gridLocation.Width + effectRange * 2 - 2, gridLocation.Height + effectRange * 2 - 2);
             Animation effect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], Display.GridLocationToViewport(boundingBox), 2, 0.1);
             effect.AddColorFrame(Color.TransparentWhite, 0);
             effect.AddColorFrame(Color.Yellow, 0.5);
             effect.AddColorFrame(Color.TransparentWhite, 2);
+        }
 
-            foreach (Point p in building.GetEffectRange())
+        /* "Education +1 (Range 2)", Y */
+        private static bool Effect0(Building building) {
+            EducateAnimation(building.GridLocation, EffectRangeBasic);
+
+            foreach (Point p in building.GetEffectRange(0))
             {
                 if (!World.InBound(p))
                 {
@@ -105,6 +125,85 @@ namespace Illumination.WorldObjects {
 
             return true;
         }
+
+        /* "Education +1 (Range 3)", YB */
+        private static bool Effect1(Building building) {
+            EducateAnimation(building.GridLocation, EffectRangeAdvanced);
+
+            foreach (Point p in building.GetEffectRange(1)) {
+                if (!World.InBound(p)) {
+                    continue;
+                }
+
+                foreach (Entity entity in World.GetEntities(p.X, p.Y)) {
+                    if (entity.Hidden) {
+                        continue;
+                    }
+
+                    if (entity is Person) {
+                        Person thisPerson = (Person)entity;
+                        if (!thisPerson.IsEducated) {
+                            thisPerson.Educate(1);
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /* "Education +2 (Range 2)", YYY */
+        private static bool Effect2(Building building) {
+            EducateAnimation(building.GridLocation, EffectRangeBasic);
+
+            foreach (Point p in building.GetEffectRange(2)) {
+                if (!World.InBound(p)) {
+                    continue;
+                }
+
+                foreach (Entity entity in World.GetEntities(p.X, p.Y)) {
+                    if (entity.Hidden) {
+                        continue;
+                    }
+
+                    if (entity is Person) {
+                        Person thisPerson = (Person)entity;
+                        if (!thisPerson.IsEducated) {
+                            thisPerson.Educate(2);
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /* "Education +2 (Range 3)", YYYB */
+        private static bool Effect3(Building building) {
+            EducateAnimation(building.GridLocation, EffectRangeAdvanced);
+
+            foreach (Point p in building.GetEffectRange(3)) {
+                if (!World.InBound(p)) {
+                    continue;
+                }
+
+                foreach (Entity entity in World.GetEntities(p.X, p.Y)) {
+                    if (entity.Hidden) {
+                        continue;
+                    }
+
+                    if (entity is Person) {
+                        Person thisPerson = (Person)entity;
+                        if (!thisPerson.IsEducated) {
+                            thisPerson.Educate(2);
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
 
         public override Texture2D GetTexture() {
             return MediaRepository.Textures["School"];

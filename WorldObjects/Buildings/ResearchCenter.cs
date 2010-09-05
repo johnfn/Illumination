@@ -20,12 +20,16 @@ namespace Illumination.WorldObjects
 
         const int EFFECT_RANGE = 2;
 
-        static Dictionary<LightSequence, DoEffect> effects;
+        static BuildingEffect[] effects;
 
         static ResearchCenter()
         {
-            effects = new Dictionary<LightSequence, DoEffect>();
-            effects.Add(new LightSequence("*"), StandardEffect);
+            effects = new BuildingEffect[4];
+
+            effects[0] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[1] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[2] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[3] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
         }
 
         public ResearchCenter() { /* Default constructor */ }
@@ -47,12 +51,12 @@ namespace Illumination.WorldObjects
             spriteBatch.DrawRelative(GetTexture(), BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
         }
 
-        protected override Dictionary<LightSequence, Building.DoEffect> GetEffects()
+        public override BuildingEffect[] GetEffects()
         {
             return ResearchCenter.effects;
         }
-
-        public override HashSet<Point> GetEffectRange()
+        
+        public override HashSet<Point> GetEffectRange(int effectIndex)
         {
             HashSet<Point> points = new HashSet<Point>();
 
@@ -79,7 +83,8 @@ namespace Illumination.WorldObjects
 
         private static bool StandardEffect(Building building)
         {
-            return false;
+            /* Nothing Yet */
+            return true;
         }
     }
 }

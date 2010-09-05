@@ -2,15 +2,35 @@
 using System.Collections.Generic;
 using Illumination.Logic;
 using Microsoft.Xna.Framework;
+using Illumination.Components;
+using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Building : Entity {
+
+        public struct BuildingEffect {
+            public string description;
+            public LightSequence sequence;
+            public DoEffect effectHandle;
+            public bool isKnown;
+
+            public BuildingEffect(string description, LightSequence sequence, DoEffect effectHandle, bool isKnown) {
+                this.description = description;
+                this.sequence = sequence;
+                this.effectHandle = effectHandle;
+                this.isKnown = isKnown;
+            }
+        }
+
         LightSequence lightBeams;
 
         HashSet <LightSequence> triggeredSequences;
 
+        protected LightSequenceBar effectDisplay;
+        int activatedEffect;
+
         // Returns whether to mark effect as completed or not
-        protected delegate bool DoEffect(Building triggeringBuilding);
+        public delegate bool DoEffect(Building triggeringBuilding);
 
         public Building() : base() { /* Default constructor */ }
 
@@ -18,6 +38,11 @@ namespace Illumination.WorldObjects {
             Initialize(x, y, width, height, texture);
 
             Name = "Building";
+        }
+
+        public int ActivatedEffect {
+            get { return activatedEffect; }
+            set { activatedEffect = value; }
         }
 
         public int Width {
@@ -30,13 +55,15 @@ namespace Illumination.WorldObjects {
 
         public abstract void Initialize(int x, int y);
 
-        protected abstract Dictionary<LightSequence, DoEffect> GetEffects();
+        public abstract BuildingEffect[] GetEffects();
 
         public override void Initialize(int x, int y, int width, int height, Texture2D texture) {
             base.Initialize(x, y, width, height, texture);
 
             lightBeams = new LightSequence();
             triggeredSequences = new HashSet<LightSequence>();
+            activatedEffect = 0;
+            effectDisplay = new LightSequenceBar(new LightSequence(), new Point(BoundingBox.X + 30, BoundingBox.Y + 30), new Dimension(10, 10), 5);
 
             base.DeferDraw = true;
         }
@@ -52,17 +79,16 @@ namespace Illumination.WorldObjects {
         }
 
         public void Activate() {
-            Dictionary<LightSequence, DoEffect> effects = GetEffects();
-            foreach (LightSequence sequence in effects.Keys) {
-                if (lightBeams.IsSubsequence(sequence) && !triggeredSequences.Contains(sequence)) {
-                    if (effects[sequence](this)) {
-                        triggeredSequences.Add(sequence);
-                    }
+            BuildingEffect thisEffect = GetEffects()[activatedEffect];
+
+            if (lightBeams.IsSubsequence(thisEffect.sequence) && !triggeredSequences.Contains(thisEffect.sequence)) {
+                if (thisEffect.effectHandle(this)) {
+                    triggeredSequences.Add(thisEffect.sequence);
                 }
             }
         }
 
-        public virtual HashSet<Point> GetEffectRange() {
+        public virtual HashSet<Point> GetEffectRange(int effectIndex) {
             HashSet<Point> points = new HashSet<Point>();
             for (int row = GridLocation.Top; row < GridLocation.Bottom; row++) {
                 for (int col = GridLocation.Left; col < GridLocation.Right; col++) {
@@ -74,7 +100,11 @@ namespace Illumination.WorldObjects {
         }
 
         public override IEnumerable<Point> GetRange() {
-            return GetEffectRange();
+            return GetEffectRange(activatedEffect);
+        }
+
+        public void ActivateEffect(int clickedEffect) {
+            activatedEffect = clickedEffect;
         }
     }
 }

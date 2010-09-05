@@ -60,12 +60,15 @@ namespace Illumination.Components {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
-            base.Draw(spriteBatch, isRelative);
+            if (IsActive) {
+                base.Draw(spriteBatch, isRelative);
 
-            if (!isRelative) {
-                spriteBatch.DrawStringAbsolute(font, text, textLocation, textColor);
-            } else {
-                spriteBatch.DrawString(font, text, textLocation, textColor);
+                if (!isRelative) {
+                    spriteBatch.DrawStringAbsolute(font, text, textLocation, textColor);
+                }
+                else {
+                    spriteBatch.DrawString(font, text, textLocation, textColor);
+                }
             }
         }
     }

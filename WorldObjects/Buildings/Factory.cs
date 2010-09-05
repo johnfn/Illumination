@@ -20,12 +20,16 @@ namespace Illumination.WorldObjects
 
         const int EFFECT_RANGE = 2;
 
-        static Dictionary<LightSequence, DoEffect> effects;
+        static BuildingEffect[] effects;
 
         static Factory()
         {
-            effects = new Dictionary<LightSequence, DoEffect>();
-            effects.Add(new LightSequence("*"), StandardEffect);
+            effects = new BuildingEffect[4];
+
+            effects[0] = new BuildingEffect("Money +5", new LightSequence("*"), StandardEffect, true);
+            effects[1] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[2] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[3] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
         }
 
         public Factory() { /* Default constructor */ }
@@ -45,14 +49,17 @@ namespace Illumination.WorldObjects
         public override void Draw(SpriteBatchRelative spriteBatch)
         {
             spriteBatch.DrawRelative(GetTexture(), BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+            
+            effectDisplay.Sequence = effects[ActivatedEffect].sequence;
+            effectDisplay.Draw(spriteBatch, true);
         }
 
-        protected override Dictionary<LightSequence, Building.DoEffect> GetEffects()
+        public override BuildingEffect[] GetEffects()
         {
             return Factory.effects;
         }
 
-        public override HashSet<Point> GetEffectRange()
+        public override HashSet<Point> GetEffectRange(int effectIndex)
         {
             HashSet<Point> points = new HashSet<Point>();
 
