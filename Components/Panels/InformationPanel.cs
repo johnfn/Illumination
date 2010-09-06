@@ -22,6 +22,7 @@ namespace Illumination.Components.Panels {
         Panel professionPanel;
         Panel personStatusPanel;
         Panel buildingStatusPanel;
+        Panel researchPanel;
         TextBox missionResultBox;
 
         Button shopButton;
@@ -39,6 +40,7 @@ namespace Illumination.Components.Panels {
             
             personStatusPanel = new PersonPanel(new Rectangle(0, 0, 200, 140));
             buildingStatusPanel = new BuildingPanel(new Rectangle(0, 0, 200, 140));
+            researchPanel = new ResearchPanel(new Rectangle(0, 0, 200, 140));
 
             shopButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(800, -30, 90, 30), new Color(0, 0, 150, 100),
                 "Shop", MediaRepository.Fonts["DefaultFont"], Color.White);
@@ -60,6 +62,7 @@ namespace Illumination.Components.Panels {
 
             detailPanel.AddComponent(personStatusPanel);
             detailPanel.AddComponent(buildingStatusPanel);
+            detailPanel.AddComponent(researchPanel);
 
             this.consumesMouseEvent = false;
         }
@@ -108,6 +111,7 @@ namespace Illumination.Components.Panels {
             professionPanel.DeactivatePanel(true);
             personStatusPanel.DeactivatePanel(true);
             buildingStatusPanel.DeactivatePanel(true);
+            researchPanel.DeactivatePanel(true);
 
             if (World.SelectedEntities.Count > 0) {
                 World.EntityType entityType = World.SelectedEntityType;
@@ -140,7 +144,12 @@ namespace Illumination.Components.Panels {
                         }
                     }
                     if (World.SelectedEntities.Count == 1) {
-                        buildingStatusPanel.ActivatePanel(true);
+                        if (World.SelectedEntities.First() is ResearchCenter) {
+                            researchPanel.ActivatePanel(true);
+                        }
+                        else {
+                            buildingStatusPanel.ActivatePanel(true);
+                        }
                     }
                 }
             }

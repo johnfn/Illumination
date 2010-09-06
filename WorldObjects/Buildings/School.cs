@@ -41,7 +41,11 @@ namespace Illumination.WorldObjects {
             effects[0] = new EducationEffect("Education +1 (Range 2)", new LightSequence("Y"), true, 2, 1);
             effects[1] = new EducationEffect("Education +1 (Range 3)", new LightSequence("YB"), true, 3, 1);
             effects[2] = new EducationEffect("Education +2 (Range 2)", new LightSequence("YYY"), true, 2, 2);
-            effects[3] = new EducationEffect("Education +2 (Range 3)", new LightSequence("YYYB"), true, 3, 2);
+            effects[3] = new EducationEffect("Education +2 (Range 3)", new LightSequence("YYYB"), false, 3, 2);
+        }
+
+        public static void UnlockEffect(int effectIndex) {
+            effects[effectIndex].isKnown = true;    
         }
 
         public School() { /* Default constructor */ }

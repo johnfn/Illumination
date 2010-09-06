@@ -45,7 +45,10 @@ namespace Illumination.WorldObjects
             effects[2] = new BuildingEffect("Clean technology", new LightSequence("GG"), Clean, true);
             effects[3] = new BuildingEffect("Cleaner technology", new LightSequence("GGGG"), Cleaner, true);
         }
-        
+
+        public static void UnlockEffect(int effectIndex) {
+            effects[effectIndex].isKnown = true;    
+        }
 
         public Factory() { /* Default constructor */ }
 

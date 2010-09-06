@@ -37,6 +37,7 @@ namespace Illumination.Logic {
 
         static LightLogic lightLogic = new LightLogic();
         static Mission currentMission = new Mission();
+        static ResearchLogic researchLogic = new ResearchLogic();
 
         static bool isNight;
         static bool isDayAndNightToggled = false;
@@ -107,6 +108,10 @@ namespace Illumination.Logic {
 
         public static HashSet<Entity> SelectedEntities {
             get { return selectedEntities; }
+        }
+
+        public static Research GetResearch(int index) {
+            return ResearchLogic.GetResearch(0);
         }
 
         public static void SelectEntity(Entity entity) {
