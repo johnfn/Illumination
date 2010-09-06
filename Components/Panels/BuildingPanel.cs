@@ -124,6 +124,7 @@ namespace Illumination.Components.Panels
 
             Building building = (Building)World.SelectedEntities.First();
             building.ActivateEffect(clickedEffect);
+            World.UpdateHighlight();
         }
     }
 }

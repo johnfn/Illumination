@@ -122,6 +122,10 @@ namespace Illumination.Logic {
                 selectedEntityType = EntityType.None;
             }
 
+            UpdateHighlight();
+        }
+
+        public static void UpdateHighlight() {
             RemoveAllHighlight();
             foreach (Entity e in selectedEntities) {
                 AddHighlight(e.GetRange());
