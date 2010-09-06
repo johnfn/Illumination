@@ -22,6 +22,13 @@ namespace Illumination.Logic {
 
         public const double DAY_TIME_LIMIT = 60;
 
+        /*
+         * Enables various hacks that allow us to test
+         * functionality faster.
+         */
+
+        public static bool cheater = true;
+
         static Tile[,] grid;
         static HashSet<Person> personSet;
         static HashSet<Building> buildingSet;

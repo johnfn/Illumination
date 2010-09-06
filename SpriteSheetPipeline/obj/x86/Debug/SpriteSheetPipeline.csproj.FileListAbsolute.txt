@@ -8,3 +8,8 @@ C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeli
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.dll
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.pdb
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.dll
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetPipeline\bin\x86\Debug\SpriteSheetPipeline.pdb
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetPipeline\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.dll
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetPipeline\obj\x86\Debug\SpriteSheetPipeline.pdb

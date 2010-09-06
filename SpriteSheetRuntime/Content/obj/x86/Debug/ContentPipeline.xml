@@ -6,15 +6,15 @@
       <TargetPlatform>Windows</TargetPlatform>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\Content\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\Content\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\Content\</RootDirectory>
+      <LoggerRootDirectory>C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
-        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2010-07-19T11:04:04.5689912-07:00</Value>
+        <Key>C:\WINDOWS\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2010-08-26T21:09:08.65625-07:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

@@ -54,8 +54,8 @@ namespace Illumination.Components.Panels
             Deactivate();
         }
 
-        public override void Activate() {
-            base.Activate();
+        public override void ActivatePanel(bool isRecursive) {
+            base.ActivatePanel(isRecursive);
         
             /* It is gauranteed that the selected entity is a single person. */
             person = (Person)World.SelectedEntities.First();

@@ -10,3 +10,9 @@ C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntim
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\obj\x86\Debug\SpriteSheetRuntime.dll
 C:\Users\Hoon\Documents\Visual Studio 2008\Projects\ImagineCup\SpriteSheetRuntime\obj\x86\Debug\SpriteSheetRuntime.pdb
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\bin\x86\Debug\SpriteSheetRuntime.dll
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\bin\x86\Debug\SpriteSheetRuntime.pdb
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\obj\x86\Debug\SpriteSheetRuntime.dll
+C:\Documents and Settings\Grant\My Documents\My Dropbox\illumination\SpriteSheetRuntime\obj\x86\Debug\SpriteSheetRuntime.pdb

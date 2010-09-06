@@ -29,7 +29,7 @@ namespace Illumination.WorldObjects {
         protected LightSequenceBar effectDisplay;
         int activatedEffect;
 
-        // Returns whether to mark effect as completed or not
+        // Returns whether to mark effect as 1 time use
         public delegate bool DoEffect(Building triggeringBuilding);
 
         public Building() : base() { /* Default constructor */ }
@@ -83,9 +83,20 @@ namespace Illumination.WorldObjects {
             BuildingEffect thisEffect = GetEffects()[activatedEffect];
 
             if (lightBeams.IsSubsequence(thisEffect.sequence) && !triggeredSequences.Contains(thisEffect.sequence)) {
-                if (thisEffect.effectHandle(this)) {
+                if (thisEffect.effectHandle(this)) { //Activates effect; returns true if it is a 1 time effect
                     triggeredSequences.Add(thisEffect.sequence);
                 }
+            }
+        }
+
+        /*
+         * Forces an effect to trigger, but only if you're a cheater.
+         */
+        public void ForceActivate(){
+            if (World.cheater){
+                BuildingEffect thisEffect = GetEffects()[activatedEffect];
+
+                thisEffect.effectHandle(this);
             }
         }
 

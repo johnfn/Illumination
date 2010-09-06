@@ -60,19 +60,23 @@ namespace Illumination.Components.Panels {
             }
         }
 
-        public override void Activate() {
+        public virtual void ActivatePanel(bool isRecursive) {
             base.Activate();
 
-            foreach (Component c in components) {
-                c.Activate();
+            if (isRecursive) {
+                foreach (Component c in components) {
+                    c.Activate();
+                }
             }
         }
 
-        public override void Deactivate() {
+        public virtual void DeactivatePanel(bool isRecursive) {
             base.Deactivate();
 
-            foreach (Component c in components) {
-                c.Deactivate();
+            if (isRecursive) {
+                foreach (Component c in components) {
+                    c.Deactivate();
+                }
             }
         }
 

@@ -12,6 +12,21 @@ namespace Illumination.Logic
             ResetAllFrequencies();
         }
 
+        /*
+         * Initialize a LightSequence 
+         *
+         * lights - a string representing the light sequence
+         *
+         * light is not in any special order.
+         *
+          B Blue;
+          * Gray;
+          Y Yellow;
+          W White;
+          G Green;
+          R Red;
+         *
+         */
         public LightSequence(string lights) : this() {
             Light.LightType[] lightSequence = new Light.LightType[lights.Length];
             foreach (char ch in lights.ToCharArray()) {

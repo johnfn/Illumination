@@ -20,17 +20,32 @@ namespace Illumination.WorldObjects
 
         const int EFFECT_RANGE = 2;
 
+        /*
+         * You start out with a pollution score of 10 (best).
+         *
+         * For each factory, you subtract this number from
+         * the pollution score.
+         *
+         * It can be decreased through research / light.
+         */
+
+        double pollutionFactor = 1;
+        public double PollutionFactor {
+            get { return pollutionFactor; }
+        }
+
         static BuildingEffect[] effects;
 
         static Factory()
         {
             effects = new BuildingEffect[4];
 
-            effects[0] = new BuildingEffect("Money +5", new LightSequence("*"), StandardEffect, true);
-            effects[1] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
-            effects[2] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
-            effects[3] = new BuildingEffect("", new LightSequence(), StandardEffect, false);
+            effects[0] = new BuildingEffect("Money +5", new LightSequence("*"), Add5, true);
+            effects[1] = new BuildingEffect("Money +20", new LightSequence("***"), Add20, false);
+            effects[2] = new BuildingEffect("Clean technology", new LightSequence("GG"), Clean, true);
+            effects[3] = new BuildingEffect("Cleaner technology", new LightSequence("GGGG"), Cleaner, true);
         }
+        
 
         public Factory() { /* Default constructor */ }
 
@@ -98,10 +113,29 @@ namespace Illumination.WorldObjects
             return MediaRepository.Textures["Factory"];
         }
 
-        private static bool StandardEffect(Building building) {
+        private static bool Add5(Building building) {
             ((Factory) building).EarnMoney(5);
 
             return false;
+        }
+        private static bool Add20(Building building) {
+            ((Factory) building).EarnMoney(20);
+
+            return false;
+        }
+
+        private static bool Clean(Building building) {
+            //It's worth it to check to see if the polution factor isn't already 0, just in case.
+            if (((Factory) building).pollutionFactor > .5) 
+                ((Factory) building).pollutionFactor = .5;
+
+            return true;
+        }
+
+        private static bool Cleaner(Building building) {
+            ((Factory) building).pollutionFactor = 0.0;
+
+            return true;
         }
     }
 }

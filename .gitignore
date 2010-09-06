@@ -13,3 +13,5 @@ Illumination.csproj
 *.xnb
 *.sln
 *.suo
+*.xml
+

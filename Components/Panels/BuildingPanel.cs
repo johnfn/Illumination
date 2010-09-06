@@ -96,9 +96,9 @@ namespace Illumination.Components.Panels
             }
         }
 
-        public override void Activate()
+        public override void ActivatePanel(bool isRecursive)
         {
-            base.Activate();
+            base.ActivatePanel(isRecursive);
 
             Update();
 
@@ -113,6 +113,10 @@ namespace Illumination.Components.Panels
             }
         }
 
+        /*
+         * Triggered when a user clicks on a button.
+         */
+
         public void ActionPerformed(ActionEvent evt) {
             int clickedEffect = 0;
             foreach (Button button in effectButtons) {
@@ -124,6 +128,10 @@ namespace Illumination.Components.Panels
 
             Building building = (Building)World.SelectedEntities.First();
             building.ActivateEffect(clickedEffect);
+
+            if (World.cheater){
+                building.ForceActivate();
+            }
         }
     }
 }

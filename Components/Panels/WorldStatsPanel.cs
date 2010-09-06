@@ -43,7 +43,6 @@ namespace Illumination.Components.Panels {
 
             /* Temporary Values */
             healthBar.Fraction = 0.7;
-            environmentBar.Fraction = 0.8;
 
             AddComponent(overallBar);
             AddComponent(educationBar);
@@ -57,14 +56,25 @@ namespace Illumination.Components.Panels {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {
+            double environmentScore = 10; //Hello magic number. How are you today.
             int educatedCount = 0; 
+            
             foreach (Person person in World.PersonSet) {
                 if (person.IsEducated) {
                     educatedCount++;
                 }
             }
 
+            foreach (Building b in World.BuildingSet) { 
+                if (b is Factory){
+                    environmentScore -= ((Factory) b).PollutionFactor;                    
+                }
+            }
+
             educationBar.Fraction = educatedCount / (double)World.PersonSet.Count;
+
+            environmentBar.Fraction = environmentScore / (double)10;
+
             overallBar.Fraction = (educationBar.Fraction + healthBar.Fraction + environmentBar.Fraction) / 3;
 
             base.Draw(spriteBatch, isRelative);
