@@ -20,7 +20,8 @@ namespace Illumination.Components.Panels {
 
         DirectionEvent directionEventHandler;
 
-        private void init(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror){
+        public DirectionPanel(Rectangle boundingBox, DirectionEvent directionEventHandler)
+            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
             int buttonWidth = boundingBox.Width / 2;
             int buttonHeight = boundingBox.Height / 2;
 
@@ -29,46 +30,21 @@ namespace Illumination.Components.Panels {
             boundingBoxes = new Rectangle[(int)Entity.DirectionType.SIZE];
 
             /* 0:North, 1:South, 2:East, 3:West */
-            if (isMirror){
-                textures[0] = MediaRepository.Textures["Mirror_NE"];
-                textures[1] = MediaRepository.Textures["Mirror_SW"];
-                textures[2] = MediaRepository.Textures["Mirror_SE"];
-                textures[3] = MediaRepository.Textures["Mirror_NW"];
+            textures[0] = MediaRepository.Textures["Arrow_N"];
+            textures[1] = MediaRepository.Textures["Arrow_S"];
+            textures[2] = MediaRepository.Textures["Arrow_E"];
+            textures[3] = MediaRepository.Textures["Arrow_W"];
 
-
-                boundingBoxes[0] = new Rectangle(buttonWidth, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[1] = new Rectangle(buttonWidth/2, 0, buttonWidth, buttonHeight);
-                boundingBoxes[2] = new Rectangle(0, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[3] = new Rectangle(buttonWidth/2, buttonHeight, buttonWidth, buttonHeight);
-            } else { 
-                textures[0] = MediaRepository.Textures["Arrow_N"];
-                textures[1] = MediaRepository.Textures["Arrow_S"];
-                textures[2] = MediaRepository.Textures["Arrow_E"];
-                textures[3] = MediaRepository.Textures["Arrow_W"];
-
-
-                boundingBoxes[0] = new Rectangle(buttonWidth, 0, buttonWidth, buttonHeight);
-                boundingBoxes[1] = new Rectangle(0, buttonHeight, buttonWidth, buttonHeight);
-                boundingBoxes[2] = new Rectangle(buttonWidth, buttonHeight, buttonWidth, buttonHeight);
-                boundingBoxes[3] = new Rectangle(0, 0, buttonWidth, buttonHeight);
-            }
-
+            boundingBoxes[0] = new Rectangle(buttonWidth, 0, buttonWidth, buttonHeight);
+            boundingBoxes[1] = new Rectangle(0, buttonHeight, buttonWidth, buttonHeight);
+            boundingBoxes[2] = new Rectangle(buttonWidth, buttonHeight, buttonWidth, buttonHeight);
+            boundingBoxes[3] = new Rectangle(0, 0, buttonWidth, buttonHeight);
 
             Initialize();
 
             this.directionEventHandler = directionEventHandler;
 
             base.Deactivate();
-        }
-
-        public DirectionPanel(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            init(boundingBox, directionEventHandler, isMirror);
-        }
-
-        public DirectionPanel(Rectangle boundingBox, DirectionEvent directionEventHandler)
-            : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            init(boundingBox, directionEventHandler, false);
         }
 
         public void Initialize() {
