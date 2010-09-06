@@ -36,10 +36,10 @@ namespace Illumination.Components.Panels {
                 textures[3] = MediaRepository.Textures["Mirror_NW"];
 
 
+                boundingBoxes[3] = new Rectangle(buttonWidth/2, 0, buttonWidth, buttonHeight);
+                boundingBoxes[1] = new Rectangle(0, buttonHeight/2, buttonWidth, buttonHeight);
                 boundingBoxes[0] = new Rectangle(buttonWidth, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[1] = new Rectangle(buttonWidth/2, 0, buttonWidth, buttonHeight);
-                boundingBoxes[2] = new Rectangle(0, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[3] = new Rectangle(buttonWidth/2, buttonHeight, buttonWidth, buttonHeight);
+                boundingBoxes[2] = new Rectangle(buttonWidth/2, buttonHeight, buttonWidth, buttonHeight);
             } else { 
                 textures[0] = MediaRepository.Textures["Arrow_N"];
                 textures[1] = MediaRepository.Textures["Arrow_S"];
