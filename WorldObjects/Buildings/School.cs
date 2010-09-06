@@ -18,16 +18,30 @@ namespace Illumination.WorldObjects {
         const int EffectRangeBasic = 2;
         const int EffectRangeAdvanced = 3;
 
-        //static Dictionary<LightSequence, DoEffect> effects;
-        static BuildingEffect[] effects;
+        private class EducationEffect : Building.BuildingEffect {
+            public int range;
+            public int increment;
+
+            public EducationEffect(string description, LightSequence sequence, bool isKnown, int range, int increment)
+                : base(description, sequence,
+                    delegate(Building building) {
+                        return EducatePeople(building, range, increment);
+                    }, isKnown) {
+
+                this.range = range;
+                this.increment = increment;
+            }
+        }
+
+        static EducationEffect[] effects;
 
         static School() {
-            effects = new BuildingEffect[4];
+            effects = new EducationEffect[4];
 
-            effects[0] = new BuildingEffect("Education +1 (Range 2)", new LightSequence("Y"), Effect0, true);
-            effects[1] = new BuildingEffect("Education +1 (Range 3)", new LightSequence("YB"), Effect1, true);
-            effects[2] = new BuildingEffect("Education +2 (Range 2)", new LightSequence("YYY"), Effect2, true);
-            effects[3] = new BuildingEffect("Education +2 (Range 3)", new LightSequence("YYYB"), Effect3, true);
+            effects[0] = new EducationEffect("Education +1 (Range 2)", new LightSequence("Y"), true, 2, 1);
+            effects[1] = new EducationEffect("Education +1 (Range 3)", new LightSequence("YB"), true, 3, 1);
+            effects[2] = new EducationEffect("Education +2 (Range 2)", new LightSequence("YYY"), true, 2, 2);
+            effects[3] = new EducationEffect("Education +2 (Range 3)", new LightSequence("YYYB"), true, 3, 2);
         }
 
         public School() { /* Default constructor */ }
@@ -56,28 +70,19 @@ namespace Illumination.WorldObjects {
         public override BuildingEffect[] GetEffects() {
             return School.effects;
         }
-        
-        public override HashSet<Point> GetEffectRange(int effectIndex)
-        {
+
+        public override HashSet<Point> GetEffectRange(int activatedEffect) {
+            int range = effects[activatedEffect].range;
+
             HashSet<Point> points = new HashSet<Point>();
 
-            int effectRange = 0;
-            if (effectIndex == 0 || effectIndex == 2) {
-                effectRange = EffectRangeBasic;
-            }
-            else {
-                effectRange = EffectRangeAdvanced;
-            }
+            int startRow = GridLocation.Left - range;
+            int endRow = GridLocation.Right + range;
+            int startCol = GridLocation.Top - range;
+            int endCol = GridLocation.Bottom + range;
 
-            int startRow = GridLocation.Left - effectRange;
-            int endRow = GridLocation.Right + effectRange;
-            int startCol = GridLocation.Top - effectRange;
-            int endCol = GridLocation.Bottom + effectRange;
-
-            for (int row = startRow; row < endRow; row++)
-            {
-                for (int col = startCol; col < endCol; col++)
-                {
+            for (int row = startRow; row < endRow; row++) {
+                for (int col = startCol; col < endCol; col++) {
                     points.Add(new Point(row, col));
                 }
             }
@@ -94,43 +99,10 @@ namespace Illumination.WorldObjects {
             effect.AddColorFrame(Color.TransparentWhite, 2);
         }
 
-        /* "Education +1 (Range 2)", Y */
-        private static bool Effect0(Building building) {
-            EducateAnimation(building.GridLocation, EffectRangeBasic);
-
-            foreach (Point p in building.GetEffectRange(0))
-            {
-                if (!World.InBound(p))
-                {
-                    continue;
-                }
-
-                foreach (Entity entity in World.GetEntities(p.X, p.Y))
-                {
-                    if (entity.Hidden)
-                    {
-                        continue;
-                    }
-
-                    if (entity is Person)
-                    {
-                        Person thisPerson = (Person)entity;
-                        if (!thisPerson.IsEducated)
-                        {
-                            thisPerson.Educate(1);
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        /* "Education +1 (Range 3)", YB */
-        private static bool Effect1(Building building) {
-            EducateAnimation(building.GridLocation, EffectRangeAdvanced);
-
-            foreach (Point p in building.GetEffectRange(1)) {
+        private static bool EducatePeople(Building building, int range, int educationIncrement) {
+            EducateAnimation(building.GridLocation, range);
+            
+            foreach (Point p in building.GetRange()) {
                 if (!World.InBound(p)) {
                     continue;
                 }
@@ -139,71 +111,16 @@ namespace Illumination.WorldObjects {
                     if (entity.Hidden) {
                         continue;
                     }
-
                     if (entity is Person) {
-                        Person thisPerson = (Person)entity;
+                        Person thisPerson = (Person) entity;
                         if (!thisPerson.IsEducated) {
-                            thisPerson.Educate(1);
+                            thisPerson.Educate(educationIncrement);
                         }
                     }
                 }
             }
-
             return true;
         }
-
-        /* "Education +2 (Range 2)", YYY */
-        private static bool Effect2(Building building) {
-            EducateAnimation(building.GridLocation, EffectRangeBasic);
-
-            foreach (Point p in building.GetEffectRange(2)) {
-                if (!World.InBound(p)) {
-                    continue;
-                }
-
-                foreach (Entity entity in World.GetEntities(p.X, p.Y)) {
-                    if (entity.Hidden) {
-                        continue;
-                    }
-
-                    if (entity is Person) {
-                        Person thisPerson = (Person)entity;
-                        if (!thisPerson.IsEducated) {
-                            thisPerson.Educate(2);
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        /* "Education +2 (Range 3)", YYYB */
-        private static bool Effect3(Building building) {
-            EducateAnimation(building.GridLocation, EffectRangeAdvanced);
-
-            foreach (Point p in building.GetEffectRange(3)) {
-                if (!World.InBound(p)) {
-                    continue;
-                }
-
-                foreach (Entity entity in World.GetEntities(p.X, p.Y)) {
-                    if (entity.Hidden) {
-                        continue;
-                    }
-
-                    if (entity is Person) {
-                        Person thisPerson = (Person)entity;
-                        if (!thisPerson.IsEducated) {
-                            thisPerson.Educate(2);
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
 
         public override Texture2D GetTexture() {
             return MediaRepository.Textures["School"];
