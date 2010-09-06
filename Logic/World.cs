@@ -129,10 +129,7 @@ namespace Illumination.Logic {
                 selectedEntityType = EntityType.None;
             }
 
-            RemoveAllHighlight();
-            foreach (Entity e in selectedEntities) {
-                AddHighlight(e.GetRange());
-            }
+            UpdateHighlight();
         }
 
         public static void ClearSelection() {
@@ -321,7 +318,10 @@ namespace Illumination.Logic {
             foreach (Person person in personSet) {
                 person.RemainingMovement = (int) ((person.MovementRange * 2 / 3.0 + 0.5));
             }
+
             timeLeft = 0;
+
+            UpdateHighlight();
         }
 
         public static void BeginDay() {
@@ -336,6 +336,8 @@ namespace Illumination.Logic {
             }
             timeLeft = DAY_TIME_LIMIT;
             dayCount++;
+
+            UpdateHighlight();
         }
 
         public static void AddHighlight(int x, int y) {
@@ -373,6 +375,13 @@ namespace Illumination.Logic {
                 t.Highlighted = false;
             }
             highlightedTiles.Clear();
+        }
+
+        public static void UpdateHighlight() {
+            RemoveAllHighlight();
+            foreach (Entity e in selectedEntities) {
+                AddHighlight(e.GetRange());
+            }
         }
 
         public static void ChangeDirection(Entity.DirectionType direction) {

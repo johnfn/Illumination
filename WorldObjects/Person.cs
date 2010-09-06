@@ -171,7 +171,7 @@ namespace Illumination.WorldObjects {
         {
             if (education < EDUCATION_MAX)
             {
-                education += increment;
+                education = Math.Min(education + increment, EDUCATION_MAX);
             }
             Rectangle boundingBox = Display.GridLocationToViewport(GridLocation);
             Animation educateEffect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], boundingBox, 2, 0.1);

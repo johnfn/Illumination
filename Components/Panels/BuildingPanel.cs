@@ -132,6 +132,7 @@ namespace Illumination.Components.Panels
             if (World.cheater){
                 building.ForceActivate();
             }
+            World.UpdateHighlight();
         }
     }
 }

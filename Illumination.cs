@@ -286,6 +286,10 @@ namespace Illumination {
                 if (!World.IsNight)
                     World.IsNight = true;
             }
+
+            if (evt.ChangedKeys.Contains(Keys.F12)) {
+                this.graphics.ToggleFullScreen();
+            }
         }
 
         public void KeysReleased(KeyEvent evt) { /* Ignore */ }

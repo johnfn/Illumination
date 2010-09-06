@@ -7,8 +7,7 @@ using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
     public abstract class Building : Entity {
-
-        public struct BuildingEffect {
+        public class BuildingEffect {
             public string description;
             public LightSequence sequence;
             public DoEffect effectHandle;
