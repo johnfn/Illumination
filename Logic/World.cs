@@ -17,7 +17,8 @@ namespace Illumination.Logic {
             None,
             Person,
             Tree,
-            Building
+            Building,
+            Item
         }
 
         public const double DAY_TIME_LIMIT = 60;
@@ -146,6 +147,8 @@ namespace Illumination.Logic {
                 return EntityType.Building;
             } else if (entity is Tree) {
                 return EntityType.Tree;
+            } else if (entity is Item) { 
+               return EntityType.Item; 
             } else {
                 return EntityType.None;
             }
@@ -393,7 +396,21 @@ namespace Illumination.Logic {
                 foreach (Entity e in selectedEntities) {
                     ((Tree) e).Direction = direction;
                 }
+            } else if (selectedEntityType == EntityType.Item) {
+                foreach (Entity e in selectedEntities) {
+                    if (e is Mirror) {
+                        Mirror.ReflectionType newReflectiontype = Mirror.ReflectionType.NorthWest;
+                        if (direction == Entity.DirectionType.East)  newReflectiontype = Mirror.ReflectionType.SouthEast;
+                        if (direction == Entity.DirectionType.South) newReflectiontype = Mirror.ReflectionType.SouthWest;
+                        if (direction == Entity.DirectionType.West)  newReflectiontype = Mirror.ReflectionType.NorthWest;
+                        if (direction == Entity.DirectionType.North) newReflectiontype = Mirror.ReflectionType.NorthEast;
+                        
+                        ((Mirror) e).Reflection = newReflectiontype;
+                        
+                    }
+                }
             }
+
         }
     }
 }

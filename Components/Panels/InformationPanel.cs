@@ -19,6 +19,7 @@ namespace Illumination.Components.Panels {
         Panel mapPanel;
 
         Panel arrowPanel;
+        Panel mirrorArrowPanel;
         Panel professionPanel;
         Panel personStatusPanel;
         Panel buildingStatusPanel;
@@ -29,11 +30,15 @@ namespace Illumination.Components.Panels {
 
         public InformationPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, new Color(255, 255, 255, 50)) {
+
             directionPanel = new Panel(new Rectangle(5, 5, 240, 140), new Color(255, 255, 255, 100));
+
             detailPanel = new Panel(new Rectangle(255, 5, 480, 140), new Color(0, 0, 0, 50));
             mapPanel = new Panel(new Rectangle(745, 5, 140, 140), new Color(255, 255, 255, 100));
 
             arrowPanel = new DirectionPanel(new Rectangle(20, 20, 200, 100), World.ChangeDirection);
+            mirrorArrowPanel = new DirectionPanel(new Rectangle(20, 20, 200, 100), World.ChangeDirection, true);
+
             professionPanel = new ProfessionPanel(new Rectangle(285, -52, 320, 52));
             missionResultBox = new TextBox(new Rectangle(0, -40, 230, 40), "", Color.White, TextBox.AlignType.Center);
             
@@ -57,6 +62,7 @@ namespace Illumination.Components.Panels {
             AddComponent(shopPanel);
 
             directionPanel.AddComponent(arrowPanel);
+            directionPanel.AddComponent(mirrorArrowPanel);
 
             detailPanel.AddComponent(personStatusPanel);
             detailPanel.AddComponent(buildingStatusPanel);
@@ -103,8 +109,12 @@ namespace Illumination.Components.Panels {
             }
         } 
 
+        /*
+         * Decides which panels to show.
+         */
         public void UpdateInformationPanel() {
             arrowPanel.DeactivatePanel(true);
+            mirrorArrowPanel.DeactivatePanel(true);
             professionPanel.DeactivatePanel(true);
             personStatusPanel.DeactivatePanel(true);
             buildingStatusPanel.DeactivatePanel(true);
@@ -142,6 +152,8 @@ namespace Illumination.Components.Panels {
                     if (World.SelectedEntities.Count == 1) {
                         buildingStatusPanel.ActivatePanel(true);
                     }
+                } else if (entityType == World.EntityType.Item) { 
+                    mirrorArrowPanel.ActivatePanel(true);
                 }
             }
         }
