@@ -10,7 +10,7 @@ namespace Illumination.Logic.Missions.Conditions {
     [XmlInclude(typeof(TurnCondition))]
     public abstract class Condition {
         private string description;
-        public string Context {
+        public string Description {
             get { return description; }
             set { description = value; }
         }

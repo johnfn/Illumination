@@ -10,6 +10,7 @@ using Illumination.Logic.Missions.Conditions;
 using System.Xml.Serialization;
 using System.IO;
 using Illumination.Components.Panels;
+using Illumination.Logic.Missions.Events;
 
 namespace Illumination.Logic {
     public static class World {
@@ -292,6 +293,8 @@ namespace Illumination.Logic {
         }
 
         public static void NextTimestep(GameTime gameTime) {
+            currentMission.Update();
+
             /* Toggling is done only by user input. */
             if (isDayAndNightToggled) {
                 if (isNight) {

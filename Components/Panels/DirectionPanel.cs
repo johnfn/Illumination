@@ -20,27 +20,27 @@ namespace Illumination.Components.Panels {
 
         DirectionEvent directionEventHandler;
 
-        private void init(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror){
+        private void init(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror) {
             int buttonWidth = boundingBox.Width / 2;
             int buttonHeight = boundingBox.Height / 2;
 
-            buttons = new Button[(int)Entity.DirectionType.SIZE];
-            textures = new Texture2D[(int)Entity.DirectionType.SIZE];
-            boundingBoxes = new Rectangle[(int)Entity.DirectionType.SIZE];
+            buttons = new Button[(int) Entity.DirectionType.SIZE];
+            textures = new Texture2D[(int) Entity.DirectionType.SIZE];
+            boundingBoxes = new Rectangle[(int) Entity.DirectionType.SIZE];
 
             /* 0:North, 1:South, 2:East, 3:West */
-            if (isMirror){
+            if (isMirror) {
                 textures[0] = MediaRepository.Textures["Mirror_NE"];
                 textures[1] = MediaRepository.Textures["Mirror_SW"];
                 textures[2] = MediaRepository.Textures["Mirror_SE"];
                 textures[3] = MediaRepository.Textures["Mirror_NW"];
 
 
-                boundingBoxes[3] = new Rectangle(buttonWidth/2, 0, buttonWidth, buttonHeight);
-                boundingBoxes[1] = new Rectangle(0, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[0] = new Rectangle(buttonWidth, buttonHeight/2, buttonWidth, buttonHeight);
-                boundingBoxes[2] = new Rectangle(buttonWidth/2, buttonHeight, buttonWidth, buttonHeight);
-            } else { 
+                boundingBoxes[3] = new Rectangle(buttonWidth / 2, 0, buttonWidth, buttonHeight);
+                boundingBoxes[1] = new Rectangle(0, buttonHeight / 2, buttonWidth, buttonHeight);
+                boundingBoxes[0] = new Rectangle(buttonWidth, buttonHeight / 2, buttonWidth, buttonHeight);
+                boundingBoxes[2] = new Rectangle(buttonWidth / 2, buttonHeight, buttonWidth, buttonHeight);
+            } else {
                 textures[0] = MediaRepository.Textures["Arrow_N"];
                 textures[1] = MediaRepository.Textures["Arrow_S"];
                 textures[2] = MediaRepository.Textures["Arrow_E"];
@@ -72,7 +72,7 @@ namespace Illumination.Components.Panels {
         }
 
         public void Initialize() {
-            for (int n = 0; n < (int)Entity.DirectionType.SIZE; n++) {
+            for (int n = 0; n < (int) Entity.DirectionType.SIZE; n++) {
                 buttons[n] = new Button(textures[n], boundingBoxes[n], Color.White);
                 AddComponent(buttons[n]);
                 buttons[n].AddActionListener(this);

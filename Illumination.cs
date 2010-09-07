@@ -126,7 +126,6 @@ namespace Illumination {
             m2.Reflection = Mirror.ReflectionType.NorthEast;
             World.AddEntity(m1);
             World.AddEntity(m2);
-
         }
 
         /// <summary>

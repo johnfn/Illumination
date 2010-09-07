@@ -6,6 +6,7 @@ using Illumination.Logic.Missions.Conditions;
 using System.Xml.Serialization;
 using System.IO;
 using Illumination.WorldObjects;
+using Illumination.Logic.Missions.Events;
 
 namespace Illumination.Logic.Missions {
     public class XMLTest {
@@ -33,6 +34,10 @@ namespace Illumination.Logic.Missions {
             currentMission.PrimaryObjectives.Add(objective1);
             currentMission.PrimaryObjectives.Add(objective2);
             currentMission.PrimaryObjectives.Add(objective3);
+
+            currentMission.AddTrigger(new Trigger(
+                new ProfessionCondition(Person.ProfessionType.Environmentalist, 0, ComparisonCondition.GREATER),
+                new MoneyAdjustmentEvent(10)));
 
             XmlSerializer serializer = new XmlSerializer(typeof(Mission));
             TextWriter writer = new StreamWriter("test.xml");
