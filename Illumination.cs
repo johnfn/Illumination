@@ -27,7 +27,7 @@ namespace Illumination {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, MouseScrollListener, KeyListener {
+    public class Illumination : Microsoft.Xna.Framework.Game, ActionListener, MouseListener, MouseScrollListener, MouseMotionListener, KeyListener {
         GraphicsDeviceManager graphics;
         SpriteBatchRelative spriteBatch;
 
@@ -64,6 +64,7 @@ namespace Illumination {
             KeyController.Initialize();
 
             MouseController.AddMouseListener(this);
+            MouseController.AddMouseMotionListener(this);
             MouseController.AddMouseScrollListener(this);
             KeyController.AddKeyListener(this);
 
@@ -218,6 +219,11 @@ namespace Illumination {
         public void MouseClicked(MouseEvent evt) {
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
 
+            if (World.ItemToPlace != null) {
+                World.PlaceItem(gridLocation);
+                World.ItemToPlace = null;
+            }
+
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);
             if (entities.Count > 0) {
                 Entity entity = entities.First();
@@ -268,6 +274,16 @@ namespace Illumination {
 
         public void MouseScrolled(MouseScrollEvent evt) {
             Display.ScaleView(evt.Change >= 0 ? 1.1 : 0.9);
+        }
+
+        public void MouseDragged(MouseEvent evt) { }
+
+        public void MouseMoved(MouseEvent evt) {
+            Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
+            if (World.ItemToPlace != null) {
+                World.RemoveAllHighlight();
+                World.AddHighlight(gridLocation.X, gridLocation.Y);
+            }
         }
 
         #region KeyListener Members

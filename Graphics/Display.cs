@@ -197,7 +197,7 @@ namespace Illumination.Graphics
         public static Rectangle GetTextureBoundingBox(Texture2D texture, Rectangle gridLocation, int elevation)
         {
             Rectangle boundingBox = GridLocationToViewport(gridLocation);
-            int newHeight = (int)(texture.Height * boundingBox.Width / (double)texture.Width);
+            int newHeight = texture != null ? (int) (texture.Height * boundingBox.Width / (double) texture.Width) : 0;
             return new Rectangle(boundingBox.X, boundingBox.Y - newHeight + boundingBox.Height - elevation, boundingBox.Width, newHeight);
         }
 

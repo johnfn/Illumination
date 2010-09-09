@@ -20,7 +20,7 @@ namespace Illumination.Components.Panels {
 
         DirectionEvent directionEventHandler;
 
-        private void init(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror) {
+        private void Initialize(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror) {
             int buttonWidth = boundingBox.Width / 2;
             int buttonHeight = boundingBox.Height / 2;
 
@@ -35,7 +35,6 @@ namespace Illumination.Components.Panels {
                 textures[2] = MediaRepository.Textures["Mirror_SE"];
                 textures[3] = MediaRepository.Textures["Mirror_NW"];
 
-
                 boundingBoxes[3] = new Rectangle(buttonWidth / 2, 0, buttonWidth, buttonHeight);
                 boundingBoxes[1] = new Rectangle(0, buttonHeight / 2, buttonWidth, buttonHeight);
                 boundingBoxes[0] = new Rectangle(buttonWidth, buttonHeight / 2, buttonWidth, buttonHeight);
@@ -46,15 +45,17 @@ namespace Illumination.Components.Panels {
                 textures[2] = MediaRepository.Textures["Arrow_E"];
                 textures[3] = MediaRepository.Textures["Arrow_W"];
 
-
                 boundingBoxes[0] = new Rectangle(buttonWidth, 0, buttonWidth, buttonHeight);
                 boundingBoxes[1] = new Rectangle(0, buttonHeight, buttonWidth, buttonHeight);
                 boundingBoxes[2] = new Rectangle(buttonWidth, buttonHeight, buttonWidth, buttonHeight);
                 boundingBoxes[3] = new Rectangle(0, 0, buttonWidth, buttonHeight);
             }
 
-
-            Initialize();
+            for (int n = 0; n < (int) Entity.DirectionType.SIZE; n++) {
+                buttons[n] = new Button(textures[n], boundingBoxes[n], Color.White);
+                AddComponent(buttons[n]);
+                buttons[n].AddActionListener(this);
+            }
 
             this.directionEventHandler = directionEventHandler;
 
@@ -63,20 +64,12 @@ namespace Illumination.Components.Panels {
 
         public DirectionPanel(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            init(boundingBox, directionEventHandler, isMirror);
+            Initialize(boundingBox, directionEventHandler, isMirror);
         }
 
         public DirectionPanel(Rectangle boundingBox, DirectionEvent directionEventHandler)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            init(boundingBox, directionEventHandler, false);
-        }
-
-        public void Initialize() {
-            for (int n = 0; n < (int) Entity.DirectionType.SIZE; n++) {
-                buttons[n] = new Button(textures[n], boundingBoxes[n], Color.White);
-                AddComponent(buttons[n]);
-                buttons[n].AddActionListener(this);
-            }
+            Initialize(boundingBox, directionEventHandler, false);
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch, bool isRelative) {

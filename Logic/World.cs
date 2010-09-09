@@ -39,30 +39,19 @@ namespace Illumination.Logic {
 
         static LightLogic lightLogic = new LightLogic();
         static Mission currentMission = new Mission();
+        public static Mission CurrentMission {
+            get { return currentMission; }
+        }
+
         static ResearchLogic researchLogic = new ResearchLogic();
 
+        static Item itemToPlace = null;
+        public static Item ItemToPlace {
+            get { return itemToPlace; }
+            set { itemToPlace = value; }
+        }
+
         static bool isNight;
-        static bool isDayAndNightToggled = false;
-
-        static double timeLeft;
-        static int dayCount;
-        static int money;
-
-        static HashSet <Entity> selectedEntities = new HashSet<Entity>();
-        static EntityType selectedEntityType = EntityType.None;
-
-        public static double TimeLeft {
-            get { return timeLeft; }
-            set { timeLeft = value; }
-        }
-
-        public static int Money {
-            get { return money; }
-            set { money = value; }
-        }
-
-        static HashSet <Tile> highlightedTiles;
-
         public static bool IsNight {
             get { return isNight; }
             set {
@@ -71,14 +60,30 @@ namespace Illumination.Logic {
             }
         }
 
-        public static Mission CurrentMission {
-            get { return currentMission; }
+        static bool isDayAndNightToggled = false;
+
+        static double timeLeft;
+        public static double TimeLeft {
+            get { return timeLeft; }
+            set { timeLeft = value; }
         }
 
+        static int dayCount;
         public static int DayCount {
             get { return dayCount; }
             set { dayCount = value; }
         }
+
+        static int money;
+        public static int Money {
+            get { return money; }
+            set { money = value; }
+        }
+
+        static HashSet <Entity> selectedEntities = new HashSet<Entity>();
+        static EntityType selectedEntityType = EntityType.None;
+
+        static HashSet <Tile> highlightedTiles;
 
         public static double LightSpeed {
             get { return lightLogic.LightSpeed; }
@@ -272,6 +277,12 @@ namespace Illumination.Logic {
             }
 
             Grid[entity.GridLocation.X, entity.GridLocation.Y].RemoveEntity(entity);
+        }
+
+        public static void PlaceItem(Point location) {
+            itemToPlace.SetLocation(location);
+            AddEntity(itemToPlace);
+            itemToPlace = null;
         }
 
         public static Person MovePerson(Person person, Point newLocation) {

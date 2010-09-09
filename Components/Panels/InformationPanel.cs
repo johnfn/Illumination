@@ -51,7 +51,7 @@ namespace Illumination.Components.Panels {
                 "Shop", MediaRepository.Fonts["DefaultFont"], Color.White);
             shopButton.AddActionListener(this);
 
-            shopPanel = new Panel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
+            shopPanel = new ShopPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
             shopPanel.Deactivate();
 
             AddComponent(directionPanel);

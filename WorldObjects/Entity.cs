@@ -7,12 +7,12 @@ namespace Illumination.WorldObjects {
     public abstract class Entity : WorldObject {
         private static HashSet<Point> EMPTY_SET = new HashSet<Point>();
 
-        private bool spansMultipleTiles = false;
-        private bool blocksMovement = true;
-        private bool hidden = false;
-        private bool selectable = true;
+        protected bool spansMultipleTiles = false;
+        protected bool blocksMovement = true;
+        protected bool hidden = false;
+        protected bool selectable = true;
 
-        string name;
+        protected string name;
         public string Name
         {
             get { return name; }
@@ -55,7 +55,7 @@ namespace Illumination.WorldObjects {
             set { selectable = value; }
         }
 
-        public Entity() { /* Default constructor */ }
+        public Entity() : this(0, 0, 0, 0, null) { }
 
         public Entity(int x, int y, int width, int height, Texture2D texture) {
             Initialize(x, y, width, height, texture);

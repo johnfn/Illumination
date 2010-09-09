@@ -42,12 +42,19 @@ namespace Illumination.WorldObjects
             return texturesMap[reflection];;
         }
 
-        public Mirror() : base() { /* Default Constructor */ }
+        public Mirror() : base() {
+            Initialize();
+        }
 
         public Mirror(int x, int y) : base(x, y, 1, 1, MediaRepository.Textures["Mirror_NE"]) {
             reflection = ReflectionType.NorthEast;
 
-            Name = "Mirror";
+            Initialize();
+        }
+
+        private void Initialize() {
+            name = "Mirror";
+            cost = 5;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch)
@@ -79,6 +86,13 @@ namespace Illumination.WorldObjects
             }
 
             return lightOut;
+        }
+
+        public override Item CreateNewItem() {
+            Mirror newMirror = new Mirror(0, 0);
+            newMirror.reflection = reflection;
+
+            return newMirror;
         }
     }
 }
