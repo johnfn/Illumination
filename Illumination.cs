@@ -68,13 +68,13 @@ namespace Illumination {
             MouseController.AddMouseScrollListener(this);
             KeyController.AddKeyListener(this);
 
-            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(900, 600));
+            Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(900, 600), new Rectangle(0, 25, 900, 425));
             World.InitalizeWorld(12, 11);
             Layer.Initialize();
 
             informationPanel = new InformationPanel(new Rectangle(5, 445, 890, 150));
             missionPanel = new MissionPanel(new Rectangle(0, 25, 300, 200));
-            menuBar = new MenuBar(new Rectangle(0, 0, 1000, 25));
+            menuBar = new MenuBar(new Rectangle(0, 0, 900, 25));
             worldStatsBar = new WorldStatsPanel(new Rectangle(800, 25, 95, 100));
 
             Tree t1 = new Tree(2, 1);

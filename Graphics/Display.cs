@@ -22,6 +22,10 @@ namespace Illumination.Graphics
             this.Width = width;
             this.Height = height;
         }
+
+        public override string ToString() {
+            return String.Format("Width: {0}, Height: {1}", Width, Height);
+        }
     }
 
     public static class Display {
@@ -31,7 +35,14 @@ namespace Illumination.Graphics
         static Point viewportShift;
         static Dimension tileSize;
         static Dimension viewportDimension;
+        static Rectangle worldViewRectangle;
+        public static Rectangle WorldViewRectangle {
+            get { return worldViewRectangle; }
+            set { worldViewRectangle = value; }
+        }
+
         static double scale;
+        static int minX = int.MaxValue, maxX, minY, maxY;
 
         static Panel nightOverlay;
         public static void NightOverlay(bool isOn)
@@ -63,8 +74,16 @@ namespace Illumination.Graphics
         }
 
         public static void TranslateViewport(int x, int y) {
-            viewportShift.X += x;
-            viewportShift.Y += y;
+            if (minX == int.MaxValue) {
+                minX = GridLocationToViewport(new Point(World.Grid.GetLength(0), 0)).X;
+                maxX = GridLocationToViewport(new Point(0, World.Grid.GetLength(1))).X - viewportDimension.Width + tileSize.Width;
+
+                minY = GridLocationToViewport(new Point(0, 0)).Y - WorldViewRectangle.Y - tileSize.Height;
+                maxY = GridLocationToViewport(new Point(World.Grid.GetLength(0), World.Grid.GetLength(1))).Y - worldViewRectangle.Height;
+            }
+
+            viewportShift.X = Math.Max(Math.Min(viewportShift.X + x, maxX), minX);
+            viewportShift.Y = Math.Max(Math.Min(viewportShift.Y + y, maxY), minY);
         }
 
         public static double Scale {
@@ -72,11 +91,11 @@ namespace Illumination.Graphics
             set { scale = value; }
         }
 
-        public static void InitializeDisplay(Dimension tileSize, Point gridOrigin, Dimension viewportDimension) 
-        {
+        public static void InitializeDisplay(Dimension tileSize, Point gridOrigin, Dimension viewportDimension, Rectangle worldViewRectangle) {
             Display.tileSize = tileSize;
             Display.gridOrigin = gridOrigin;
             Display.viewportDimension = viewportDimension;
+            Display.worldViewRectangle = worldViewRectangle;
 
             nightOverlay = new Panel(Geometry.ConstructRectangle(gridOrigin, viewportDimension), new Color(0, 0, 0, 50));
             nightOverlay.Deactivate();
