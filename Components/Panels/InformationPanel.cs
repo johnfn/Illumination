@@ -27,7 +27,9 @@ namespace Illumination.Components.Panels {
         TextBox missionResultBox;
 
         Button shopButton;
+        Button itemsButton;
         Panel shopPanel;
+        Panel itemsPanel;
 
         public InformationPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, new Color(255, 255, 255, 50)) {
@@ -51,8 +53,15 @@ namespace Illumination.Components.Panels {
                 "Shop", MediaRepository.Fonts["DefaultFont"], Color.White);
             shopButton.AddActionListener(this);
 
+            itemsButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(700, -30, 90, 30), new Color(0, 0, 150, 100),
+                "Items", MediaRepository.Fonts["DefaultFont"], Color.White);
+            itemsButton.AddActionListener(this);
+
             shopPanel = new ShopPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
             shopPanel.Deactivate();
+
+            itemsPanel = new ItemPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
+            itemsPanel.Deactivate();
 
             AddComponent(directionPanel);
             AddComponent(detailPanel);
@@ -61,7 +70,9 @@ namespace Illumination.Components.Panels {
             AddComponent(missionResultBox);
             AddComponent(professionPanel);
             AddComponent(shopButton);
+            AddComponent(itemsButton);
             AddComponent(shopPanel);
+            AddComponent(itemsPanel);
 
             directionPanel.AddComponent(arrowPanel);
             directionPanel.AddComponent(mirrorArrowPanel);
@@ -92,15 +103,10 @@ namespace Illumination.Components.Panels {
         public void ActionPerformed(ActionEvent evt) {
             if (evt.InvokingComponent == shopButton) {
                 if (shopPanel.IsActive) {
-                    shopPanel.DeactivatePanel(true);
-                    directionPanel.ActivatePanel(false);
-                    detailPanel.ActivatePanel(false);
-                    mapPanel.ActivatePanel(false);
-
-                    shopButton.Text = "Shop";
-                    shopButton.Color = new Color(0, 0, 150, 100);
+                    CloseShopPanel();
                 }
                 else {
+                    CloseItemsPanel();
                     shopPanel.ActivatePanel(true);
                     directionPanel.DeactivatePanel(true);
                     detailPanel.DeactivatePanel(true);
@@ -109,13 +115,49 @@ namespace Illumination.Components.Panels {
                     shopButton.Text = "Back";
                     shopButton.Color = new Color(150, 0, 0, 100);
                 }
+            } else if (evt.InvokingComponent == itemsButton) {
+                if (itemsPanel.IsActive) {
+                    CloseItemsPanel();
+                } else {
+                    CloseShopPanel();
+                    itemsPanel.ActivatePanel(true);
+                    directionPanel.DeactivatePanel(true);
+                    detailPanel.DeactivatePanel(true);
+                    mapPanel.DeactivatePanel(true);
+
+                    itemsButton.Text = "Back";
+                    itemsButton.Color = new Color(150, 0, 0, 100);
+                }
             }
-        } 
+        }
+
+        private void CloseShopPanel() {
+            shopPanel.DeactivatePanel(true);
+            directionPanel.ActivatePanel(false);
+            detailPanel.ActivatePanel(false);
+            mapPanel.ActivatePanel(false);
+
+            shopButton.Text = "Shop";
+            shopButton.Color = new Color(0, 0, 150, 100);
+        }
+
+        private void CloseItemsPanel() {
+            itemsPanel.DeactivatePanel(true);
+            directionPanel.ActivatePanel(false);
+            detailPanel.ActivatePanel(false);
+            mapPanel.ActivatePanel(false);
+
+            itemsButton.Text = "Items";
+            itemsButton.Color = new Color(0, 0, 150, 100);
+        }
 
         /*
          * Decides which panels to show.
          */
         public void UpdateInformationPanel() {
+            CloseShopPanel();
+            CloseItemsPanel();
+
             arrowPanel.DeactivatePanel(true);
             mirrorArrowPanel.DeactivatePanel(true);
             professionPanel.DeactivatePanel(true);

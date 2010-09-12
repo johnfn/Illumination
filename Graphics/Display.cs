@@ -75,15 +75,19 @@ namespace Illumination.Graphics
 
         public static void TranslateViewport(int x, int y) {
             if (minX == int.MaxValue) {
-                minX = GridLocationToViewport(new Point(World.Grid.GetLength(0), 0)).X;
-                maxX = GridLocationToViewport(new Point(0, World.Grid.GetLength(1))).X - viewportDimension.Width + tileSize.Width;
-
-                minY = GridLocationToViewport(new Point(0, 0)).Y - WorldViewRectangle.Y - tileSize.Height;
-                maxY = GridLocationToViewport(new Point(World.Grid.GetLength(0), World.Grid.GetLength(1))).Y - worldViewRectangle.Height;
+                ComputeTranslationBounds();
             }
 
             viewportShift.X = Math.Max(Math.Min(viewportShift.X + x, maxX), minX);
             viewportShift.Y = Math.Max(Math.Min(viewportShift.Y + y, maxY), minY);
+        }
+
+        private static void ComputeTranslationBounds() {
+            minX = (int) (GridLocationToViewport(new Point(World.Grid.GetLength(0), 0)).X * scale);
+            maxX = (int) (GridLocationToViewport(new Point(0, World.Grid.GetLength(1))).X * scale - viewportDimension.Width + tileSize.Width * scale);
+
+            minY = (int) (GridLocationToViewport(new Point(0, 0)).Y * scale - WorldViewRectangle.Y - tileSize.Height * scale);
+            maxY = (int) (GridLocationToViewport(new Point(World.Grid.GetLength(0), World.Grid.GetLength(1))).Y * scale - worldViewRectangle.Height);
         }
 
         public static double Scale {
@@ -235,6 +239,7 @@ namespace Illumination.Graphics
 
         public static void ScaleView(double multiplier) {
             scale *= multiplier;
+            ComputeTranslationBounds();
             viewportShift = Geometry.Scale(viewportShift, multiplier);
         }
     }
