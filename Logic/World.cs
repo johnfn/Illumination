@@ -33,11 +33,33 @@ namespace Illumination.Logic {
 
         static Tile[,] grid;
         static HashSet<Person> personSet;
+        public static HashSet<Person> PersonSet {
+            get { return personSet; }
+        }
+
         static HashSet<Building> buildingSet;
+        public static HashSet<Building> BuildingSet {
+            get { return buildingSet; }
+        }
+
         static HashSet<Tree> treeSet;
+        public static HashSet<Tree> TreeSet {
+            get { return treeSet; }
+        }
+
         static HashSet<Item> itemSet;
+        public static HashSet<Item> ItemSet {
+            get { return itemSet; }
+        }
+
+        static Dictionary<ShopItem, int> inventory;
+        public static Dictionary<ShopItem, int> Inventory {
+            get { return inventory; }
+            set { inventory = value; }
+        }
 
         static LightLogic lightLogic = new LightLogic();
+
         static Mission currentMission = new Mission();
         public static Mission CurrentMission {
             get { return currentMission; }
@@ -81,7 +103,14 @@ namespace Illumination.Logic {
         }
 
         static HashSet <Entity> selectedEntities = new HashSet<Entity>();
+        public static HashSet<Entity> SelectedEntities {
+            get { return selectedEntities; }
+        }
+
         static EntityType selectedEntityType = EntityType.None;
+        public static EntityType SelectedEntityType {
+            get { return selectedEntityType; }
+        }
 
         static HashSet <Tile> highlightedTiles;
 
@@ -89,36 +118,16 @@ namespace Illumination.Logic {
             get { return lightLogic.LightSpeed; }
         }
 
-        public static HashSet<Tree> TreeSet {
-            get { return treeSet; }
-        }
-
-        public static HashSet<Light> LightSet {
-            get { return lightLogic.LightSet; }
-        }
-
-        public static HashSet<Person> PersonSet {
-            get { return personSet; }
-        }
-
-        public static HashSet<Building> BuildingSet {
-            get { return buildingSet; }
-        }
-
-        public static HashSet<Item> ItemSet {
-            get { return itemSet; }
-        }
-
         public static Tile[,] Grid {
             get { return grid; }
         }
 
-        public static HashSet<Entity> SelectedEntities {
-            get { return selectedEntities; }
-        }
-
         public static Research GetResearch(int index) {
             return ResearchLogic.GetResearch(0);
+        }
+
+        public static HashSet<Light> LightSet {
+            get { return lightLogic.LightSet; }
         }
 
         public static void SelectEntity(Entity entity) {
@@ -165,10 +174,6 @@ namespace Illumination.Logic {
             }
         }
 
-        public static EntityType SelectedEntityType {
-            get { return selectedEntityType; }
-        }
-
         public static HashSet<Entity> GetEntities(int x, int y) {
             if (!InBound(x, y)) {
                 return new HashSet<Entity>(); // Return empty set
@@ -189,6 +194,7 @@ namespace Illumination.Logic {
             buildingSet = new HashSet<Building>();
             treeSet = new HashSet<Tree>();
             itemSet = new HashSet<Item>();
+            inventory = new Dictionary<ShopItem, int>();
 
             highlightedTiles = new HashSet<Tile>();
 
@@ -277,6 +283,23 @@ namespace Illumination.Logic {
             }
 
             Grid[entity.GridLocation.X, entity.GridLocation.Y].RemoveEntity(entity);
+        }
+
+        public static void AddItemToInventory(ShopItem item) {
+            if (!inventory.ContainsKey(item)) {
+                inventory[item] = 0;
+            }
+            inventory[item]++;
+        }
+
+        public static bool RemoveItemFromInventory(ShopItem item) {
+            if (!inventory.ContainsKey(item)) {
+                return false;
+            }
+            if (--inventory[item] <= 0) {
+                inventory.Remove(item);
+            }
+            return true;
         }
 
         public static void PlaceItem(Point location) {

@@ -12,32 +12,47 @@ using Illumination.Logic;
 namespace Illumination.Components.Panels {
     public class ItemPanel : Panel {
         private class ItemDisplay : Panel, ActionListener {
-            private Item item;
+            private ShopItem item;
 
-            public ItemDisplay(Item item, Rectangle rectangle)
+            public ItemDisplay(ShopItem item, Rectangle rectangle)
                 : base(rectangle) {
                 this.item = item;
 
-                Button buyButton = new Button(item.GetTexture(), rectangle, Color.White);
-                buyButton.AddActionListener(this);
-                AddComponent(buyButton);
+                Button useButton = new Button(item.ItemCopy.GetTexture(), rectangle, Color.White);
+                useButton.AddActionListener(this);
+                AddComponent(useButton);
             }
 
             public void ActionPerformed(ActionEvent evt) {
-                if (World.Money >= item.Cost && World.ItemToPlace == null) {
-                    World.Money -= item.Cost;
-                    World.ItemToPlace = item.CreateNewItem();
+                if (World.RemoveItemFromInventory(item)) {
+                    World.ItemToPlace = item.ItemCopy.CreateNewItem();
                 }
             }
         }
 
         public ItemPanel(Rectangle rectangle, Color color)
             : base(rectangle, color) {
-            Initialize();
+            UpdateDisplay();
         }
 
-        public void Initialize() {
-            AddComponent(new ItemDisplay(new Mirror(), new Rectangle(0, 0, 100, 100)));
+        public void UpdateDisplay() {
+            foreach (Component c in components) {
+                c.Deactivate();
+            }
+
+            foreach (ShopItem item in World.Inventory.Keys) {
+                AddComponent(new ItemDisplay(item, new Rectangle(0, 0, 100, 100)));
+            }
+        }
+
+        public override void ActivatePanel(bool isRecursive) {
+            UpdateDisplay();
+            base.ActivatePanel(isRecursive);
+        }
+
+        public override void Activate() {
+            UpdateDisplay();
+            base.Activate();
         }
     }
 }

@@ -87,5 +87,7 @@ namespace Illumination.Components {
         public virtual void Deactivate() {
             isActive = false;
         }
+
+        public virtual void Destroy() { /* Default to do nothing */ }
     }
 }

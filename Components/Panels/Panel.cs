@@ -49,8 +49,22 @@ namespace Illumination.Components.Panels {
             components.Add(c);
         }
 
-        public void RemoveComponent(Component newComponent) {
-            components.Remove(newComponent);
+        public void RemoveComponent(Component component) {
+            component.Deactivate();
+            components.Remove(component);
+        }
+
+        public void RemoveAllComponents() {
+            foreach (Component component in components) {
+                RemoveComponent(component);
+            }
+        }
+
+        public override void Destroy() {
+            base.Destroy();
+            foreach (Component c in components) {
+                c.Destroy();
+            }
         }
 
         public override void Update() {

@@ -12,20 +12,21 @@ using Illumination.Logic;
 namespace Illumination.Components.Panels {
     public class ShopPanel : Panel {
         private class ItemDisplay : Panel, ActionListener {
-            private Item item;
+            private ShopItem item;
 
-            public ItemDisplay(Item item, Rectangle rectangle) : base(rectangle) {
+            public ItemDisplay(ShopItem item, Rectangle rectangle)
+                : base(rectangle) {
                 this.item = item;
 
-                Button buyButton = new Button(item.GetTexture(), rectangle, Color.White);
+                Button buyButton = new Button(item.ItemCopy.GetTexture(), rectangle, Color.White);
                 buyButton.AddActionListener(this);
                 AddComponent(buyButton);
             }
 
             public void ActionPerformed(ActionEvent evt) {
-                if (World.Money >= item.Cost && World.ItemToPlace == null) {
-                    World.Money -= item.Cost;
-                    World.ItemToPlace = item.CreateNewItem();
+                if (World.Money >= item.ItemCopy.Cost && World.ItemToPlace == null) {
+                    World.Money -= item.ItemCopy.Cost;
+                    World.AddItemToInventory(item);
                 }
             }
         }
@@ -35,7 +36,7 @@ namespace Illumination.Components.Panels {
         }
 
         public void Initialize() {
-            AddComponent(new ItemDisplay(new Mirror(), new Rectangle(0, 0, 100, 100)));
+            AddComponent(new ItemDisplay(new ShopItem(new Mirror()), new Rectangle(0, 0, 100, 100)));
         }
     }
 }

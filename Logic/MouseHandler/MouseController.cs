@@ -117,7 +117,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseMoved(MouseEvent evt) {
-            foreach (MouseMotionListener mml in mouseMotionListeners) {
+            foreach (MouseMotionListener mml in new LinkedList <MouseMotionListener> (mouseMotionListeners)) {
                 if (evt.Consumed)
                     break;
                 mml.MouseMoved(evt);
@@ -125,7 +125,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMousePressed(MouseEvent evt) {
-            foreach (MouseListener ml in mouseListeners) {
+            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
                 if (evt.Consumed)
                     break;
                 ml.MousePressed(evt);
@@ -133,7 +133,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseReleased(MouseEvent evt) {
-            foreach (MouseListener ml in mouseListeners) {
+            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
                 if (evt.Consumed)
                     break;
                 ml.MouseReleased(evt);
@@ -141,7 +141,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseDragged(MouseEvent evt) {
-            foreach (MouseMotionListener mml in mouseMotionListeners) {
+            foreach (MouseMotionListener mml in new LinkedList <MouseMotionListener> (mouseMotionListeners)) {
                 if (evt.Consumed)
                     break;
                 mml.MouseDragged(evt);
@@ -149,7 +149,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseClicked(MouseEvent evt) {
-            foreach (MouseListener ml in mouseListeners) {
+            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
                 if (evt.Consumed)
                     break;
                 ml.MouseClicked(evt);
@@ -157,7 +157,7 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseScrolled(MouseScrollEvent evt) {
-            foreach (MouseScrollListener msl in mouseScrollListeners) {
+            foreach (MouseScrollListener msl in new LinkedList <MouseScrollListener>(mouseScrollListeners)) {
                 if (evt.Consumed)
                     break;
                 msl.MouseScrolled(evt);

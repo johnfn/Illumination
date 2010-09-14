@@ -46,5 +46,10 @@ namespace Illumination.Components {
                 evt.Consumed = true;
             }
         }
+
+        public override void Destroy() {
+            base.Destroy();
+            MouseController.RemoveMouseListener(this);
+        }
     }
 }
