@@ -21,6 +21,13 @@ namespace Illumination.Logic.MouseHandler {
         private static LinkedList<MouseMotionListener> mouseMotionListeners;
         private static LinkedList<MouseScrollListener> mouseScrollListeners;
 
+        private static LinkedList<MouseListener> mouseListenersToAdd = new LinkedList<MouseListener>();
+        private static LinkedList<MouseListener> mouseListenersToRemove = new LinkedList<MouseListener>();
+        private static LinkedList<MouseMotionListener> mouseMotionListenersToAdd = new LinkedList<MouseMotionListener>();
+        private static LinkedList<MouseMotionListener> mouseMotionListenersToRemove = new LinkedList<MouseMotionListener>();
+        private static LinkedList<MouseScrollListener> mouseScrollListenersToAdd = new LinkedList<MouseScrollListener>();
+        private static LinkedList<MouseScrollListener> mouseScrollListenersToRemove = new LinkedList<MouseScrollListener>();
+
         public static MouseState CurrentState {
             get { return currentState; }
         }
@@ -35,27 +42,27 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         public static void AddMouseListener(MouseListener ml) {
-            mouseListeners.AddFirst(ml);
+            mouseListenersToAdd.AddLast(ml);
         }
 
         public static void RemoveMouseListener(MouseListener ml) {
-            mouseListeners.Remove(ml);
+            mouseListenersToRemove.AddLast(ml);
         }
 
         public static void AddMouseMotionListener(MouseMotionListener mml) {
-            mouseMotionListeners.AddFirst(mml);
+            mouseMotionListenersToAdd.AddLast(mml);
         }
 
         public static void RemoveMouseMotionListener(MouseMotionListener mml) {
-            mouseMotionListeners.Remove(mml);
+            mouseMotionListenersToRemove.AddLast(mml);
         }
 
         public static void AddMouseScrollListener(MouseScrollListener msl) {
-            mouseScrollListeners.AddFirst(msl);
+            mouseScrollListenersToAdd.AddLast(msl);
         }
 
         public static void RemoveMouseScrollListener(MouseScrollListener msl) {
-            mouseScrollListeners.Remove(msl);
+            mouseScrollListenersToRemove.AddLast(msl);
         }
 
         public static void Update() {
@@ -116,8 +123,32 @@ namespace Illumination.Logic.MouseHandler {
             }
         }
 
+        private static void UpdateListeners<T>(LinkedList<T> listenerList, LinkedList<T> addList, LinkedList<T> removeList) {
+            if (addList.Count != 0 || removeList.Count != 0) {
+                foreach (T ml in addList) {
+                    listenerList.AddFirst(ml);
+                }
+                foreach (T ml in mouseListenersToRemove) {
+                    listenerList.Remove(ml);
+                }
+            }
+        }
+
+        private static void UpdateMouseListeners() {
+            UpdateListeners<MouseListener>(mouseListeners, mouseListenersToAdd, mouseListenersToRemove);
+        }
+
+        private static void UpdateMouseMotionListeners() {
+            UpdateListeners<MouseMotionListener>(mouseMotionListeners, mouseMotionListenersToAdd, mouseMotionListenersToRemove);
+        }
+
+        private static void UpdateMouseScrollListeners() {
+            UpdateListeners<MouseScrollListener>(mouseScrollListeners, mouseScrollListenersToAdd, mouseScrollListenersToRemove);
+        }
+        
         private static void FireMouseMoved(MouseEvent evt) {
-            foreach (MouseMotionListener mml in new LinkedList <MouseMotionListener> (mouseMotionListeners)) {
+            UpdateMouseMotionListeners();
+            foreach (MouseMotionListener mml in mouseMotionListeners) {
                 if (evt.Consumed)
                     break;
                 mml.MouseMoved(evt);
@@ -125,7 +156,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMousePressed(MouseEvent evt) {
-            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
+            UpdateMouseListeners();
+            foreach (MouseListener ml in mouseListeners) {
                 if (evt.Consumed)
                     break;
                 ml.MousePressed(evt);
@@ -133,7 +165,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseReleased(MouseEvent evt) {
-            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
+            UpdateMouseListeners();
+            foreach (MouseListener ml in mouseListeners) {
                 if (evt.Consumed)
                     break;
                 ml.MouseReleased(evt);
@@ -141,7 +174,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseDragged(MouseEvent evt) {
-            foreach (MouseMotionListener mml in new LinkedList <MouseMotionListener> (mouseMotionListeners)) {
+            UpdateMouseMotionListeners();
+            foreach (MouseMotionListener mml in mouseMotionListeners) {
                 if (evt.Consumed)
                     break;
                 mml.MouseDragged(evt);
@@ -149,7 +183,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseClicked(MouseEvent evt) {
-            foreach (MouseListener ml in new LinkedList <MouseListener> (mouseListeners)) {
+            UpdateMouseListeners();
+            foreach (MouseListener ml in mouseListeners) {
                 if (evt.Consumed)
                     break;
                 ml.MouseClicked(evt);
@@ -157,7 +192,8 @@ namespace Illumination.Logic.MouseHandler {
         }
 
         private static void FireMouseScrolled(MouseScrollEvent evt) {
-            foreach (MouseScrollListener msl in new LinkedList <MouseScrollListener>(mouseScrollListeners)) {
+            UpdateMouseScrollListeners();
+            foreach (MouseScrollListener msl in mouseScrollListeners) {
                 if (evt.Consumed)
                     break;
                 msl.MouseScrolled(evt);
