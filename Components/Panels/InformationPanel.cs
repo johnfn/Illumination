@@ -60,7 +60,7 @@ namespace Illumination.Components.Panels {
             shopPanel = new ShopPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
             shopPanel.Deactivate();
 
-            itemsPanel = new ItemPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
+            itemsPanel = new ItemsPanel(new Rectangle(5, 5, 880, 140), new Color(255, 255, 255, 100));
             itemsPanel.Deactivate();
 
             AddComponent(directionPanel);

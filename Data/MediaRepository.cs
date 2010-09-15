@@ -30,6 +30,7 @@ namespace Illumination.Data {
 
             Textures.Add("TileBorder", gameInstance.Content.Load<Texture2D>("BorderTile"));
             Textures.Add("Border", gameInstance.Content.Load<Texture2D>("Border"));
+            Textures.Add("Pixel", gameInstance.Content.Load<Texture2D>("Pixel"));
 
             Textures.Add("Worker", gameInstance.Content.Load<Texture2D>("WorkerTile"));
             Textures.Add("Educator", gameInstance.Content.Load<Texture2D>("EducatorTile"));
