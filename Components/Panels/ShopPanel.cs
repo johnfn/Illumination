@@ -18,14 +18,18 @@ namespace Illumination.Components.Panels {
                 : base(rectangle) {
                 this.item = item;
 
-                Button buyButton = new Button(item.ItemCopy.GetTexture(), rectangle, Color.White);
+                Button buyButton = new Button(item.BaseItem.GetTexture(), rectangle, Color.White);
                 buyButton.AddActionListener(this);
                 AddComponent(buyButton);
+
+                string description = String.Format("{0}: ${1}", item.BaseItem.Name, item.BaseItem.Cost);
+                AddComponent(new TextBox(new Rectangle(rectangle.X, rectangle.Y + rectangle.Height + 5,
+                    rectangle.Width, 20), description, Color.Black, TextBox.AlignType.Center));
             }
 
             public void ActionPerformed(ActionEvent evt) {
-                if (World.Money >= item.ItemCopy.Cost && World.ItemToPlace == null) {
-                    World.Money -= item.ItemCopy.Cost;
+                if (World.Money >= item.BaseItem.Cost && World.ItemToPlace == null) {
+                    World.Money -= item.BaseItem.Cost;
                     World.AddItemToInventory(item);
                 }
             }

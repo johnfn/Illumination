@@ -12,6 +12,10 @@ using Illumination.Logic.MouseHandler;
 namespace Illumination.Components.Panels {
     public class Panel : Component, MouseListener {
         protected HashSet <Component> components;
+        public HashSet<Component> Components {
+            get { return components; }
+        }
+
         protected bool consumesMouseEvent = true;
 
         public Panel(Rectangle boundingBox) : this(MediaRepository.Textures["Blank"], boundingBox, Color.White) { }
@@ -56,8 +60,9 @@ namespace Illumination.Components.Panels {
 
         public void RemoveAllComponents() {
             foreach (Component component in components) {
-                RemoveComponent(component);
+                component.Deactivate();
             }
+            components.Clear();
         }
 
         public override void Destroy() {
@@ -80,6 +85,9 @@ namespace Illumination.Components.Panels {
             if (isRecursive) {
                 foreach (Component c in components) {
                     c.Activate();
+                    if (c is Panel) {
+                        ((Panel) c).ActivatePanel(isRecursive);
+                    }
                 }
             }
         }
@@ -90,6 +98,9 @@ namespace Illumination.Components.Panels {
             if (isRecursive) {
                 foreach (Component c in components) {
                     c.Deactivate();
+                    if (c is Panel) {
+                        ((Panel) c).DeactivatePanel(isRecursive);
+                    }
                 }
             }
         }

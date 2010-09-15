@@ -51,5 +51,10 @@ namespace Illumination.Components {
             base.Destroy();
             MouseController.RemoveMouseListener(this);
         }
+
+        public override string ToString() {
+            return String.Format("Button {0}: {1} - {2}", boundingBox, Text.Length > 0 ? Text : "<No Text>",
+                isActive ? "Enabled" : "Disabled");
+        }
     }
 }

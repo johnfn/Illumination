@@ -128,9 +128,12 @@ namespace Illumination.Logic.MouseHandler {
                 foreach (T ml in addList) {
                     listenerList.AddFirst(ml);
                 }
-                foreach (T ml in mouseListenersToRemove) {
+                foreach (T ml in removeList) {
                     listenerList.Remove(ml);
                 }
+
+                addList.Clear();
+                removeList.Clear();
             }
         }
 

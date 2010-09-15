@@ -7,7 +7,7 @@ using Illumination.WorldObjects;
 namespace Illumination.Logic {
     public class ShopItem {
         private Item item;
-        public Item ItemCopy {
+        public Item BaseItem {
             get { return item; }
         }
 
