@@ -101,8 +101,8 @@ namespace Illumination.WorldObjects {
 
         public virtual HashSet<Point> GetEffectRange(int effectIndex) {
             HashSet<Point> points = new HashSet<Point>();
-            for (int row = GridLocation.Top; row < GridLocation.Bottom; row++) {
-                for (int col = GridLocation.Left; col < GridLocation.Right; col++) {
+            for (int row = GridLocation.Left; row < GridLocation.Right; row++) {
+                for (int col = GridLocation.Top; col < GridLocation.Bottom; col++) {
                     points.Add(new Point(row, col));
                 }
             }
