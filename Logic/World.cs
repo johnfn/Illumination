@@ -67,8 +67,8 @@ namespace Illumination.Logic {
 
         static ResearchLogic researchLogic = new ResearchLogic();
 
-        static Item itemToPlace = null;
-        public static Item ItemToPlace {
+        static ShopItem itemToPlace = null;
+        public static ShopItem ItemToPlace {
             get { return itemToPlace; }
             set { itemToPlace = value; }
         }
@@ -216,6 +216,10 @@ namespace Illumination.Logic {
             return InBound(p.X, p.Y);
         }
 
+        public static bool IsClear(Point p) {
+            return IsClear(new Rectangle(p.X, p.Y, 1, 1));
+        }
+
         public static bool IsClear(Rectangle r) {
             if (r.Width < 0 || r.Height < 0 || !InBound(r.X, r.Y) || !InBound(r.X + r.Width - 1, r.Y + r.Height - 1)) {
                 return false;
@@ -292,20 +296,21 @@ namespace Illumination.Logic {
             inventory[item]++;
         }
 
-        public static bool RemoveItemFromInventory(ShopItem item) {
-            if (!inventory.ContainsKey(item)) {
-                return false;
-            }
-            if (--inventory[item] <= 0) {
+        public static void RemoveItemFromInventory(ShopItem item) {
+            if (inventory.ContainsKey(item) && --inventory[item] <= 0) {
                 inventory.Remove(item);
             }
-            return true;
         }
 
         public static void PlaceItem(Point location) {
-            itemToPlace.SetLocation(location);
-            AddEntity(itemToPlace);
-            itemToPlace = null;
+            if (itemToPlace != null && IsClear(location)) {
+                Item newItem = itemToPlace.BaseItem.CreateNewItem();
+                newItem.SetLocation(location);
+                AddEntity(newItem);
+
+                RemoveItemFromInventory(itemToPlace);
+                itemToPlace = null;
+            }
         }
 
         public static Person MovePerson(Person person, Point newLocation) {

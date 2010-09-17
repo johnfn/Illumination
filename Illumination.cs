@@ -221,7 +221,6 @@ namespace Illumination {
 
             if (World.ItemToPlace != null) {
                 World.PlaceItem(gridLocation);
-                World.ItemToPlace = null;
             }
 
             HashSet <Entity> entities = World.GetEntities(gridLocation.X, gridLocation.Y);

@@ -27,9 +27,7 @@ namespace Illumination.Components.Panels {
                     string description = String.Format("{0} ({1})", item.BaseItem.Name, World.Inventory[item]);
                     AddComponent(new ItemDisplay(item, new Point(5, 5), 100, description,
                         delegate(ShopItem shopItem) {
-                            if (World.RemoveItemFromInventory(item)) {
-                                World.ItemToPlace = item.BaseItem.CreateNewItem();
-                            }
+                            World.ItemToPlace = shopItem;
                         })
                     );
                 }
