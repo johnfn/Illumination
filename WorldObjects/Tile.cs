@@ -16,35 +16,47 @@ namespace Illumination.WorldObjects {
             Grass
         }
 
+        public enum TileHighlightColor {
+            None,
+            Green,
+            Red,
+            Blue
+        }
+
         static Dictionary <TileType, int> movementCosts;
+        static Dictionary <TileHighlightColor, Color> tileHighlightColors;
 
         static Tile() {
             movementCosts = new Dictionary<TileType, int>();
             movementCosts[TileType.Water] = -1;
             movementCosts[TileType.Grass] = 1;
+
+            tileHighlightColors = new Dictionary<TileHighlightColor, Color>();
+            tileHighlightColors[TileHighlightColor.Green] = new Color(0, 255, 0, 100);
+            tileHighlightColors[TileHighlightColor.Red] = new Color(255, 0, 0, 100);
+            tileHighlightColors[TileHighlightColor.Blue] = new Color(0, 0, 255, 100);
         }
 
         #region Properties
 
         TileType type;
-        HashSet<Entity> entities;
-        bool highlighted;
-        public Point gridLocation;
-
-        public HashSet<Entity> Entities {
-            get { return entities; }
-        }
-
         public TileType Type {
             get { return type; }
             set { type = value; }
         }
 
-        public bool Highlighted {
-            get { return highlighted; }
-            set { highlighted = value; }
+        HashSet<Entity> entities;
+        public HashSet<Entity> Entities {
+            get { return entities; }
         }
 
+        TileHighlightColor highlightColor;
+        public TileHighlightColor HighlightColor {
+            get { return highlightColor; }
+            set { highlightColor = value; }
+        }
+
+        public Point gridLocation;
         public Point GridLocation {
             get { return gridLocation; }
             set { gridLocation = value; }
@@ -57,7 +69,7 @@ namespace Illumination.WorldObjects {
         public Tile(int gridX, int gridY, TileType type) {
             base.BoundingBox = Display.GridLocationToViewport(new Rectangle(gridX, gridY, 1, 1));
             this.type = type;
-            this.highlighted = false;
+            this.highlightColor = TileHighlightColor.None;
             this.gridLocation = new Point(gridX, gridY);
             entities = new HashSet<Entity>();
         }
@@ -75,8 +87,8 @@ namespace Illumination.WorldObjects {
                     spriteBatch.DrawRelative(MediaRepository.Textures["WaterTile"], BoundingBox, new Color(255, 255, 255, 100), Layer.Depth["Tile"]);
                     break;
             }
-            if (highlighted) {
-                spriteBatch.DrawRelative(MediaRepository.Textures["BlankTile"], BoundingBox, new Color(0, 255, 0, 150), Layer.Depth["Highlight"]);
+            if (highlightColor != TileHighlightColor.None) {
+                spriteBatch.DrawRelative(MediaRepository.Textures["BlankTile"], BoundingBox, tileHighlightColors[highlightColor], Layer.Depth["Highlight"]);
             }
 
             foreach (Entity entity in entities) {

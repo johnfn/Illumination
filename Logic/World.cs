@@ -390,25 +390,33 @@ namespace Illumination.Logic {
             UpdateHighlight();
         }
 
-        public static void AddHighlight(int x, int y) {
+        public static void AddHighlight(int x, int y, Tile.TileHighlightColor highlightColor) {
             if (InBound(x, y)) {
                 highlightedTiles.Add(grid[x, y]);
-                grid[x, y].Highlighted = true;
+                grid[x, y].HighlightColor = highlightColor;
+            }
+        }
+
+        public static void AddHighlight(int x, int y) {
+            AddHighlight(x, y, Tile.TileHighlightColor.Green);
+        }
+
+        public static void AddHighlight(IEnumerable<Point> points, Tile.TileHighlightColor highlightColor) {
+            foreach (Point p in points) {
+                if (InBound(p)) {
+                    AddHighlight(p.X, p.Y, highlightColor);
+                }
             }
         }
 
         public static void AddHighlight(IEnumerable<Point> points) {
-            foreach (Point p in points) {
-                if (InBound(p)) {
-                    AddHighlight(p.X, p.Y);
-                }
-            }
+            AddHighlight(points, Tile.TileHighlightColor.Green);
         }
 
         public static void RemoveHighlight(int x, int y) {
             if (InBound(x, y)) {
                 highlightedTiles.Remove(grid[x, y]);
-                grid[x, y].Highlighted = false;
+                grid[x, y].HighlightColor = Tile.TileHighlightColor.None;
             }
         }
 
@@ -422,7 +430,7 @@ namespace Illumination.Logic {
 
         public static void RemoveAllHighlight() {
             foreach (Tile t in highlightedTiles) {
-                t.Highlighted = false;
+                t.HighlightColor = Tile.TileHighlightColor.None;
             }
             highlightedTiles.Clear();
         }
