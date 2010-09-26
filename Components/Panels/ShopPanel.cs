@@ -16,14 +16,18 @@ namespace Illumination.Components.Panels {
         }
 
         public void Initialize() {
-            Item mirror = new Mirror();
-            string description = String.Format("{0}: ${1}", mirror.Name, mirror.Cost);
+            AddItemPanel(new Mirror(), new Point(5, 5), 100);
+            AddItemPanel(new Road(), new Point(110, 5), 100);
+        }
 
-            AddComponent(new ItemDisplay(new ShopItem(new Mirror()), new Point(5, 5), 100, description,
-                delegate(ShopItem item) {
-                    if (World.Money >= item.BaseItem.Cost && World.ItemToPlace == null) {
-                        World.Money -= item.BaseItem.Cost;
-                        World.AddItemToInventory(item);
+        private void AddItemPanel(Item item, Point p, int dimension) {
+            string description = String.Format("{0}: ${1}", item.Name, item.Cost);
+
+            AddComponent(new ItemDisplay(new ShopItem(item), p, dimension, description,
+                delegate(ShopItem shopItem) {
+                    if (World.Money >= shopItem.BaseItem.Cost && World.ItemToPlace == null) {
+                        World.Money -= shopItem.BaseItem.Cost;
+                        World.AddItemToInventory(shopItem);
                     }
                 })
             );

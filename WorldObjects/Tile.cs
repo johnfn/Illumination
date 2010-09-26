@@ -23,13 +23,13 @@ namespace Illumination.WorldObjects {
             Blue
         }
 
-        static Dictionary <TileType, int> movementCosts;
+        static Dictionary <TileType, int> defaultMovementCosts;
         static Dictionary <TileHighlightColor, Color> tileHighlightColors;
 
         static Tile() {
-            movementCosts = new Dictionary<TileType, int>();
-            movementCosts[TileType.Water] = -1;
-            movementCosts[TileType.Grass] = 1;
+            defaultMovementCosts = new Dictionary<TileType, int>();
+            defaultMovementCosts[TileType.Water] = -1;
+            defaultMovementCosts[TileType.Grass] = 12;
 
             tileHighlightColors = new Dictionary<TileHighlightColor, Color>();
             tileHighlightColors[TileHighlightColor.Green] = new Color(0, 255, 0, 100);
@@ -56,10 +56,20 @@ namespace Illumination.WorldObjects {
             set { highlightColor = value; }
         }
 
-        public Point gridLocation;
+        private Point gridLocation;
         public Point GridLocation {
             get { return gridLocation; }
             set { gridLocation = value; }
+        }
+
+        private int movementCost;
+        public int MovementCost {
+            get { return movementCost; }
+            set { movementCost = value; }
+        }
+
+        public int DefaultMovementCost {
+            get { return defaultMovementCosts[this.type]; }
         }
 
         #endregion
@@ -71,6 +81,7 @@ namespace Illumination.WorldObjects {
             this.type = type;
             this.highlightColor = TileHighlightColor.None;
             this.gridLocation = new Point(gridX, gridY);
+            this.movementCost = defaultMovementCosts[type];
             entities = new HashSet<Entity>();
         }
 
@@ -104,7 +115,7 @@ namespace Illumination.WorldObjects {
                     return -1;
                 }
             }
-            return movementCosts[type];
+            return movementCost;
         }
 
         public void AddEntity(Entity entity) {

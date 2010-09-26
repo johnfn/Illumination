@@ -308,6 +308,8 @@ namespace Illumination.Logic {
                 newItem.SetLocation(location);
                 AddEntity(newItem);
 
+                newItem.ActionOnPlace(location);
+
                 RemoveItemFromInventory(itemToPlace);
                 itemToPlace = null;
             }

@@ -7,8 +7,7 @@ namespace Illumination.WorldObjects
 {
     public abstract class WorldObject
     {
-        Rectangle boundingBox;
-
+        protected Rectangle boundingBox;
         public Rectangle BoundingBox 
         {
             get { return boundingBox; }

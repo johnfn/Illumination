@@ -128,7 +128,7 @@ namespace Illumination.WorldObjects {
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
-            remainingMovement = movementRange = 3;
+            remainingMovement = movementRange = 36;
             BlocksMovement = false;
 
             Name = "Person";

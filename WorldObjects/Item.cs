@@ -36,5 +36,7 @@ namespace Illumination.WorldObjects {
         }
 
         public abstract Item CreateNewItem();
+
+        public virtual void ActionOnPlace(Point location) { }
     }
 }
