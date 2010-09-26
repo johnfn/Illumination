@@ -25,6 +25,7 @@ namespace Illumination.WorldObjects {
         }
 
         public const int EDUCATION_MAX = 3;
+        public const int HEALTH_MAX = 10;
 
         #region Properties
 
@@ -124,7 +125,7 @@ namespace Illumination.WorldObjects {
             age = 0;
             education = 0;
             gender = GenderType.Male;
-            health = 100;
+            health = HEALTH_MAX;
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
@@ -167,16 +168,24 @@ namespace Illumination.WorldObjects {
             }
         }
 
-        public void Educate(int increment)
-        {
-            if (education < EDUCATION_MAX)
-            {
+        public void Educate(int increment) {
+            if (education < EDUCATION_MAX) {
                 education = Math.Min(education + increment, EDUCATION_MAX);
             }
+            Glow(Color.Yellow);
+        }
+
+        public void Heal(int increment) {
+            if (health < HEALTH_MAX) {
+                health = Math.Min(health + increment, HEALTH_MAX);
+            }
+        }
+
+        void Glow(Color color) {
             Rectangle boundingBox = Display.GridLocationToViewport(GridLocation);
             Animation educateEffect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], boundingBox, 2, 0.1);
             educateEffect.AddColorFrame(Color.TransparentWhite, 0);
-            educateEffect.AddColorFrame(Color.Yellow, 0.5);
+            educateEffect.AddColorFrame(color, 0.5);
             educateEffect.AddColorFrame(Color.TransparentWhite, 2);
         }
 
