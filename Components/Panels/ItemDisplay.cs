@@ -27,7 +27,7 @@ namespace Illumination.Components.Panels {
                 Color.Black));
             AddComponent(new ImageBox(MediaRepository.Textures["Pixel"],
                 new Rectangle(BORDER_WIDTH, BORDER_WIDTH, dimension, dimension),
-                Color.White));
+                new Color(255, 255, 255, 230)));
 
             Button buyButton = new Button(item.BaseItem.GetTexture(),
                 new Rectangle(BORDER_WIDTH, BORDER_WIDTH, dimension, dimension),

@@ -380,6 +380,18 @@ namespace Illumination.Logic {
                 person.RemainingMovement = (int) ((person.MovementRange * 2 / 3.0 + 0.5));
             }
 
+            HashSet<Item> oldItemSet = new HashSet<Item> (itemSet);
+            foreach (Item item in oldItemSet) {
+                if (item is Inspiration) {
+                    for (Entity.DirectionType dir = 0; dir < Entity.DirectionType.SIZE; dir++) {
+                        CreateLight(new Point(item.GridLocation.X, item.GridLocation.Y),
+                        Light.LightType.White, dir);
+                    }
+
+                    itemSet.Remove(item);
+                }
+            }
+
             timeLeft = 0;
 
             UpdateHighlight();

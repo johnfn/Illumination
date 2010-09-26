@@ -19,6 +19,7 @@ namespace Illumination.Components.Panels {
             AddItemPanel(new Mirror(), new Point(5, 5), 100);
             AddItemPanel(new Road(), new Point(110, 5), 100);
             AddItemPanel(new Airport(), new Point(215, 5), 100);
+            AddItemPanel(new Inspiration(), new Point(320, 5), 100);
         }
 
         private void AddItemPanel(Item item, Point p, int dimension) {

@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Illumination.Graphics;
+using Illumination.Data;
+using Illumination.Logic;
 
 namespace Illumination.WorldObjects {
     public abstract class Item : Entity
@@ -38,5 +40,33 @@ namespace Illumination.WorldObjects {
         public abstract Item CreateNewItem();
 
         public virtual void ActionOnPlace(Point location) { }
+    }
+
+    public class Inspiration : Item {
+        private static Texture2D texture = MediaRepository.Textures["WhiteLight"];
+
+        public Inspiration()
+            : base(0, 0, 1, 1, texture) {
+            Initialize();
+        }
+
+        private void Initialize() {
+            blocksMovement = false;
+
+            name = "Inspiration";
+            cost = 10;
+        }
+
+        public override Texture2D GetTexture() {
+            return texture;
+        }
+
+        public override void Draw(SpriteBatchRelative spriteBatch) {
+            spriteBatch.DrawRelative(GetTexture(), BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+        }
+
+        public override Item CreateNewItem() {
+            return new Inspiration();
+        }
     }
 }
