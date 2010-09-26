@@ -69,7 +69,7 @@ namespace Illumination {
             KeyController.AddKeyListener(this);
 
             Display.InitializeDisplay(new Dimension(100, 50), new Point(0, 25), new Dimension(900, 600), new Rectangle(0, 25, 900, 425));
-            World.InitalizeWorld(12, 11);
+            World.InitalizeWorld(20, 18);
             Layer.Initialize();
 
             informationPanel = new InformationPanel(new Rectangle(5, 445, 890, 150));

@@ -129,7 +129,7 @@ namespace Illumination.WorldObjects {
             profession = ProfessionType.Worker;
             Random random = new Random();
             direction = (DirectionType)(random.Next() % (int)DirectionType.SIZE);
-            remainingMovement = movementRange = 3;
+            remainingMovement = movementRange = 36;
             BlocksMovement = false;
 
             Name = "Person";
@@ -260,6 +260,13 @@ namespace Illumination.WorldObjects {
                             continue;
                         }
                         queue.Enqueue(new SearchNode(nextPoint, node.cost + cost, node));
+                        if (World.LocationsWithAirports.Contains(nextPoint)) {
+                            foreach (Point point in World.LocationsWithAirports) {
+                                if (!possibleLocations.ContainsKey(point)) {
+                                    queue.Enqueue(new SearchNode(point, node.cost, node));
+                                }
+                            }
+                        }
                     }
                 }
             }

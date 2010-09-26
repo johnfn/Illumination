@@ -52,6 +52,11 @@ namespace Illumination.Logic {
             get { return itemSet; }
         }
 
+        static HashSet<Point> locationsWithAirports;
+        public static HashSet<Point> LocationsWithAirports {
+            get { return locationsWithAirports; }
+        }
+
         static Dictionary<ShopItem, int> inventory;
         public static Dictionary<ShopItem, int> Inventory {
             get { return inventory; }
@@ -197,6 +202,7 @@ namespace Illumination.Logic {
             buildingSet = new HashSet<Building>();
             treeSet = new HashSet<Tree>();
             itemSet = new HashSet<Item>();
+            locationsWithAirports = new HashSet<Point>();
             inventory = new Dictionary<ShopItem, int>();
 
             highlightedTiles = new HashSet<Tile>();
@@ -310,6 +316,8 @@ namespace Illumination.Logic {
                 Item newItem = itemToPlace.BaseItem.CreateNewItem();
                 newItem.SetLocation(location);
                 AddEntity(newItem);
+
+                newItem.ActionOnPlace(location);
 
                 RemoveItemFromInventory(itemToPlace);
                 itemToPlace = null;

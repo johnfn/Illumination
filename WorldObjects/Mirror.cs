@@ -54,7 +54,7 @@ namespace Illumination.WorldObjects
 
         private void Initialize() {
             name = "Mirror";
-            cost = 5;
+            cost = 50;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch)
