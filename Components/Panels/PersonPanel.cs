@@ -16,6 +16,7 @@ namespace Illumination.Components.Panels
         TextBox title;
         StatusBar educationBar;
         StatusBar movementBar;
+        StatusBar healthBar;
         Person person;
         ImageBox professionIcon;
 
@@ -42,6 +43,8 @@ namespace Illumination.Components.Panels
             title = new TextBox(new Rectangle(45, 10, 50, 25), "Person", Color.White, TextBox.AlignType.Left);
             movementBar = new StatusBar(new Rectangle(125, 40, 150, 10), Color.Green, Color.White);
             educationBar = new StatusBar(new Rectangle(125, 65, 150, 10), new Color(200, 200, 0), Color.White);
+            healthBar = new StatusBar(new Rectangle(125, 90, 150, 10), Color.Red, Color.White);
+
             professionIcon = new ImageBox(new Rectangle(25, 15, 10, 10), Color.White);
 
             AddComponent(title);
@@ -49,6 +52,8 @@ namespace Illumination.Components.Panels
             AddComponent(movementBar);
             AddComponent(new TextBox(new Rectangle(25, 65, 100, 10), "Education:", Color.Black, TextBox.AlignType.Left));
             AddComponent(educationBar);
+            AddComponent(new TextBox(new Rectangle(25, 90, 100, 10), "Health:", Color.Black, TextBox.AlignType.Left));
+            AddComponent(healthBar);
             AddComponent(professionIcon);
             this.consumesMouseEvent = false;
             Deactivate();
@@ -66,6 +71,7 @@ namespace Illumination.Components.Panels
                 title.Text = professionToString[person.Profession];
                 educationBar.Fraction = person.Education / (double)Person.EDUCATION_MAX;
                 movementBar.Fraction = person.RemainingMovement / (double) person.MovementRange;
+                healthBar.Fraction = person.Health / (double)Person.HEALTH_MAX;
                 professionIcon.Color = professionToColor[person.Profession];
                 base.Draw(spriteBatch, isRelative);
             }
