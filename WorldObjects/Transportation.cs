@@ -71,8 +71,6 @@ namespace Illumination.WorldObjects {
 
         public override void ActionOnPlace(Point location) {
             World.LocationsWithAirports.Add(location);
-
-            World.Grid[location.X, location.Y].MovementCost = 0;
         }
     }
 }

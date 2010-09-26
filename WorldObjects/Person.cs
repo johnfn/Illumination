@@ -254,7 +254,7 @@ namespace Illumination.WorldObjects {
                         if (World.LocationsWithAirports.Contains(nextPoint)) {
                             foreach (Point point in World.LocationsWithAirports) {
                                 if (!possibleLocations.ContainsKey(point)) {
-                                    queue.Enqueue(new SearchNode(point, node.cost, node));
+                                    queue.Enqueue(new SearchNode(point, node.cost + cost, node));
                                 }
                             }
                         }
