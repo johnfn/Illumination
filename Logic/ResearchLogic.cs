@@ -13,16 +13,22 @@ namespace Illumination.Logic {
         static ResearchLogic() {
             researches = new List<Research>();
 
-            string[] tasks = {"Y", "B", "Y"};
-            researches.Add(new Research("Unlock School Effect #4", tasks, SchoolResearch));
+            string[] tasks1 = { "B", "Y", "Y" };
+            researches.Add(new Research(0, "Unlock School Effect #3", tasks1, SchoolResearch1));
+
+            string[] tasks2 = { "B", "BB", "YY", "YB" };
+            researches.Add(new Research(1, "Unlock School Effect #4", tasks2, SchoolResearch2));
         }
 
         /* Proof of concept */
-        static void SchoolResearch() {
+        static void SchoolResearch1() {
+            School.UnlockEffect(2);
+        }
+        static void SchoolResearch2() {
             School.UnlockEffect(3);
         }
 
-        public static Research GetResearch(int index) {
+        public Research GetResearch(int index) {
             return researches[index];
         }
     }

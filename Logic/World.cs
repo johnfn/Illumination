@@ -66,6 +66,9 @@ namespace Illumination.Logic {
         }
 
         static ResearchLogic researchLogic = new ResearchLogic();
+        public static ResearchLogic ResearchLogic {
+            get { return researchLogic; }
+        }
 
         static ShopItem itemToPlace = null;
         public static ShopItem ItemToPlace {
@@ -123,7 +126,7 @@ namespace Illumination.Logic {
         }
 
         public static Research GetResearch(int index) {
-            return ResearchLogic.GetResearch(0);
+            return ResearchLogic.GetResearch(index);
         }
 
         public static HashSet<Light> LightSet {
