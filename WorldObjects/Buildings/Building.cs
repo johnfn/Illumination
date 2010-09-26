@@ -78,11 +78,14 @@ namespace Illumination.WorldObjects {
             Activate();
         }
 
+        /// <summary>
+        /// Returns true if it is a 1 time effect.
+        /// </summary>
         public void Activate() {
             BuildingEffect thisEffect = GetEffects()[activatedEffect];
 
             if (lightBeams.IsSubsequence(thisEffect.sequence) && !triggeredSequences.Contains(thisEffect.sequence)) {
-                if (thisEffect.effectHandle(this)) { //Activates effect; returns true if it is a 1 time effect
+                if (thisEffect.effectHandle(this)) { 
                     triggeredSequences.Add(thisEffect.sequence);
                 }
             }
