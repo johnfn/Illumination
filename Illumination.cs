@@ -92,6 +92,7 @@ namespace Illumination {
             World.AddEntity(new School(6, 6));
             World.AddEntity(new Factory(8, 3));
             World.AddEntity(new ResearchCenter(1, 7));
+            World.AddEntity(new Hospital(4, 10));
 
             Random random = new Random();
 
@@ -112,6 +113,7 @@ namespace Illumination {
             p5.Profession = Person.ProfessionType.Educator;
             p6.Profession = Person.ProfessionType.Scientist;
             p5.Education = 3;
+            p5.Health = 5;
             p6.Education = 3;
             World.AddEntity(p0);
             World.AddEntity(p1);

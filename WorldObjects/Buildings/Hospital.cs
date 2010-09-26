@@ -11,18 +11,18 @@ using Illumination.Graphics.AnimationHandler;
 using Illumination.Utility;
 
 namespace Illumination.WorldObjects {
-    public class School : Building {
+    public class Hospital : Building {
         const int WIDTH = 2;
         const int HEIGHT = 2;
 
-        private class EducationEffect : Building.BuildingEffect {
+        private class HealEffect : Building.BuildingEffect {
             public int range;
             public int increment;
 
-            public EducationEffect(string description, LightSequence sequence, bool isKnown, int range, int increment)
+            public HealEffect(string description, LightSequence sequence, bool isKnown, int range, int increment)
                 : base(description, sequence,
                     delegate(Building building) {
-                        return EducatePeople(building, range, increment);
+                        return HealPeople(building, range, increment);
                     }, isKnown) {
 
                 this.range = range;
@@ -30,27 +30,27 @@ namespace Illumination.WorldObjects {
             }
         }
 
-        static EducationEffect[] effects;
+        static HealEffect[] effects;
 
-        static School() {
-            effects = new EducationEffect[4];
+        static Hospital() {
+            effects = new HealEffect[4];
 
-            effects[0] = new EducationEffect("Education +1 (Range 2)", new LightSequence("Y"), true, 2, 1);
-            effects[1] = new EducationEffect("Education +1 (Range 3)", new LightSequence("YB"), true, 3, 1);
-            effects[2] = new EducationEffect("Education +2 (Range 2)", new LightSequence("YYY"), false, 2, 2);
-            effects[3] = new EducationEffect("Education +2 (Range 3)", new LightSequence("YYYB"), false, 3, 2);
+            effects[0] = new HealEffect("Health +1 (Range 2)", new LightSequence("R"), true, 2, 1);
+            effects[1] = new HealEffect("Health +1 (Range 3)", new LightSequence("RB"), true, 3, 1);
+            effects[2] = new HealEffect("Health +2 (Range 2)", new LightSequence("RRR"), true, 2, 2);
+            effects[3] = new HealEffect("Health +2 (Range 3)", new LightSequence("RRRB"), false, 3, 2);
         }
 
         public static void UnlockEffect(int effectIndex) {
-            effects[effectIndex].isKnown = true;    
+            effects[effectIndex].isKnown = true;
         }
 
-        public School() { /* Default constructor */ }
+        public Hospital() { /* Default constructor */ }
 
-        public School(int x, int y) {
+        public Hospital(int x, int y) {
             Initialize(x, y);
 
-            Name = "School";
+            Name = "Hospital";
         }
 
         public Texture2D Texture {
@@ -62,14 +62,14 @@ namespace Illumination.WorldObjects {
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
-            spriteBatch.DrawRelative(Texture, BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+            spriteBatch.DrawRelative(Texture, BoundingBox, Color.Red, Layer.GetWorldDepth(GridLocation));
 
             effectDisplay.Sequence = effects[ActivatedEffect].sequence;
             effectDisplay.Draw(spriteBatch, true);
         }
 
         public override BuildingEffect[] GetEffects() {
-            return School.effects;
+            return Hospital.effects;
         }
 
         public override HashSet<Point> GetEffectRange(int activatedEffect) {
@@ -91,18 +91,18 @@ namespace Illumination.WorldObjects {
             return points;
         }
 
-        static void EducateAnimation(Rectangle gridLocation, int effectRange) {
+        static void HealAnimation(Rectangle gridLocation, int effectRange) {
             Rectangle boundingBox = new Rectangle(gridLocation.Left - effectRange + 1, gridLocation.Top - effectRange + 1,
                 gridLocation.Width + effectRange * 2 - 2, gridLocation.Height + effectRange * 2 - 2);
             Animation effect = Display.CreateAnimation(MediaRepository.Sheets["Glow"], Display.GridLocationToViewport(boundingBox), 2, 0.1);
             effect.AddColorFrame(Color.TransparentWhite, 0);
-            effect.AddColorFrame(Color.Yellow, 0.5);
+            effect.AddColorFrame(Color.Red, 0.5);
             effect.AddColorFrame(Color.TransparentWhite, 2);
         }
 
-        private static bool EducatePeople(Building building, int range, int educationIncrement) {
-            EducateAnimation(building.GridLocation, range);
-            
+        private static bool HealPeople(Building building, int range, int healthIncrement) {
+            HealAnimation(building.GridLocation, range);
+
             foreach (Point p in building.GetRange()) {
                 if (!World.InBound(p)) {
                     continue;
@@ -113,10 +113,8 @@ namespace Illumination.WorldObjects {
                         continue;
                     }
                     if (entity is Person) {
-                        Person thisPerson = (Person) entity;
-                        if (!thisPerson.IsEducated) {
-                            thisPerson.Educate(educationIncrement);
-                        }
+                        Person thisPerson = (Person)entity;
+                        thisPerson.Heal(healthIncrement);
                     }
                 }
             }
