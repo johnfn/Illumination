@@ -251,6 +251,13 @@ namespace Illumination.WorldObjects {
                             continue;
                         }
                         queue.Enqueue(new SearchNode(nextPoint, node.cost + cost, node));
+                        if (World.LocationsWithAirports.Contains(nextPoint)) {
+                            foreach (Point point in World.LocationsWithAirports) {
+                                if (!possibleLocations.ContainsKey(point)) {
+                                    queue.Enqueue(new SearchNode(point, node.cost, node));
+                                }
+                            }
+                        }
                     }
                 }
             }

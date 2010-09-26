@@ -41,4 +41,38 @@ namespace Illumination.WorldObjects {
             currentTile.MovementCost = currentTile.DefaultMovementCost / 2;
         }
     }
+
+    public class Airport : Item {
+        private static Texture2D texture = MediaRepository.Textures["WaterTile"];
+
+        public Airport()
+            : base(0, 0, 1, 1, texture) {
+            Initialize();
+        }
+
+        private void Initialize() {
+            blocksMovement = false;
+
+            name = "Airport";
+            cost = 10;
+        }
+
+        public override Texture2D GetTexture() {
+            return texture;
+        }
+
+        public override void Draw(SpriteBatchRelative spriteBatch) {
+            spriteBatch.DrawRelative(GetTexture(), BoundingBox, Color.White, Layer.GetWorldDepth(GridLocation));
+        }
+
+        public override Item CreateNewItem() {
+            return new Airport();
+        }
+
+        public override void ActionOnPlace(Point location) {
+            World.LocationsWithAirports.Add(location);
+
+            World.Grid[location.X, location.Y].MovementCost = 0;
+        }
+    }
 }
