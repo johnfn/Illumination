@@ -15,6 +15,7 @@ namespace Illumination.Components.Panels
     public class BuildingPanel : Panel, ActionListener
     {
         TextBox title;
+        Button demolishButton;
         Panel[] effectPanels;
         Button[] effectButtons;
         LightSequenceBar[] sequenceBars;
@@ -33,7 +34,10 @@ namespace Illumination.Components.Panels
         public BuildingPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite)
         {
-            title = new TextBox(new Rectangle(25, 10, 50, 25), "Building", Color.White, TextBox.AlignType.Left);
+            title = new TextBox(new Rectangle(25, 10, 100, 25), "Building", Color.White, TextBox.AlignType.Left);
+            demolishButton = new Button(new Rectangle(300, 10, 135, 25), "Demolish", MediaRepository.Fonts["DefaultFont"], Color.Red);
+            demolishButton.AddActionListener(this);
+
             effectPanels = new Panel[4];
             effectButtons = new Button[4];
             sequenceBars = new LightSequenceBar[4];
@@ -64,6 +68,7 @@ namespace Illumination.Components.Panels
             }
 
             AddComponent(title);
+            AddComponent(demolishButton);
 
             Deactivate();
         }
@@ -102,7 +107,7 @@ namespace Illumination.Components.Panels
 
             Update();
 
-            /* It is gauranteed that selected entity is a single building. */
+            /* It is guaranteed that selected entity is a single building. */
             Building thisBuilding = (Building)World.SelectedEntities.First();
             title.Text = thisBuilding.Name;
 
@@ -118,21 +123,27 @@ namespace Illumination.Components.Panels
          */
 
         public void ActionPerformed(ActionEvent evt) {
-            int clickedEffect = 0;
-            foreach (Button button in effectButtons) {
-                if (evt.InvokingComponent == button) {
-                    break;
+            if (evt.InvokingComponent == demolishButton) {
+                Deactivate();
+                World.RemoveEntity((Building) World.SelectedEntities.First());
+                World.ClearSelection();
+            } else {
+                int clickedEffect = 0;
+                foreach (Button button in effectButtons) {
+                    if (evt.InvokingComponent == button) {
+                        break;
+                    }
+                    clickedEffect++;
                 }
-                clickedEffect++;
-            }
 
-            Building building = (Building)World.SelectedEntities.First();
-            building.ActivateEffect(clickedEffect);
+                Building building = (Building) World.SelectedEntities.First();
+                building.ActivateEffect(clickedEffect);
 
-            if (World.cheater){
-                building.ForceActivate();
+                if (World.cheater) {
+                    building.ForceActivate();
+                }
+                World.UpdateHighlight();
             }
-            World.UpdateHighlight();
         }
     }
 }

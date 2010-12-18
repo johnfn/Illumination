@@ -14,6 +14,7 @@ using Illumination.WorldObjects;
 namespace Illumination.Components.Panels {
     public class ResearchPanel : Panel, ActionListener {
         TextBox title;
+        Button demolishButton;
 
         TextBox descriptionHeader;
         TextBox descriptionText;
@@ -41,7 +42,9 @@ namespace Illumination.Components.Panels {
 
         public ResearchPanel(Rectangle boundingBox)
             : base(MediaRepository.Textures["Blank"], boundingBox, Color.TransparentWhite) {
-            title = new TextBox(new Rectangle(25, 10, 50, 25), "Research Center", Color.White, TextBox.AlignType.Left);
+            title = new TextBox(new Rectangle(25, 10, 100, 25), "Research Center", Color.White, TextBox.AlignType.Left);
+            demolishButton = new Button(new Rectangle(300, 10, 135, 25), "Demolish", MediaRepository.Fonts["DefaultFont"], Color.Red);
+            demolishButton.AddActionListener(this);
 
             activateButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(370, 10, 100, 25), new Color(100, 100, 255, 200), "Activate", MediaRepository.Fonts["Arial10"], Color.Black);
             abortButton = new Button(MediaRepository.Textures["Blank"], new Rectangle(370, 10, 100, 25), new Color(255, 100, 100, 200), "Abort", MediaRepository.Fonts["Arial10"], Color.Black);
@@ -71,6 +74,7 @@ namespace Illumination.Components.Panels {
             AddComponent(schoolResearchButton_2);
 
             AddComponent(title);
+            AddComponent(demolishButton);
             AddComponent(descriptionHeader);
             AddComponent(descriptionText);
             AddComponent(statusHeader);
@@ -124,16 +128,17 @@ namespace Illumination.Components.Panels {
         }
 
         public void ActionPerformed(ActionEvent evt) {
-            if (evt.InvokingComponent == schoolResearchButton_1) {
+            if (evt.InvokingComponent == demolishButton) {
+                Deactivate();
+                World.RemoveEntity((Building) World.SelectedEntities.First());
+                World.ClearSelection();
+            } else if (evt.InvokingComponent == schoolResearchButton_1) {
                 thisResearch = World.GetResearch(0);
-            }
-            else if (evt.InvokingComponent == schoolResearchButton_2) {
+            } else if (evt.InvokingComponent == schoolResearchButton_2) {
                 thisResearch = World.GetResearch(1);
-            }
-            else if (evt.InvokingComponent == activateButton) {
+            } else if (evt.InvokingComponent == activateButton) {
                 thisCenter.InitiateResearch(thisResearch.Index);
-            }
-            else if (evt.InvokingComponent == abortButton) {
+            } else if (evt.InvokingComponent == abortButton) {
                 thisCenter.AbortResearch();
             }
         }

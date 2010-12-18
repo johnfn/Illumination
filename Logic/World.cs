@@ -299,7 +299,11 @@ namespace Illumination.Logic {
                 itemSet.Remove((Item) entity);
             }
 
-            Grid[entity.GridLocation.X, entity.GridLocation.Y].RemoveEntity(entity);
+            for (int i = entity.GridLocation.X; i < entity.GridLocation.X + entity.GridLocation.Width; i++) {
+                for (int j = entity.GridLocation.Y; j < entity.GridLocation.Y + entity.GridLocation.Height; j++) {
+                    Grid[i, j].RemoveEntity(entity);
+                }
+            }
         }
 
         public static void AddItemToInventory(ShopItem item) {
