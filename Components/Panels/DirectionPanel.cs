@@ -9,12 +9,14 @@ using Illumination.Logic.ActionHandler;
 using Illumination.Logic;
 using Illumination.WorldObjects;
 using Illumination.Graphics;
+using Illumination.Utility;
 
 namespace Illumination.Components.Panels {
     public class DirectionPanel : Panel, ActionListener {
         Button[] buttons;
         Texture2D[] textures;
         Rectangle[] boundingBoxes;
+        Polygon clickableRegion;
 
         public delegate void DirectionEvent(Entity.DirectionType direction);
 
@@ -23,6 +25,11 @@ namespace Illumination.Components.Panels {
         private void Initialize(Rectangle boundingBox, DirectionEvent directionEventHandler, bool isMirror) {
             int buttonWidth = boundingBox.Width / 2;
             int buttonHeight = boundingBox.Height / 2;
+
+            clickableRegion = new Polygon(new Point[] { new Point(buttonWidth / 2, 0),
+                                                        new Point(buttonWidth, buttonHeight / 2),
+                                                        new Point(buttonWidth / 2, buttonHeight),
+                                                        new Point(0, buttonHeight / 2)});
 
             buttons = new Button[(int) Entity.DirectionType.SIZE];
             textures = new Texture2D[(int) Entity.DirectionType.SIZE];
@@ -55,6 +62,7 @@ namespace Illumination.Components.Panels {
                 buttons[n] = new Button(textures[n], boundingBoxes[n], Color.White);
                 AddComponent(buttons[n]);
                 buttons[n].AddActionListener(this);
+                buttons[n].clickableRegionRel = new Polygon(clickableRegion);
             }
 
             this.directionEventHandler = directionEventHandler;

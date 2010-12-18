@@ -488,7 +488,6 @@ namespace Illumination.Logic {
                     }
                 }
             }
-
         }
     }
 }

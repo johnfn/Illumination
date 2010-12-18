@@ -14,6 +14,16 @@ namespace Illumination.Components {
     public class Button : TextBox, MouseListener {
         HashSet<ActionListener> actionListeners;
 
+        public Polygon clickableRegionRel = null;
+        public Polygon ClickableRegionRel {
+            get { return clickableRegionRel; }
+            set {
+                clickableRegionRel = value;
+                Update();
+            }
+        }
+        private Polygon clickableRegion;
+
         public Button(Texture2D background, Rectangle boundingBox, Color color) 
             : this(background, boundingBox, color, "", MediaRepository.Fonts["DefaultFont"], Color.White) { }
 
@@ -39,11 +49,21 @@ namespace Illumination.Components {
         public void MouseReleased(MouseEvent evt) { /* Ignore */ }
         public void MousePressed(MouseEvent evt) { /* Ignore */ }
         public void MouseClicked(MouseEvent evt) {
-            if (IsActive && BoundingBox.Contains(evt.CurrentLocation)) {
+            if (IsActive && ((clickableRegion == null && BoundingBox.Contains(evt.CurrentLocation)) ||
+                             (clickableRegion != null && clickableRegion.Contains(evt.CurrentLocation)))) {
                 foreach (ActionListener al in actionListeners) {
                     al.ActionPerformed(new ActionEvent(this));
                 }
                 evt.Consumed = true;
+            }
+        }
+
+        public override void Update() {
+            base.Update();
+
+            if (clickableRegionRel != null) {
+                clickableRegion = new Polygon(clickableRegionRel);
+                clickableRegion.Translate(boundingBox.X, boundingBox.Y);
             }
         }
 
