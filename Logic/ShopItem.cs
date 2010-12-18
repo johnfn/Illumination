@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Illumination.WorldObjects;
+using Illumination.Graphics;
 
 namespace Illumination.Logic {
     public class ShopItem {
         private Item item;
         public Item BaseItem {
             get { return item; }
+        }
+
+        public Dimension ItemDimension {
+            get { return item.ItemDimension; }
         }
 
         public ShopItem(Item item) {

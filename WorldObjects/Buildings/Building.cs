@@ -6,7 +6,7 @@ using Illumination.Components;
 using Illumination.Graphics;
 
 namespace Illumination.WorldObjects {
-    public abstract class Building : Entity {
+    public abstract class Building : Item {
         public class BuildingEffect {
             public string description;
             public LightSequence sequence;
@@ -31,12 +31,12 @@ namespace Illumination.WorldObjects {
         // Returns whether to mark effect as 1 time use
         public delegate bool DoEffect(Building triggeringBuilding);
 
-        public Building() : base() { /* Default constructor */ }
+        public Building() : base() {
+            Initialize(0, 0);
+        }
 
         public Building(int x, int y, int width, int height, Texture2D texture) {
             Initialize(x, y, width, height, texture);
-
-            Name = "Building";
         }
 
         public int ActivatedEffect {
@@ -52,7 +52,9 @@ namespace Illumination.WorldObjects {
             get { return base.GridLocation.Height; }
         }
 
-        public abstract void Initialize(int x, int y);
+        public virtual void Initialize(int x, int y) {
+            Name = "Building";
+        }
 
         public abstract BuildingEffect[] GetEffects();
 
@@ -65,6 +67,7 @@ namespace Illumination.WorldObjects {
             effectDisplay = new LightSequenceBar(new LightSequence(), new Point(BoundingBox.X + 30, BoundingBox.Y + 30), new Dimension(10, 10), 5);
             effectDisplay.LayerDepth = Layer.Depth["LightSequence"];
 
+            base.dimension = new Dimension(2, 2);
             base.DeferDraw = true;
         }
 

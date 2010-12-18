@@ -36,7 +36,7 @@ namespace Illumination.Components.Panels {
             AddComponent(buyButton);
 
             AddComponent(new TextBox(new Rectangle(0, dimension + TEXT_PADDING,
-                dimension, TEXT_HEIGHT), description, Color.Black, TextBox.AlignType.Center));
+                dimension, TEXT_HEIGHT), description, Color.Black, MediaRepository.Fonts["Arial10"], TextBox.AlignType.Center));
         }
 
         public void ActionPerformed(ActionEvent evt) {

@@ -283,11 +283,11 @@ namespace Illumination {
             Point gridLocation = Display.RelativeViewportToGridLocation(evt.CurrentLocation);
             if (World.ItemToPlace != null) {
                 World.RemoveAllHighlight();
-                if (World.IsClear(gridLocation)) {
-                    World.AddHighlight(gridLocation.X, gridLocation.Y);
-                } else {
-                    World.AddHighlight(gridLocation.X, gridLocation.Y, Tile.TileHighlightColor.Red);
-                }
+
+                Tile.TileHighlightColor highlightColor = World.IsClear(gridLocation, World.ItemToPlace.ItemDimension) ?
+                    Tile.TileHighlightColor.Green : Tile.TileHighlightColor.Red;
+
+                World.AddHighlight(gridLocation, World.ItemToPlace.ItemDimension, highlightColor);
             }
         }
 

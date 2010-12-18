@@ -229,6 +229,10 @@ namespace Illumination.Logic {
             return IsClear(new Rectangle(p.X, p.Y, 1, 1));
         }
 
+        public static bool IsClear(Point p, Dimension d) {
+            return IsClear(new Rectangle(p.X, p.Y, d.Width, d.Height));
+        }
+
         public static bool IsClear(Rectangle r) {
             if (r.Width < 0 || r.Height < 0 || !InBound(r.X, r.Y) || !InBound(r.X + r.Width - 1, r.Y + r.Height - 1)) {
                 return false;
@@ -428,6 +432,16 @@ namespace Illumination.Logic {
             foreach (Point p in points) {
                 if (InBound(p)) {
                     AddHighlight(p.X, p.Y, highlightColor);
+                }
+            }
+        }
+
+        public static void AddHighlight(Point p, Dimension d, Tile.TileHighlightColor highlightColor) {
+            for (int i = p.X; i < p.X + d.Width; i++) {
+                for (int j = p.Y; j < p.Y + d.Height; j++) {
+                    if (InBound(i, j)) {
+                        AddHighlight(i, j, highlightColor);
+                    }
                 }
             }
         }

@@ -23,13 +23,16 @@ namespace Illumination.Components.Panels {
             RemoveAllComponents();
 
             if (World.Inventory.Count != 0) {
+                int x = 5;
                 foreach (ShopItem item in World.Inventory.Keys) {
                     string description = String.Format("{0} ({1})", item.BaseItem.Name, World.Inventory[item]);
-                    AddComponent(new ItemDisplay(item, new Point(5, 5), 100, description,
+                    AddComponent(new ItemDisplay(item, new Point(x, 5), 100, description,
                         delegate(ShopItem shopItem) {
                             World.ItemToPlace = shopItem;
                         })
                     );
+
+                    x += 100;
                 }
             } else {
                 AddComponent(new TextBox(new Rectangle(0, 0, boundingBox.Width, boundingBox.Height), "No Items", Color.Black, TextBox.AlignType.Center));

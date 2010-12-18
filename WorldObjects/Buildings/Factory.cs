@@ -50,18 +50,19 @@ namespace Illumination.WorldObjects
             effects[effectIndex].isKnown = true;    
         }
 
-        public Factory() { /* Default constructor */ }
+        public Factory() : this(0, 0) { }
 
         public Factory(int x, int y)
         {
             Initialize(x, y);
-
-            Name = "Factory";
         }
 
         public override void Initialize(int x, int y)
         {
             base.Initialize(x, y, WIDTH, HEIGHT, GetTexture());
+
+            Name = "Factory";
+            Cost = 10;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch)
@@ -139,6 +140,10 @@ namespace Illumination.WorldObjects
             ((Factory) building).pollutionFactor = 0.0;
 
             return true;
+        }
+
+        public override Item CreateNewItem() {
+            return new Factory();
         }
     }
 }

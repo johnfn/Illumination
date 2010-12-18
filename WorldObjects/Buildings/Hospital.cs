@@ -45,12 +45,10 @@ namespace Illumination.WorldObjects {
             effects[effectIndex].isKnown = true;
         }
 
-        public Hospital() { /* Default constructor */ }
+        public Hospital() : this(0, 0) { }
 
         public Hospital(int x, int y) {
             Initialize(x, y);
-
-            Name = "Hospital";
         }
 
         public Texture2D Texture {
@@ -59,6 +57,9 @@ namespace Illumination.WorldObjects {
 
         public override void Initialize(int x, int y) {
             base.Initialize(x, y, WIDTH, HEIGHT, Texture);
+
+            Name = "Hospital";
+            Cost = 10;
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
@@ -123,6 +124,10 @@ namespace Illumination.WorldObjects {
 
         public override Texture2D GetTexture() {
             return MediaRepository.Textures["School"];
+        }
+
+        public override Item CreateNewItem() {
+            return new Hospital();
         }
     }
 }

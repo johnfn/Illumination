@@ -24,20 +24,20 @@ namespace Illumination.WorldObjects
 
         public bool IsActive { get { return activatedResearch != -1;  } }
 
-        public ResearchCenter() { /* Default constructor */ }
+        public ResearchCenter() : this(0, 0) { }
 
         public ResearchCenter(int x, int y) {
             Initialize(x, y);
-
-            Name = "Research Center";
-            activatedResearch = NO_RESEARCH; 
-            
-            effects = new BuildingEffect[1];
-            effects[0] = new BuildingEffect("Current Task", new LightSequence(), StandardEffect, true);
         }
 
         public override void Initialize(int x, int y) {
             base.Initialize(x, y, WIDTH, HEIGHT, GetTexture());
+
+            Name = "Research Center";
+            activatedResearch = NO_RESEARCH;
+
+            effects = new BuildingEffect[1];
+            effects[0] = new BuildingEffect("Current Task", new LightSequence(), StandardEffect, true);
         }
 
         public override void Draw(SpriteBatchRelative spriteBatch) {
@@ -101,6 +101,10 @@ namespace Illumination.WorldObjects
             }
 
             return true;
+        }
+
+        public override Item CreateNewItem() {
+            return new ResearchCenter();
         }
     }
 }

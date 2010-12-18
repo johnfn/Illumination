@@ -16,6 +16,11 @@ namespace Illumination.WorldObjects {
             get { return cost; }
             set { cost = value; }
         }
+
+        protected Dimension dimension;
+        public Dimension ItemDimension {
+            get { return dimension; }
+        }
         
         public Item() : base() { }
 
@@ -30,6 +35,7 @@ namespace Illumination.WorldObjects {
             base.Initialize(x, y, width, height, texture);
 
             base.DeferDraw = true;
+            dimension = new Dimension(1, 1);
         }
 
         public void SetLocation(Point p) {
@@ -53,8 +59,8 @@ namespace Illumination.WorldObjects {
         private void Initialize() {
             blocksMovement = false;
 
-            name = "Inspiration";
-            cost = 10;
+            Name = "Inspiration";
+            Cost = 10;
         }
 
         public override Texture2D GetTexture() {

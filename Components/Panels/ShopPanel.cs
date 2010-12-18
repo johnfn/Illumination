@@ -20,6 +20,10 @@ namespace Illumination.Components.Panels {
             AddItemPanel(new Road(), new Point(110, 5), 100);
             AddItemPanel(new Airport(), new Point(215, 5), 100);
             AddItemPanel(new Inspiration(), new Point(320, 5), 100);
+            AddItemPanel(new School(), new Point(425, 5), 100);
+            AddItemPanel(new Factory(), new Point(530, 5), 100);
+            AddItemPanel(new Hospital(), new Point(635, 5), 100);
+            AddItemPanel(new ResearchCenter(), new Point(740, 5), 100);
         }
 
         private void AddItemPanel(Item item, Point p, int dimension) {
